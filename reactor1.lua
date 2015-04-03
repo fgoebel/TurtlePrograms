@@ -1,5 +1,5 @@
 -- from Direwolf20 via Pastebin: http://pastebin.com/4qNyaPav
-
+-- button api via Pastebin: http://pastebin.com/XBbMUYNn
 os.loadAPI("button")
  
 p = peripheral.find("tile_blockcapacitorbank_name")
