@@ -29,22 +29,24 @@ function display()
 	timeToWait = pollTime - timerCount
 	term.clear()
 	term.setCursorPos(1,1)
+	print("+Status Screen - Pure Crystal Crafting+")
 	if working then
-		print("working: true")
+		print("Redstone: ON")
 	else
-		print("working: false")
+		print("Redstone: OFF")
 	end
 	if waiting then
-		print("wait " .. timeToWait .. " more Seconds!")
+		print("current Status: waiting " .. timeToWait .. " Seconds!")
 	else
-		print("not sleeping")
+		print("current Status: Standby")
 	end
 	
 	if done then
 		print("currently done! waiting for more work")
 	end
 	heartbeat = heartbeat + 1
-	print(heartbeat)
+	print("Event HeartBeat: " .. heartbeat)
+	print("press x to exit Programm!")
 end
 
 
@@ -86,10 +88,12 @@ event , param1 = os.pullEvent() --
 			timerCount = timerCount + 1
 			waitingTimer = os.startTimer(1)
 		end
-	end
-	if (event == "turtle_inventory") and (not(waiting)) then
+	elseif (event == "key") and (param1 == keys.x ) then
+		return
+	elseif (event == "turtle_inventory") and (not(waiting)) then
 		work = true
 		sleep(2) -- the item delivery is not instant..
+		dropAll()
 	end
 
 	if not waiting then
