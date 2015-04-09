@@ -6,7 +6,6 @@ local x = 0
 local y = 70
 local z = 0
 local f = 0
-local url = "http://turtle.fgdo.de/Communicator.aspx"
 local fFromXZ = {}
 local id = os.computerID() 
 
@@ -30,10 +29,6 @@ zDirFromF[0]=1
 zDirFromF[1]=0		
 zDirFromF[2]=-1		
 zDirFromF[3]=0
-
-
-
-
 
 function store(sName, stuff)
         local filePath = fs.combine("/.persistance", sName)
@@ -94,6 +89,17 @@ end
 	end
 	x = x + xDirFromF[f]
 	z = z + zDirFromF[f]
+	store("x",x)
+	store("z",z)
+	return true
+end
+
+function back()
+	if not turtle.back() then
+		return false
+	end
+	x = x - xDirFromF[f]
+	z = z - zDirFromF[f]
 	store("x",x)
 	store("z",z)
 	return true
@@ -182,27 +188,21 @@ end
 end
 
 function goTo( toX,toY,toZ, toF)
-	print("Position: X:"..  x .. " Y:".. y .. " Z:".. z .. " F:".. f)
-	print("Going to: X:"..  toX .. " Y:".. toY .. " Z:".. toZ .. " F:".. toF)
+
+
 	while y < toY do
 		up()
-		print("Position: X:"..  x .. " Y:".. y .. " Z:".. z .. " F:".. f)
-		print("Going to: X:"..  toX .. " Y:".. toY .. " Z:".. toZ .. " F:".. toF)
 	end
 
 	if x > toX then
 		turnToDir(1)
 		while x > toX do
 			xForward()
-			print("Position: X:"..  x .. " Y:".. y .. " Z:".. z .. " F:".. f)
-			print("Going to: X:"..  toX .. " Y:".. toY .. " Z:".. toZ .. " F:".. toF)
 		end
 	elseif x < toX then
 		turnToDir(3)
 		while x < toX do
 			xForward()
-			print("Position: X:"..  x .. " Y:".. y .. " Z:".. z .. " F:".. f)
-			print("Going to: X:"..  toX .. " Y:".. toY .. " Z:".. toZ .. " F:".. toF)
 		end
 	end
 	
@@ -210,15 +210,11 @@ function goTo( toX,toY,toZ, toF)
 		turnToDir(2)
 		while z > toZ do
 			xForward()
-			print("Position: X:"..  x .. " Y:".. y .. " Z:".. z .. " F:".. f)
-			print("Going to: X:"..  toX .. " Y:".. toY .. " Z:".. toZ .. " F:".. toF)
 		end
 	elseif z < toZ then
 		turnToDir(0)
 		while z < toZ do
 			xForward()
-			print("Position: X:"..  x .. " Y:".. y .. " Z:".. z .. " F:".. f)
-			print("Going to: X:"..  toX .. " Y:".. toY .. " Z:".. toZ .. " F:".. toF)
 		end	
 	end
 
@@ -229,27 +225,34 @@ function goTo( toX,toY,toZ, toF)
 	turnToDir(toF)
 end
 
+function getPos()
+	return x,y,z,f
+end
+
+function setPos(xPos,yPos,zPos,fPos)
+	x = xPos
+	y = yPos
+	z = zPos
+	f = fPos
+	store("x",x)
+	store("y",y)
+	store("z",z)
+	store("f",f)
+	
+end
+
 
 function initialize()
 	if exists("x") then
 		x = pull("x")
-	else
-		x=345
 	end
 	if exists("y") then
 		y = pull("y")
-	else
-		y=88
 	end
 	if exists("z") then
 		z = pull("z")
-	else
-		z=-31
 	end
 	if exists("f") then
 		f = pull("f")
-	else
-		f=2
 	end
-	--möchte man hier nicht auch speichern?
 end
