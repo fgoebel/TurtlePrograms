@@ -188,8 +188,6 @@ end
 end
 
 function goTo( toX,toY,toZ, toF)
-
-
 	while y < toY do
 		up()
 	end
@@ -226,7 +224,7 @@ function goTo( toX,toY,toZ, toF)
 end
 
 function getPos()
-	return x,y,z,f
+	return {x=x,y=y,z=z,f=f}
 end
 
 function setPos(xPos,yPos,zPos,fPos)
