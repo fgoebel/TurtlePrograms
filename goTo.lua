@@ -2,10 +2,13 @@
 
 -- originaly written by Keefkalif
 
-local x = 0
-local y = 70
-local z = 0
-local f = 0
+local currentPosition = {
+    x = 0,
+    y = 70,
+    z = 0,
+    f = 0
+};
+
 local fFromXZ = {}
 local id = os.computerID() 
 
@@ -55,23 +58,23 @@ function exists(sName)
 end
 
 function syncF()
-	if f == -1 then
-		f = 3
-	elseif f == 4 then
-		f = 0
+	if currentPosition.f == -1 then
+		currentPosition.f = 3
+	elseif currentPosition.f == 4 then
+		currentPosition.f = 0
 	end
-	store("f",f)
+	store("f",currentPosition.f)
 end
 
  function turnLeft()
 	turtle.turnLeft()
-	f = f -1
+	currentPosition.f = currentPosition.f -1
 	syncF()
 end
 
  function turnRight()
 	turtle.turnRight()
-	f = f + 1
+	currentPosition.f = currentPosition.f + 1
 	syncF()
 end
 
@@ -87,10 +90,10 @@ end
 			sleep( 0.5 )
 		end
 	end
-	x = x + xDirFromF[f]
-	z = z + zDirFromF[f]
-	store("x",x)
-	store("z",z)
+	currentPosition.x = currentPosition.x + xDirFromF[currentPosition.f]
+	currentPosition.z = currentPosition.z + zDirFromF[currentPosition.f]
+	store("x",currentPosition.x)
+	store("z",currentPosition.z)
 	return true
 end
 
@@ -98,10 +101,10 @@ function back()
 	if not turtle.back() then
 		return false
 	end
-	x = x - xDirFromF[f]
-	z = z - zDirFromF[f]
-	store("x",x)
-	store("z",z)
+	currentPosition.x = currentPosition.x - xDirFromF[currentPosition.f]
+	currentPosition.z = currentPosition.z - zDirFromF[currentPosition.f]
+	store("x",currentPosition.x)
+	store("z",currentPosition.z)
 	return true
 end
 
@@ -118,8 +121,8 @@ end
 		end
 	end
 
-	y = y - 1
-	store("y",y)
+	currentPosition.y = currentPosition.y - 1
+	store("y",currentPosition.y)
 	return true
 end
 
@@ -136,14 +139,14 @@ end
 		end
 	end
 
-	y = y + 1
-	store("y",y)
+	currentPosition.y = currentPosition.y + 1
+	store("y",currentPosition.y)
 	return true
 end
 
 function turnToDir(toF)
 	local spinCount = math.abs(f-toF);
-	local spin = ((toF > f and spinCount < 3) or (f > toF and spinCount > 2)) and turnRight or turnLeft;
+	local spin = ((toF > currentPosition.f and spinCount < 3) or (currentPosition.f > toF and spinCount > 2)) and turnRight or turnLeft;
 	spinCount = (spinCount > 2) and 4-spinCount or spinCount;
 	for i=1,spinCount do
 		spin();
@@ -154,117 +157,82 @@ function xForward()
 	if not turtle.forward() then
 			up()
 	else
-		x = x + xDirFromF[f]
-		z = z + zDirFromF[f]
-		store("x",x)
-		store("z",z)
+		currentPosition.x = currentPosition.x + xDirFromF[currentPosition.f]
+		currentPosition.z = currentPosition.z + zDirFromF[currentPosition.f]
+		store("x",currentPosition.x)
+		store("z",currentPosition.z)
 	end
 	return true
 end
 
- function mForward()
-	turtle.digUp()
-	turtle.digDown()
-	while not turtle.forward() do
-		if turtle.detect() then
-			if turtle.dig() then
-			else
-				return false
-			end
-		elseif turtle.attack() then
-		else
-			sleep( 0.5 )
-		end
-	end
-
-	x = x + xDirFromF[f]
-	z = z + zDirFromF[f]
-	store("x",x)
-	store("z",z)
-	if turtle.getItemCount(16) > 0 then
-		dropOff()
-	end
-	return true
-end
-
-function goTo( toX,toY,toZ, toF)
-	while y < toY do
+function goTo( Position)
+	while currentPosition.y < Position.y do
 		up()
 	end
 
-	if x > toX then
+	if currentPosition.x > Position.x then
 		turnToDir(1)
-		while x > toX do
+		while currentPosition.x > Position.x do
 			xForward()
 		end
-	elseif x < toX then
+	elseif currentPosition.x < Position.x then
 		turnToDir(3)
-		while x < toX do
+		while currentPosition.x < Position.x do
 			xForward()
 		end
 	end
 	
-	if z > toZ then
+	if currentPosition.z > Position.z then
 		turnToDir(2)
-		while z > toZ do
+		while currentPosition.z > Position.z do
 			xForward()
 		end
-	elseif z < toZ then
+	elseif currentPosition.z < Position.z then
 		turnToDir(0)
-		while z < toZ do
+		while currentPosition.z < Position.z do
 			xForward()
 		end	
 	end
 
-	while y > toY do
+	while currentPosition.y > Position.y do
 		down()
 	end
 	
-	turnToDir(toF)
-end
-
-function goTo2(pos)
-	goTo(pos.x,pos.y,pos.z,pos.f)
+	turnToDir(Position.f)
 end
 
 function getPos()
-	return {x=x,y=y,z=z,f=f}
+	return {x=currentPosition.x,y=currentPosition.y,z=currentPosition.z,f=currentPosition.f}
 end
 
-function setPos(xPos,yPos,zPos,fPos)
-	x = xPos
-	y = yPos
-	z = zPos
-	f = fPos
-	store("x",x)
-	store("y",y)
-	store("z",z)
-	store("f",f)
+function setPos(Position)
+    currentPosition.x = Position.x
+    currentPosition.y = Position.y
+    currentPosition.z = Position.z
+    currentPosition.f = Position.f
+    storePosition(Position)
 end
 
-function setPos2(Pos)
-	x = Pos.x
-	y = Pos.y
-	z = Pos.z
-	f = Pos.f
-	store("x",x)
-	store("y",y)
-	store("z",z)
-	store("f",f)
-end
+function storePosition(Position)
+{
+    store("x",Position.x)
+	store("y",Position.y)
+	store("z",Position.z)
+	store("f",Position.f)
+}
 
 
 function initialize()
 	if exists("x") then
-		x = pull("x")
+		currentPosition.x = pull("x")
 	end
 	if exists("y") then
-		y = pull("y")
+		currentPosition.y = pull("y")
 	end
 	if exists("z") then
-		z = pull("z")
+		currentPosition.z = pull("z")
 	end
 	if exists("f") then
-		f = pull("f")
+		currentPosition.f = pull("f")
 	end
 end
