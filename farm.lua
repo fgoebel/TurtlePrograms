@@ -1,7 +1,13 @@
 home = {x=405,y=69,z=-1083,f=2}
 home1 = {x=405,y=69,z=-1085,f=0}
-dropPos = {x=405,y=69,z=-1083,f=1}
--- = {x=,y=,t=,f=}
+dropPos = {x=405,y=69,z=-1083,f=3}
+
+--felder:
+wheat01 = {pos={x=398,y=70,z=-1090,f=2},type=seeds,		right=false,	rows = 9, cols = 9}
+wheat02 = {pos={x=400,y=70,z=-1090,f=2},type=seeds,		right=true,		rows = 9, cols = 9}
+ender01 = {pos={x=410,y=70,z=-1090,f=2},type=enderlily,	right=true,		rows = 4, cols = 4}
+cactus01 ={pos={x=410,y=72,z=-1100,f=2},type=0,	right=true,		rows = 9, cols = 9}
+-- = {x=,y=,z=,f=}
 
 pollTime = 600 --sekunden zwischen den Nachgucken
 timerCount = 0
@@ -13,15 +19,12 @@ lastFuelLevel = turtle.getFuelLevel()
 usedFuel = 0
 refuelCount = 0
 lastUsedSlot = 2 -- darüber wird gelehrt
-
+currentPlant = 1
 -- so ists einfacher im code
 seeds = 1
 enderlily = 2
 ItemReserve = 0 -- 0: slot wird bis auf einen geleert
 
-doEnder = true
-doCactus = true
-doWheat = true
 
 if not os.loadAPI("goTo") then
 	shell.run("openp/github get Blast0r/TurtlePrograms/master/goTo.lua goTo")
@@ -91,6 +94,16 @@ i=0
         end
     end
 end
+function digDown()
+	turtle.digDown()
+end
+function place()
+	if turtle.placeDown() then
+		return true
+	else
+		return false
+	end
+end
 function isMature()
 success, data = turtle.inspectDown()
 	if success then
@@ -134,20 +147,24 @@ end
 function harvest()
 	mature = isMature()
 	if (mature == 1) then
+		print("is mature")
 		digDown()
-		if selectCrop() then
+		if selectCrop(currentPlant) then
 			if not place() then
-				if currentPlant~=seeds then
+				print("place failed")
+				if currentPlant~=enderlily then
 					digDown()
 				end
 				place()
+				print("second place")
 			end
 		end
 	elseif mature == 0 then
+		print("there is no block")
 	-- da ist kein block
-		if selectCrop() then
+		if selectCrop(currentPlant) then
 			if not place() then
-				if currentPlant~=seeds then
+				if currentPlant~=enderlily then
 					digDown()
 				end
 				place()
@@ -155,8 +172,6 @@ function harvest()
 		end
 	end
 end
-
-
 function display()
     timeToWait = pollTime - timerCount
     currentFuelLevel = turtle.getFuelLevel()
@@ -176,8 +191,8 @@ function display()
     print("Number of Refuels: " .. refuelCount)
 	print("press x to exit Programm!")
 end
-
 function selectCrop(plant)
+	currentPlant = plant
 	turtle.select(plant)
 	if turtle.getItemCount(plant) == 1 then 
 		fillSlot(plant)
@@ -219,19 +234,18 @@ for i = 1,16 do
 end
 turtle.select(1)
 end
-
 function goDrop()
 --function welche nachh hause Fährt, abläd und weiter macht..
 	oldPos = goTo.getPos()
-	goTo.goTo2(home1) -- home, richtung Interface
-	goTo.goTo2(dropPos)
+	up(4)
+	goTo.goTo(home1) -- home, 
+	goTo.goTo(dropPos)
 	drop()
-	right()
+	goTo.goTo(home1)
 	forward(3)
 	up(5)--erst Raus gehen! dann goto
-	goTo.goTo2(oldPos)
+	goTo.goTo(oldPos)
 end
-
 function fillSlot(fsSlot)
 	for i=lastUsedSlot + 1,16 do
 		turtle.select(fsSlot)
@@ -257,20 +271,16 @@ function getEmptySlot()
     return false
 end
 
-function newCactusField(turnRightString)
+function cactusField(rows,cols,turnRight)
 --wo starte ich denn? und wo gehe ich hin?
 -- also Breite/Reihen zu Startpunkt einordnen.
-breite=9
-reihen = 19
+breite= cols
+reihen = rows
 topRow = true
 j=1
 working = true
 
-if turnRightString == "left" then
-	turnRight = false
-elseif turnRightString == "right" then
-	turnRight =true
-end
+
 	--for j = 1, reihen do
 	while working do
 		for i = 1, breite do
@@ -278,6 +288,9 @@ end
 			if i ~= breite then
 				forward(1)
 			end
+		end
+		if ((j == reihen) and (not topRow)) then
+			break
 		end
 		if ((j == 1) and topRow) or ((j == reihen-1) and (not(topRow))) then
 			if turnRight then -- auf gleicher höhe eine Reihe weiter
@@ -321,12 +334,8 @@ end
 				topRow = true
 			end
 		end
-		if (j>reihen) and (not(topRow)) then
-			working = false
-		end
 	end
 end
-
 function oneField(rows,cols,turnRight) --cols nach vorn
 	for j = 1,rows do
 		for i=1,cols-1 do
@@ -364,15 +373,43 @@ forward(2)
 up(5)
 -- verschiednee Fields usw hier einsetzen..
 -- Wheat, oneField(rows,cols,turnRight)
---goTo.goTo(x,y,z,f)
---goTo.goTo2(feld1)
---selectCrop(seeds)
---onefield(9,9,true)
+if false then
+field = wheat01
+goTo.goTo(field.pos)
+selectCrop(field.type)
+oneField(field.rows,field.cols,field.right)
+up(3)
+
+
+field = wheat02
+goTo.goTo(field.pos)
+selectCrop(field.type)
+oneField(field.rows,field.cols,field.right)
+up(3)
+
+end
+field = ender01
+goTo.goTo(field.pos)
+selectCrop(field.type)
+oneField(field.rows,field.cols,field.right)
+up(3)
+
+
+field = cactus01
+goTo.goTo(field.pos)
+--selectCrop(field.type)
+cactusField(field.rows,field.cols,field.right)
+up(3)
+
+
+
+
 
 --ab ach hause
-    goTo.goTo2(home1) -- home, richtung Interface
-	goTo.goTo2(dropPos)
-	right()
+    goTo.goTo(home1) -- home, richtung Interface
+	goTo.goTo(dropPos)
+	drop()
+	goTo.goTo(home)
 
 
 usedFuel = usedFuel + (lastFuelLevel - turtle.getFuelLevel())
@@ -381,6 +418,7 @@ end
 
 
 goTo.initialize()
+function main()
 while true do
 display()
 event , param1 = os.pullEvent() -- 
@@ -408,7 +446,8 @@ event , param1 = os.pullEvent() --
 		end
 	end
  end
+ end
  
-
+main()
 
 
