@@ -145,7 +145,7 @@ end
 end
 
 function turnToDir(toF)
-	local spinCount = math.abs(f-toF);
+	local spinCount = math.abs(currentPosition.f-toF);
 	local spin = ((toF > currentPosition.f and spinCount < 3) or (currentPosition.f > toF and spinCount > 2)) and turnRight or turnLeft;
 	spinCount = (spinCount > 2) and 4-spinCount or spinCount;
 	for i=1,spinCount do
