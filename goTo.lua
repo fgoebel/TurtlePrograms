@@ -214,12 +214,11 @@ function setPos(Position)
 end
 
 function storePosition(Position)
-{
     store("x",Position.x)
 	store("y",Position.y)
 	store("z",Position.z)
 	store("f",Position.f)
-}
+end
 
 
 function initialize()
