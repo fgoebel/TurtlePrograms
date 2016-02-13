@@ -7,7 +7,7 @@ local currentPosition = {
     y = 70,
     z = 0,
     f = 0
-};
+}
 
 local fFromXZ = {}
 local id = os.computerID() 
