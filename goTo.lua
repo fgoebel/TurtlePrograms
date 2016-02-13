@@ -223,6 +223,10 @@ function goTo( toX,toY,toZ, toF)
 	turnToDir(toF)
 end
 
+function goTo2(pos)
+	goTo(pos.x,pos.y,pos.z,pos.f)
+end
+
 function getPos()
 	return {x=x,y=y,z=z,f=f}
 end
@@ -236,7 +240,17 @@ function setPos(xPos,yPos,zPos,fPos)
 	store("y",y)
 	store("z",z)
 	store("f",f)
-	
+end
+
+function setPos2(Pos)
+	x = Pos.x
+	y = Pos.y
+	z = Pos.z
+	f = Pos.f
+	store("x",x)
+	store("y",y)
+	store("z",z)
+	store("f",f)
 end
 
 
