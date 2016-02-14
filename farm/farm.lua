@@ -1,29 +1,32 @@
-home = {x=405,y=69,z=-1083,f=2}
-home1 = {x=405,y=69,z=-1085,f=0}
-dropPos = {x=405,y=69,z=-1083,f=3}
+local home = {x=405,y=69,z=-1083,f=2}
+local home1 = {x=405,y=69,z=-1085,f=0}
+local dropPos = {x=405,y=69,z=-1083,f=3}
 
---felder:
-wheat01 = {pos={x=398,y=70,z=-1090,f=2},type=seeds,		right=false,	rows = 9, cols = 9}
-wheat02 = {pos={x=400,y=70,z=-1090,f=2},type=seeds,		right=true,		rows = 9, cols = 9}
-ender01 = {pos={x=410,y=70,z=-1090,f=2},type=enderlily,	right=true,		rows = 4, cols = 4}
-cactus01 ={pos={x=410,y=72,z=-1100,f=2},type=0,	right=true,		rows = 9, cols = 9}
--- = {x=,y=,z=,f=}
 
-pollTime = 600 --sekunden zwischen den Nachgucken
-timerCount = 0
-heartbeat = 0
-doWork = true
-waiting = false
-currentFuelLevel = 0 
-lastFuelLevel = turtle.getFuelLevel()
-usedFuel = 0
-refuelCount = 0
-lastUsedSlot = 2 -- darüber wird gelehrt
-currentPlant = 1
+function load(name)
+	local file = fs.open(name,"r")
+	local data = file.readAll()
+	file.close()
+	return textutils.unserialize(data)
+end
+
+local fields = load("fields")
+
+local pollTime = 600 --sekunden zwischen den Nachgucken
+local timerCount = 0
+local heartbeat = 0
+local doWork = true
+local waiting = false
+local currentFuelLevel = 0 
+local lastFuelLevel = turtle.getFuelLevel()
+local usedFuel = 0
+local refuelCount = 0
+local lastUsedSlot = 2 -- darüber wird gelehrt
+local currentPlant = 1
 -- so ists einfacher im code
-seeds = 1
-enderlily = 2
-ItemReserve = 0 -- 0: slot wird bis auf einen geleert
+local seeds = 1
+local enderlily = 2
+local ItemReserve = 0 -- 0: slot wird bis auf einen geleert
 
 
 if not os.loadAPI("goTo") then
@@ -135,6 +138,7 @@ function refuel(toLevel)
 		turtle.drop()
 	end
 	turtle.select(1)
+	lastFuelLevel = turtle.getFuelLevel()
 end
 function checkFuelLevel(level)
     if turtle.getFuelLevel() >= level then
@@ -192,6 +196,9 @@ function display()
 	print("press x to exit Programm!")
 end
 function selectCrop(plant)
+	if plant == 0 then
+		return
+	end
 	currentPlant = plant
 	turtle.select(plant)
 	if turtle.getItemCount(plant) == 1 then 
@@ -373,37 +380,21 @@ forward(2)
 up(5)
 -- verschiednee Fields usw hier einsetzen..
 -- Wheat, oneField(rows,cols,turnRight)
-if false then
-field = wheat01
-goTo.goTo(field.pos)
-selectCrop(field.type)
-oneField(field.rows,field.cols,field.right)
-up(3)
 
 
-field = wheat02
-goTo.goTo(field.pos)
-selectCrop(field.type)
-oneField(field.rows,field.cols,field.right)
-up(3)
-
+for k,v in ipairs(fields) do
+print(v.name)
+	if v.active then
+	goTo.goTo(v.pos)
+	if v.type == 0 then 
+		cactusField(v.rows,v.cols,v.right)
+	else
+		selectCrop(v.type)
+		oneField(v.rows,v.cols,v.right)
+	end
+	up(5)
+	end
 end
-field = ender01
-goTo.goTo(field.pos)
-selectCrop(field.type)
-oneField(field.rows,field.cols,field.right)
-up(3)
-
-
-field = cactus01
-goTo.goTo(field.pos)
---selectCrop(field.type)
-cactusField(field.rows,field.cols,field.right)
-up(3)
-
-
-
-
 
 --ab ach hause
     goTo.goTo(home1) -- home, richtung Interface
@@ -434,6 +425,8 @@ event , param1 = os.pullEvent() --
 		end
 	elseif (event == "key") and (param1 == keys.x ) then
 		return
+	elseif (event == "key") and (param1 == keys.d) then
+		timerCount = pollTime -- was zum start des programs führen sollte..
 	end
 
 	if not waiting then
