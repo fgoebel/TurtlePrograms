@@ -53,8 +53,8 @@ end
 local function pull(sName)
     local filePath = filesystem.concat("/home", sName)
     local handle = filesystem.open(filePath, "r")
-    local stuff = handle:read("n")
-    handle.close()
+    local stuff = tonumber(handle:read(10)) -- 10 bytes to read
+    handle:close()
     return stuff
 end
 
