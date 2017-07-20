@@ -53,7 +53,7 @@ end
 local function pull(sName)
     local filePath = filesystem.concat("/home", sName)
     local handle = filesystem.open(filePath, "r")
-    local stuff = handle.readAll()
+    local stuff = handle:read("n")
     handle.close()
     return stuff
 end
