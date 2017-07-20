@@ -157,11 +157,22 @@ end
 
 function gt.turnToDir(toF)
     local spinCount = math.abs(currentPosition.f-toF);
-    local spin = ((toF > currentPosition.f and spinCount < 3) or (currentPosition.f > toF and spinCount > 2)) and turnRight or turnLeft;
-    spinCount = (spinCount > 2) and 4-spinCount or spinCount;
-    for i=1,spinCount do
-        spin();
-    end
+		if toF > currentPosition.f then
+			for i=1,spinCount do
+				turnRight()
+			end
+		else
+			for i=1,spinCount do
+				turnLeft()
+			end
+		end
+    --local spin = ((toF > currentPosition.f and spinCount < 3) or (currentPosition.f > toF and spinCount > 2)) and turnRight or turnLeft;
+    --spinCount = (spinCount > 2) and 4-spinCount or spinCount;
+    --for i=1,spinCount do
+    --    spin();
+    --end
+	
+	
 end
 
 function gt.xForward()
