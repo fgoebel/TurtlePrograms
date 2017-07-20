@@ -2,12 +2,13 @@
 local robot = require("robot")
 local component = require("component")
 local gt = require("gt")
+--Richtung f=2: north, z-
 
-local home = {x=0,y=0,z=0,f=0}
-local pos01 = {x=10,y=10,z=0,f=2}
+local home = {x=-496,y=63,z=-2087,f=2}
+local pos01 = {x=-496,y=70,z=-2100,f=0}
 
-gt.initialize()
-gt.setPos(home)
+gt.init()
+--gt.setPos(home)
 
 gt.goToPos(pos01)
 gt.goToPos(home)

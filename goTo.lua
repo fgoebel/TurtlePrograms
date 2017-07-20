@@ -4,6 +4,7 @@ local component = require("component")
 local computer = require("computer")
 local robot = require("robot")
 local filesystem = require("filesystem")
+local term = require("term")
 
 
 local gt = {} -- table with functions...
@@ -22,10 +23,10 @@ local fFromXZ = {}
 fFromXZ[0]={}
 fFromXZ[1]={}
 fFromXZ[-1]={}
-fFromXZ[0][1] = 0
-fFromXZ[0][-1] = 2
-fFromXZ[1][0] = 3
-fFromXZ[-1][0] = 1
+fFromXZ[0][1] = 0 --positive z = 0
+fFromXZ[0][-1] = 2 -- negative z = 2
+fFromXZ[1][0] = 3 -- pos x = 3
+fFromXZ[-1][0] = 1 -- neg x = 1
 
 local xDirFromF = {}
 xDirFromF[0]=0
@@ -159,11 +160,11 @@ function gt.turnToDir(toF)
     local spinCount = math.abs(currentPosition.f-toF);
 		if toF > currentPosition.f then
 			for i=1,spinCount do
-				turnRight()
+				gt.turnRight()
 			end
 		else
 			for i=1,spinCount do
-				turnLeft()
+				gt.turnLeft()
 			end
 		end
     --local spin = ((toF > currentPosition.f and spinCount < 3) or (currentPosition.f > toF and spinCount > 2)) and turnRight or turnLeft;
@@ -235,6 +236,14 @@ function gt.setPos(Position)
     gt.storePosition(Position)
 end
 
+function gt.convertPos(x,y,z,f)
+	Position.x = x
+	Position.y = y
+	Position.z = z
+	Position.f = f
+	return Position
+end
+
 function gt.storePosition(Position)
     store("x",Position.x)
     store("y",Position.y)
@@ -242,8 +251,14 @@ function gt.storePosition(Position)
     store("f",Position.f)
 end
 
+function gt.displayPos()
+	--soll einfach nur die aktuelle posisiton anzeigen..
+	--term.clear()
+	print("Pos (x,y,z,f):")
+	print("(" .. currentPosition.x .. "," .. currentPosition.y.. "," .. currentPosition.z.. "," .. currentPosition.f .. ")")
+end
 
-function gt.initialize()
+function gt.init()
     if exists("x") then
         currentPosition.x = pull("x")
     end
