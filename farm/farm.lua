@@ -2,14 +2,16 @@ local component = require("component")
 local computer = require("computer")
 local gt = require("gt") -- goto API ;-D
 local rs = component.redstone
+local serial = require("serialization")
+local robot = require("robot")
 
 -- das hier  muss ich m al noch auslagern!! auch in so eine datei!!
 	--progamm um diese Datei zu manipulieren!!
 	-- gui hihi
 	--
-local home = {x=405,y=69,z=-1083,f=2}
-local home1 = {x=405,y=69,z=-1085,f=0}
-local dropPos = {x=405,y=69,z=-1083,f=3}
+local home = {x=-496,y=63,z=-2087,f=2}
+--local home1 = {x=405,y=69,z=-1085,f=0}
+--local dropPos = {x=405,y=69,z=-1083,f=3}
 
 
 
@@ -28,7 +30,7 @@ local heartbeat = 0
 local doWork = true
 local waiting = false
 --local currentFuelLevel = 0 
-local lastFuelLevel = computer.energy()
+local lastEnergyLevel = computer.energy()
 local maxEnergyLevel = computer.maxEnergy()
 
 local chargeTo = 95 -- Percentage which should be charged to
@@ -70,7 +72,7 @@ function forward(steps)
         if gt.forward() then
             i=i+1
         else
-            sleep(0.5)
+            os.sleep(0.5)
         end
     end
 end
@@ -83,7 +85,7 @@ i=0
         if gt.back() then
             i=i+1
         else
-            sleep(0.5)
+            os.sleep(0.5)
         end
     end
 end
@@ -159,8 +161,8 @@ function rsoff()
 end
 
 function updateEnergy()
-  currentEnergy = pc.energy()
-  chargeState = round(((currentEnergy / maxEnergy) * 100),2)
+  currentEnergy = computer.energy()
+  chargeState = round(((currentEnergy / maxEnergyLevel) * 100),2)
 end
 
 function refuel()
@@ -185,7 +187,7 @@ end
 
 function checkEnergyLevel(level) --PERCENTAGE!!
 	updateEnergy()
-	if chargeState() >= level then
+	if chargeState >= level then
         return true
     else
         return false
@@ -431,21 +433,21 @@ up(5)
 for k,v in ipairs(fields) do
 print(v.name)
 	if v.active then
-	goTo.goTo(v.pos)
+	gt.goToPos(v.pos)
 	if v.type == 0 then 
-		--cactusField(v.rows,v.cols,v.right)
+		cactusField(v.rows,v.cols,v.right)
 		-- just go back ;-D
 	else
 		print("only cactus allowed for the moment")
 --		selectCrop(v.type)
 --		oneField(v.rows,v.cols,v.right)
 	end
-	up(5)
+	up(2)
 	end
 end
 
 --ab ach hause
-    gt.goToPos(home1) -- home, richtung Interface
+    gt.goToPos(home) -- home, richtung Interface
 	--gt.goToPos(dropPos)
 	--drop()
 	--gt.goToPos(home)
@@ -491,5 +493,5 @@ function main()
  end
  
 --main()
-
+work()
 
