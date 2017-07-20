@@ -241,3 +241,5 @@ function goto.initialize()
 		currentPosition.f = pull("f")
 	end
 end
+
+return goto
