@@ -1,7 +1,8 @@
 -- simple goto API with persistence... maybe gets corrupt if the server shuts down/crashes during move!
 -- originaly written by Keefkalif
 local robot = require("robot")
-local goto{} -- table with functions...
+local gt{} -- table with functions...
+
 
 
 
@@ -37,7 +38,7 @@ zDirFromF[1]=0
 zDirFromF[2]=-1		
 zDirFromF[3]=0
 
-function goTo.store(sName, stuff)
+function gt.store(sName, stuff)
         local filePath = filesystem.concat("/.persistance", sName)
         if stuff == nil then
                 return filesystem.delete(filePath)
@@ -47,14 +48,14 @@ function goTo.store(sName, stuff)
         handle.close()
 end
  
-function goto.pull(sName)
+function gt.pull(sName)
         local handle = filesystem.open(sName, "r")
         local stuff = handle.readAll()
         handle.close()
         return textutils.unserialize(stuff)
 end
 
-function goto.exists(sName)
+function gt.exists(sName)
 	if not filesystem.exists(sName) then
 		return false
 	end
@@ -70,21 +71,21 @@ function syncF()
 	store("f",currentPosition.f)
 end
 
- function goto.turnLeft()
+ function gt.turnLeft()
 	if robot.turnLeft() then
 		currentPosition.f = currentPosition.f -1
 		syncF()
 	end
 end
 
- function goto.turnRight()
+ function gt.turnRight()
 	if robot.turnRight() then
 		currentPosition.f = currentPosition.f + 1
 		syncF()
 	end
 end
 
- function goto.forward()
+ function gt.forward()
 	while not robot.forward() do
 		if robot.detect() then
 			if robot.swing() then
@@ -103,7 +104,7 @@ end
 	return true
 end
 
-function goto.back()
+function gt.back()
 	if not robot.back() then
 		return false
 	end
@@ -114,7 +115,7 @@ function goto.back()
 	return true
 end
 
- function goto.down()
+ function gt.down()
 	while not robot.down() do
 		if robot.detectDown() then
 			if robot.swingDown() then --ursprünglich digDown
@@ -132,7 +133,7 @@ end
 	return true
 end
 
- function goto.up()
+ function gt.up()
 	while not robot.up() do
 		if robot.detectUp() then
 			if robot.swingUp() then
@@ -150,7 +151,7 @@ end
 	return true
 end
 
-function goto.turnToDir(toF)
+function gt.turnToDir(toF)
 	local spinCount = math.abs(currentPosition.f-toF);
 	local spin = ((toF > currentPosition.f and spinCount < 3) or (currentPosition.f > toF and spinCount > 2)) and turnRight or turnLeft;
 	spinCount = (spinCount > 2) and 4-spinCount or spinCount;
@@ -159,7 +160,7 @@ function goto.turnToDir(toF)
 	end
 end
 
-function goto.xForward()
+function gt.xForward()
 	if not robot.forward() then
 			up()
 	else
@@ -171,7 +172,7 @@ function goto.xForward()
 	return true
 end
 
-function goto.goTo( Position)
+function gt.goTo( Position)
 	while currentPosition.y < Position.y do
 		up()
 	end
@@ -207,11 +208,11 @@ function goto.goTo( Position)
 	turnToDir(Position.f)
 end
 
-function goto.getPos()
+function gt.getPos()
 	return {x=currentPosition.x,y=currentPosition.y,z=currentPosition.z,f=currentPosition.f}
 end
 
-function goto.setPos(Position)
+function gt.setPos(Position)
     currentPosition.x = Position.x
     currentPosition.y = Position.y
     currentPosition.z = Position.z
@@ -219,7 +220,7 @@ function goto.setPos(Position)
     storePosition(Position)
 end
 
-function goto.storePosition(Position)
+function gt.storePosition(Position)
     store("x",Position.x)
 	store("y",Position.y)
 	store("z",Position.z)
@@ -227,7 +228,7 @@ function goto.storePosition(Position)
 end
 
 
-function goto.initialize()
+function gt.initialize()
 	if exists("x") then
 		currentPosition.x = pull("x")
 	end
@@ -242,4 +243,4 @@ function goto.initialize()
 	end
 end
 
-return goto
+return gt

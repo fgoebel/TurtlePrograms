@@ -7,6 +7,7 @@ local computer = require("computer")
 local rs = component.redstone
 
 
+
 function load(name)
 	local file = fs.open(name,"r")
 	local data = file.readAll()
