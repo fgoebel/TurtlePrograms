@@ -56,161 +56,161 @@ function pull(sName)
 end
 
 function exists(sName)
-	local filePath = filesystem.concat("/.persistance", sName)
-	if not filesystem.exists(filePath) then
-		return false
-	end
-	return true
+    local filePath = filesystem.concat("/.persistance", sName)
+    if not filesystem.exists(filePath) then
+        return false
+    end
+    return true
 end
 
 function syncF()
-	if currentPosition.f == -1 then
-		currentPosition.f = 3
-	elseif currentPosition.f == 4 then
-		currentPosition.f = 0
-	end
-	store("f",currentPosition.f)
+    if currentPosition.f == -1 then
+        currentPosition.f = 3
+    elseif currentPosition.f == 4 then
+        currentPosition.f = 0
+    end
+    store("f",currentPosition.f)
 end
 
- function gt.turnLeft()
-	if robot.turnLeft() then
-		currentPosition.f = currentPosition.f -1
-		syncF()
-	end
+function gt.turnLeft()
+    if robot.turnLeft() then
+        currentPosition.f = currentPosition.f -1
+        syncF()
+    end
 end
 
- function gt.turnRight()
-	if robot.turnRight() then
-		currentPosition.f = currentPosition.f + 1
-		syncF()
-	end
+function gt.turnRight()
+    if robot.turnRight() then
+        currentPosition.f = currentPosition.f + 1
+        syncF()
+    end
 end
 
- function gt.forward()
-	while not robot.forward() do
-		if robot.detect() then
-			if robot.swing() then
-			else
-				return false
-			end
-		elseif robot.swing() then --ursprünglich attack
-		else
-			sleep( 0.5 )
-		end
-	end
-	currentPosition.x = currentPosition.x + xDirFromF[currentPosition.f]
-	currentPosition.z = currentPosition.z + zDirFromF[currentPosition.f]
-	store("x",currentPosition.x)
-	store("z",currentPosition.z)
-	return true
+function gt.forward()
+    while not robot.forward() do
+        if robot.detect() then
+            if robot.swing() then
+            else
+                return false
+            end
+        elseif robot.swing() then --ursprünglich attack
+        else
+            sleep( 0.5 )
+        end
+    end
+    currentPosition.x = currentPosition.x + xDirFromF[currentPosition.f]
+    currentPosition.z = currentPosition.z + zDirFromF[currentPosition.f]
+    store("x",currentPosition.x)
+    store("z",currentPosition.z)
+    return true
 end
 
 function gt.back()
-	if not robot.back() then
-		return false
-	end
-	currentPosition.x = currentPosition.x - xDirFromF[currentPosition.f]
-	currentPosition.z = currentPosition.z - zDirFromF[currentPosition.f]
-	store("x",currentPosition.x)
-	store("z",currentPosition.z)
-	return true
+    if not robot.back() then
+        return false
+    end
+    currentPosition.x = currentPosition.x - xDirFromF[currentPosition.f]
+    currentPosition.z = currentPosition.z - zDirFromF[currentPosition.f]
+    store("x",currentPosition.x)
+    store("z",currentPosition.z)
+    return true
 end
 
  function gt.down()
-	while not robot.down() do
-		if robot.detectDown() then
-			if robot.swingDown() then --ursprünglich digDown
-			else
-				return false
-			end
-		elseif robot.swingDown() then --ursprünglich attackDown
-		else
-			sleep( 0.5 )
-		end
-	end
+    while not robot.down() do
+        if robot.detectDown() then
+            if robot.swingDown() then --ursprünglich digDown
+            else
+                return false
+            end
+        elseif robot.swingDown() then --ursprünglich attackDown
+        else
+            sleep( 0.5 )
+        end
+    end
 
-	currentPosition.y = currentPosition.y - 1
-	store("y",currentPosition.y)
-	return true
+    currentPosition.y = currentPosition.y - 1
+    store("y",currentPosition.y)
+    return true
 end
 
  function gt.up()
-	while not robot.up() do
-		if robot.detectUp() then
-			if robot.swingUp() then
-			else
-				return false
-			end
-		elseif robot.swingUp() then
-		else
-			sleep( 0.5 )
-		end
-	end
+    while not robot.up() do
+        if robot.detectUp() then
+            if robot.swingUp() then
+            else
+                return false
+            end
+        elseif robot.swingUp() then
+        else
+            sleep( 0.5 )
+        end
+    end
 
-	currentPosition.y = currentPosition.y + 1
-	store("y",currentPosition.y)
-	return true
+    currentPosition.y = currentPosition.y + 1
+    store("y",currentPosition.y)
+    return true
 end
 
 function turnToDir(toF)
-	local spinCount = math.abs(currentPosition.f-toF);
-	local spin = ((toF > currentPosition.f and spinCount < 3) or (currentPosition.f > toF and spinCount > 2)) and turnRight or turnLeft;
-	spinCount = (spinCount > 2) and 4-spinCount or spinCount;
-	for i=1,spinCount do
-		spin();
-	end
+    local spinCount = math.abs(currentPosition.f-toF);
+    local spin = ((toF > currentPosition.f and spinCount < 3) or (currentPosition.f > toF and spinCount > 2)) and turnRight or turnLeft;
+    spinCount = (spinCount > 2) and 4-spinCount or spinCount;
+    for i=1,spinCount do
+        spin();
+    end
 end
 
 function gt.xForward()
-	if not robot.forward() then
-			up()
-	else
-		currentPosition.x = currentPosition.x + xDirFromF[currentPosition.f]
-		currentPosition.z = currentPosition.z + zDirFromF[currentPosition.f]
-		store("x",currentPosition.x)
-		store("z",currentPosition.z)
-	end
-	return true
+    if not robot.forward() then
+            up()
+    else
+        currentPosition.x = currentPosition.x + xDirFromF[currentPosition.f]
+        currentPosition.z = currentPosition.z + zDirFromF[currentPosition.f]
+        store("x",currentPosition.x)
+        store("z",currentPosition.z)
+    end
+    return true
 end
 
 function gt.goTo( Position)
-	while currentPosition.y < Position.y do
-		up()
-	end
+    while currentPosition.y < Position.y do
+        up()
+    end
 
-	if currentPosition.x > Position.x then
-		turnToDir(1)
-		while currentPosition.x > Position.x do
-			xForward()
-		end
-	elseif currentPosition.x < Position.x then
-		turnToDir(3)
-		while currentPosition.x < Position.x do
-			xForward()
-		end
-	end
-	
-	if currentPosition.z > Position.z then
-		turnToDir(2)
-		while currentPosition.z > Position.z do
-			xForward()
-		end
-	elseif currentPosition.z < Position.z then
-		turnToDir(0)
-		while currentPosition.z < Position.z do
-			xForward()
-		end	
-	end
+    if currentPosition.x > Position.x then
+        turnToDir(1)
+        while currentPosition.x > Position.x do
+            xForward()
+        end
+    elseif currentPosition.x < Position.x then
+        turnToDir(3)
+        while currentPosition.x < Position.x do
+            xForward()
+        end
+    end
+    
+    if currentPosition.z > Position.z then
+        turnToDir(2)
+        while currentPosition.z > Position.z do
+            xForward()
+        end
+    elseif currentPosition.z < Position.z then
+        turnToDir(0)
+        while currentPosition.z < Position.z do
+            xForward()
+        end    
+    end
 
-	while currentPosition.y > Position.y do
-		down()
-	end
-	
-	turnToDir(Position.f)
+    while currentPosition.y > Position.y do
+        down()
+    end
+    
+    turnToDir(Position.f)
 end
 
 function gt.getPos()
-	return {x=currentPosition.x,y=currentPosition.y,z=currentPosition.z,f=currentPosition.f}
+    return {x=currentPosition.x,y=currentPosition.y,z=currentPosition.z,f=currentPosition.f}
 end
 
 function gt.setPos(Position)
@@ -223,25 +223,29 @@ end
 
 function gt.storePosition(Position)
     store("x",Position.x)
-	store("y",Position.y)
-	store("z",Position.z)
-	store("f",Position.f)
+    store("y",Position.y)
+    store("z",Position.z)
+    store("f",Position.f)
 end
 
 
 function gt.initialize()
-	if exists("x") then
-		currentPosition.x = pull("x")
-	end
-	if exists("y") then
-		currentPosition.y = pull("y")
-	end
-	if exists("z") then
-		currentPosition.z = pull("z")
-	end
-	if exists("f") then
-		currentPosition.f = pull("f")
-	end
+    if exists("x") then
+        currentPosition.x = pull("x")
+    end
+    if exists("y") then
+        currentPosition.y = pull("y")
+    end
+    if exists("z") then
+        currentPosition.z = pull("z")
+    end
+    if exists("f") then
+        currentPosition.f = pull("f")
+    end
+end
+
+function gt.test()
+    print("test successfull")
 end
 
 return gt
