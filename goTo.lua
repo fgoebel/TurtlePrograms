@@ -1,7 +1,7 @@
 -- simple goto API with persistence... maybe gets corrupt if the server shuts down/crashes during move!
 -- originaly written by Keefkalif
 local robot = require("robot")
-local gt{} -- table with functions...
+local gt = {} -- table with functions...
 
 
 
