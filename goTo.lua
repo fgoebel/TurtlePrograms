@@ -6,7 +6,6 @@ local gt = {} -- table with functions...
 
 
 
-
 local currentPosition = {
     x = 0,
     y = 70,
@@ -15,7 +14,7 @@ local currentPosition = {
 }
 
 local fFromXZ = {}
---local id = os.computerID() 
+--local id = os.computerID()
 
 fFromXZ[0]={}
 fFromXZ[1]={}
@@ -24,39 +23,41 @@ fFromXZ[0][1] = 0
 fFromXZ[0][-1] = 2
 fFromXZ[1][0] = 3
 fFromXZ[-1][0] = 1
-		
+
 local xDirFromF = {}
 xDirFromF[0]=0
-xDirFromF[1]=-1		
-xDirFromF[2]=0		
-xDirFromF[3]=1		
+xDirFromF[1]=-1
+xDirFromF[2]=0
+xDirFromF[3]=1
 
 
 local zDirFromF = {}
 zDirFromF[0]=1
-zDirFromF[1]=0		
-zDirFromF[2]=-1		
+zDirFromF[1]=0
+zDirFromF[2]=-1
 zDirFromF[3]=0
 
-function gt.store(sName, stuff)
+function store(sName, stuff)
         local filePath = filesystem.concat("/.persistance", sName)
         if stuff == nil then
                 return filesystem.delete(filePath)
         end
-        local handle = filesystem.open(sName, "w")
+        local handle = filesystem.open(filePath, "w")
         handle.write(textutils.serialize(stuff))
         handle.close()
 end
  
-function gt.pull(sName)
-        local handle = filesystem.open(sName, "r")
-        local stuff = handle.readAll()
-        handle.close()
-        return textutils.unserialize(stuff)
+function pull(sName)
+    local filePath = filesystem.concat("/.persistance", sName)
+    local handle = filesystem.open(filePath, "r")
+    local stuff = handle.readAll()
+    handle.close()
+    return textutils.unserialize(stuff)
 end
 
-function gt.exists(sName)
-	if not filesystem.exists(sName) then
+function exists(sName)
+	local filePath = filesystem.concat("/.persistance", sName)
+	if not filesystem.exists(filePath) then
 		return false
 	end
 	return true
@@ -151,7 +152,7 @@ end
 	return true
 end
 
-function gt.turnToDir(toF)
+function turnToDir(toF)
 	local spinCount = math.abs(currentPosition.f-toF);
 	local spin = ((toF > currentPosition.f and spinCount < 3) or (currentPosition.f > toF and spinCount > 2)) and turnRight or turnLeft;
 	spinCount = (spinCount > 2) and 4-spinCount or spinCount;
