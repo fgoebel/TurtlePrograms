@@ -46,7 +46,7 @@ local function store(sName, stuff)
                 return filesystem.delete(filePath)
         end
         local handle = io.open(filePath, "w")
-        handle:write(textutils.serialize(stuff))
+        handle:write(stuff)
         handle:close()
 end
  
@@ -55,7 +55,7 @@ local function pull(sName)
     local handle = filesystem.open(filePath, "r")
     local stuff = handle.readAll()
     handle.close()
-    return textutils.unserialize(stuff)
+    return stuff
 end
 
 local function exists(sName)
