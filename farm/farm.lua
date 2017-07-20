@@ -1,18 +1,23 @@
+local component = require("component")
+local computer = require("computer")
+local gt = require("gt") -- goto API ;-D
+local rs = component.redstone
+
+-- das hier  muss ich m al noch auslagern!! auch in so eine datei!!
+	--progamm um diese Datei zu manipulieren!!
+	-- gui hihi
+	--
 local home = {x=405,y=69,z=-1083,f=2}
 local home1 = {x=405,y=69,z=-1085,f=0}
 local dropPos = {x=405,y=69,z=-1083,f=3}
 
-local component = require("component")
-local computer = require("computer")
-local rs = component.redstone
-
 
 
 function load(name)
-	local file = fs.open(name,"r")
-	local data = file.readAll()
-	file.close()
-	return textutils.unserialize(data)
+	local file = io.open(name,"r")
+	local data = file:read("*a")
+	file:close()
+	return serialize.unserialize(data)
 end
 
 local fields = load("fields")
@@ -32,35 +37,37 @@ local usedEnergy = 0
 local lastUsedSlot = 2 -- darüber wird gelehrt
 local currentPlant = 1
 -- so ists einfacher im code
+local cactus = 0
 local seeds = 1
 local enderlily = 2
 local ItemReserve = 0 -- 0: slot wird bis auf einen geleert
 local inventorySize = robot.inventorySize()
 
 
-if not os.loadAPI("goTo") then
-	shell.run("openp/github get Blast0r/TurtlePrograms/master/goTo.lua goTo")
-	if not os.loadAPI("goTo") then
-	error("goTo API not present!!! ;-(")
-	end
-end
+--if not os.loadAPI("goTo") then
+--    shell.run("openp/github get Blast0r/TurtlePrograms/master/goTo.lua goTo")
+--    if not os.loadAPI("goTo") then
+--    error("goTo API not present!!! ;-(")
+--    end
+--end
+
 function turn()
     left()
-	left()
+    left()
 end
 function left()
-    goTo.turnLeft()
+    gt.turnLeft()
 end
 function right()
-    goTo.turnRight()
+    gt.turnRight()
 end
 function forward(steps)
     if steps == nil then
         steps = 1
     end
-i=0
+    i=0
     while i < steps do
-        if goTo.forward() then
+        if gt.forward() then
             i=i+1
         else
             sleep(0.5)
@@ -73,7 +80,7 @@ function back(steps)
     end
 i=0
     while i < steps do
-        if goTo.back() then
+        if gt.back() then
             i=i+1
         else
             sleep(0.5)
@@ -86,10 +93,10 @@ function up(steps)
     end
 i=0
     while i < steps do
-        if goTo.up() then
+        if gt.up() then
             i=i+1
         else
-            sleep(0.5)
+            os.sleep(0.5)
         end
     end
 end
@@ -99,7 +106,7 @@ function down(steps)
     end
 i=0
     while i < steps do
-        if goTo.down() then
+        if gt.down() then
             i=i+1
         else
             os.sleep(0.5)
@@ -118,7 +125,7 @@ function place()
 end
 
 function isMature() -- gibts glaub ich nicht
-success, data = turtle.inspectDown()
+success, data = robot.inspectDown()
 	if success then
 		--da ist ein block
 		if data.metadata == 7 then
@@ -416,7 +423,6 @@ if not checkEnergyLevel(chargeTo) then
     charge()
     --right()
 end
-forward(2)
 up(5)
 -- verschiednee Fields usw hier einsetzen..
 -- Wheat, oneField(rows,cols,turnRight)
@@ -427,20 +433,22 @@ print(v.name)
 	if v.active then
 	goTo.goTo(v.pos)
 	if v.type == 0 then 
-		cactusField(v.rows,v.cols,v.right)
+		--cactusField(v.rows,v.cols,v.right)
+		-- just go back ;-D
 	else
-		selectCrop(v.type)
-		oneField(v.rows,v.cols,v.right)
+		print("only cactus allowed for the moment")
+--		selectCrop(v.type)
+--		oneField(v.rows,v.cols,v.right)
 	end
 	up(5)
 	end
 end
 
 --ab ach hause
-    goTo.goTo(home1) -- home, richtung Interface
-	goTo.goTo(dropPos)
-	drop()
-	goTo.goTo(home)
+    gt.goToPos(home1) -- home, richtung Interface
+	--gt.goToPos(dropPos)
+	--drop()
+	--gt.goToPos(home)
 
 --nochmal überdenken:
 updateEnergy()
@@ -449,7 +457,7 @@ lastEnergyLevel = currentEnergy
 end
 
 
-goTo.initialize()
+gt.init()
 function main()
 	while true do
 	display()
@@ -482,6 +490,6 @@ function main()
 	 end
  end
  
-main()
+--main()
 
 
