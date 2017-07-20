@@ -2,6 +2,10 @@ local home = {x=405,y=69,z=-1083,f=2}
 local home1 = {x=405,y=69,z=-1085,f=0}
 local dropPos = {x=405,y=69,z=-1083,f=3}
 
+local component = require("component")
+local computer = require("computer")
+local rs = component.redstone
+
 
 function load(name)
 	local file = fs.open(name,"r")
@@ -17,16 +21,20 @@ local timerCount = 0
 local heartbeat = 0
 local doWork = true
 local waiting = false
-local currentFuelLevel = 0 
-local lastFuelLevel = turtle.getFuelLevel()
-local usedFuel = 0
-local refuelCount = 0
+--local currentFuelLevel = 0 
+local lastFuelLevel = computer.energy()
+local maxEnergyLevel = computer.maxEnergy()
+
+local chargeTo = 95 -- Percentage which should be charged to
+local usedEnergy = 0
+--local refuelCount = 0
 local lastUsedSlot = 2 -- darüber wird gelehrt
 local currentPlant = 1
 -- so ists einfacher im code
 local seeds = 1
 local enderlily = 2
 local ItemReserve = 0 -- 0: slot wird bis auf einen geleert
+local inventorySize = robot.inventorySize()
 
 
 if not os.loadAPI("goTo") then
@@ -93,21 +101,22 @@ i=0
         if goTo.down() then
             i=i+1
         else
-            sleep(0.5)
+            os.sleep(0.5)
         end
     end
 end
 function digDown()
-	turtle.digDown()
+	robot.swingDown()
 end
 function place()
-	if turtle.placeDown() then
+	if robot.placeDown() then
 		return true
 	else
 		return false
 	end
 end
-function isMature()
+
+function isMature() -- gibts glaub ich nicht
 success, data = turtle.inspectDown()
 	if success then
 		--da ist ein block
@@ -125,23 +134,50 @@ success, data = turtle.inspectDown()
 		
 	end
 end
-function refuel(toLevel)
-	turtle.select(16)
-	if turtle.getItemCount(16) ~= 0 then 
-		turtle.drop()
-	end
-	while turtle.getFuelLevel() < toLevel do
-		turtle.suck()
-		if turtle.refuel() then
-           refuelCount = refuelCount + 1-- haben wir wohl ein Bucket verbraucht.
-        end
-		turtle.drop()
-	end
-	turtle.select(1)
-	lastFuelLevel = turtle.getFuelLevel()
+
+--Math helping functions
+function round(num,numDecimalPlaces)
+  local mult = 10^(numDecimalPlaces or 0)
+  return math.floor(num * mult + 0.5) /mult
 end
-function checkFuelLevel(level)
-    if turtle.getFuelLevel() >= level then
+
+-- Charging 
+function rson()
+  rs.setOutput(sides.left,15)
+end 
+
+function rsoff()
+  rs.setOutput(sides.left,0)
+end
+
+function updateEnergy()
+  currentEnergy = pc.energy()
+  chargeState = round(((currentEnergy / maxEnergy) * 100),2)
+end
+
+function refuel()
+	charge()
+end
+
+function charge()--aufladeprogram, aber wir mappen das einfach durch refuel()
+	updateEnergy()
+	print(chargeState)
+	if chargeState <= chargeTo then
+	  rson()
+	  -- save currently stored energy
+	  while not checkEnergyLevel(chargeTo) do
+		os.sleep(1)
+		print(chargeState)
+	  end
+	  rsoff()
+	end
+	-- calculate Charged energy, and add up
+end
+
+
+function checkEnergyLevel(level) --PERCENTAGE!!
+	updateEnergy()
+	if chargeState() >= level then
         return true
     else
         return false
@@ -176,11 +212,13 @@ function harvest()
 		end
 	end
 end
+
 function display()
     timeToWait = pollTime - timerCount
-    currentFuelLevel = turtle.getFuelLevel()
+    --currentFuelLevel = turtle.getFuelLevel()
+	updateEnergy()
 	term.clear()
-	term.setCursorPos(1,1)
+	term.setCursor(1,1)
 	print("+Status Screen - EnderFarming+")
 	if waiting then
 		print("current Status: waiting " .. timeToWait .. " Seconds!")
@@ -190,9 +228,10 @@ function display()
 	
 	heartbeat = heartbeat + 1
 	--print("Event HeartBeat: " .. heartbeat)
-    print("fuelLevel: " .. currentFuelLevel)
-    print("used Fuel: " .. usedFuel) 
-    print("Number of Refuels: " .. refuelCount)
+    print("EnergyLevel: " .. currentEnergy)
+	print("chargeState: " .. chargeState)
+    print("used Energy: " .. usedEnergy) 
+    --print("Number of Refuels: " .. refuelCount)
 	print("press x to exit Programm!")
 end
 function selectCrop(plant)
@@ -200,11 +239,11 @@ function selectCrop(plant)
 		return
 	end
 	currentPlant = plant
-	turtle.select(plant)
-	if turtle.getItemCount(plant) == 1 then 
+	robot.select(plant)
+	if robot.count(plant) == 1 then 
 		fillSlot(plant)
 	end
-    if turtle.getItemCount(plant) > 1 then
+    if robot.count(plant) > 1 then
         return true
     else
         return false
@@ -212,34 +251,34 @@ function selectCrop(plant)
 end
 
 function combineStacks()
-    for i = 1, 16 do
-        turtle.select(i)
-        itemCount = turtle.getItemCount(i)
+    for i = 1, inventorySize do
+        robot.select(i)
+        itemCount = robot.count(i)
         if itemCount == 0 then --müsste man nen anderen Stack hierher holen...
             
         elseif itemCount < 64 then
             --fillSlot(i) die funktion ist blöd, da sie von vorne anfängt ...
             
-            for k = i + 1, 16 do
-                turtle.select(k)
-                if turtle.compareTo(i) then
-                    turtle.transferTo(i, 64 - turtle.getItemCount(i))
+            for k = i + 1, inventorySize do
+                robot.select(k)
+                if robot.compareTo(i) then
+                    robot.transferTo(i, 64 - robot.count(i))
                 end
             end
         end
     end
 end
 function drop()
-for i = 1,16 do
+for i = 1,inventorySize do
 	if i < lastUsedSlot + 1 then
 	--auffüllen
 		fillSlot(i)
 	else
-		turtle.select(i)
-		turtle.drop()
+		robot.select(i)
+		robot.drop()
 	end
 end
-turtle.select(1)
+robot.select(1)
 end
 function goDrop()
 --function welche nachh hause Fährt, abläd und weiter macht..
@@ -254,24 +293,24 @@ function goDrop()
 	goTo.goTo(oldPos)
 end
 function fillSlot(fsSlot)
-	for i=lastUsedSlot + 1,16 do
-		turtle.select(fsSlot)
-		if turtle.compareTo(i) then
-			turtle.select(i)
-			turtle.transferTo(fsSlot, 64 - turtle.getItemCount(fsSlot))
+	for i=lastUsedSlot + 1,inventorySize do
+		robot.select(fsSlot)
+		if robot.compareTo(i) then
+			robot.select(i)
+			robot.transferTo(fsSlot, 64 - robot.count(fsSlot))
 		end
-		if turtle.getItemCount(fsSlot) == 64 then 
-			turtle.select(fsSlot)
+		if robot.count(fsSlot) == 64 then 
+			robot.select(fsSlot)
 			return true
 		end
 	end
-	turtle.select(fsSlot)
+	robot.select(fsSlot)
 	return false
 end
 function getEmptySlot()
-    for i = lastUsedSlot + 1, 16 do
-        if turtle.getItemCount(i) == 0 then
-            --turtle.select(i)
+    for i = lastUsedSlot + 1, inventorySize do
+        if robot.count(i) == 0 then
+            --robot.select(i)
             return i
         end
     end
@@ -371,10 +410,10 @@ end
 
 
 function work()
-if not checkFuelLevel(5000) then
-    left()
-    refuel(10000)
-    right()
+if not checkEnergyLevel(chargeTo) then
+    --left()
+    charge()
+    --right()
 end
 forward(2)
 up(5)
@@ -402,43 +441,44 @@ end
 	drop()
 	goTo.goTo(home)
 
-
-usedFuel = usedFuel + (lastFuelLevel - turtle.getFuelLevel())
-lastFuelLevel = turtle.getFuelLevel()
+--nochmal überdenken:
+updateEnergy()
+usedEnergy = usedEnergy + (lastEnergyLevel - currentEnergy)
+lastEnergyLevel = currentEnergy
 end
 
 
 goTo.initialize()
 function main()
-while true do
-display()
-event , param1 = os.pullEvent() -- 
--- state machine ;-)
-	if (event == "timer") and (param1 == waitingTimer) then
-		if timerCount >= pollTime then
-			waiting = false
-			doWork = true
-			timerCount=0 --reset Timer
-		else
-			timerCount = timerCount + 1
-			waitingTimer = os.startTimer(1)
+	while true do
+	display()
+	event , param1 = os.pullEvent() -- 
+	-- state machine ;-)
+		if (event == "timer") and (param1 == waitingTimer) then
+			if timerCount >= pollTime then
+				waiting = false
+				doWork = true
+				timerCount=0 --reset Timer
+			else
+				timerCount = timerCount + 1
+				waitingTimer = os.startTimer(1)
+			end
+		elseif (event == "key") and (param1 == keys.x ) then
+			return
+		elseif (event == "key") and (param1 == keys.d) then
+			timerCount = pollTime -- was zum start des programs führen sollte..
 		end
-	elseif (event == "key") and (param1 == keys.x ) then
-		return
-	elseif (event == "key") and (param1 == keys.d) then
-		timerCount = pollTime -- was zum start des programs führen sollte..
-	end
 
-	if not waiting then
-		if doWork then
-            display()
-			doWork = false
-            work() -- also ab aufs Feld
-			waiting = true
-			waitingTimer = os.startTimer(1)
+		if not waiting then
+			if doWork then
+				display()
+				doWork = false
+				work() -- also ab aufs Feld
+				waiting = true
+				waitingTimer = os.startTimer(1)
+			end
 		end
-	end
- end
+	 end
  end
  
 main()

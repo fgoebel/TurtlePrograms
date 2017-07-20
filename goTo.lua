@@ -10,7 +10,7 @@ local currentPosition = {
 }
 
 local fFromXZ = {}
-local id = os.computerID() 
+--local id = os.computerID() 
 
 fFromXZ[0]={}
 fFromXZ[1]={}
@@ -34,24 +34,24 @@ zDirFromF[2]=-1
 zDirFromF[3]=0
 
 function store(sName, stuff)
-        local filePath = fs.combine("/.persistance", sName)
+        local filePath = filesystem.concat("/.persistance", sName)
         if stuff == nil then
-                return fs.delete(filePath)
+                return filesystem.delete(filePath)
         end
-        local handle = fs.open(sName, "w")
+        local handle = filesystem.open(sName, "w")
         handle.write(textutils.serialize(stuff))
         handle.close()
 end
  
 function pull(sName)
-        local handle = fs.open(sName, "r")
+        local handle = filesystem.open(sName, "r")
         local stuff = handle.readAll()
         handle.close()
         return textutils.unserialize(stuff)
 end
 
 function exists(sName)
-	if not fs.exists(sName) then
+	if not filesystem.exists(sName) then
 		return false
 	end
 	return true
@@ -67,25 +67,27 @@ function syncF()
 end
 
  function turnLeft()
-	turtle.turnLeft()
-	currentPosition.f = currentPosition.f -1
-	syncF()
+	if robot.turnLeft() then
+		currentPosition.f = currentPosition.f -1
+		syncF()
+	end
 end
 
  function turnRight()
-	turtle.turnRight()
-	currentPosition.f = currentPosition.f + 1
-	syncF()
+	if robot.turnRight() then
+		currentPosition.f = currentPosition.f + 1
+		syncF()
+	end
 end
 
  function forward()
-	while not turtle.forward() do
-		if turtle.detect() then
-			if turtle.dig() then
+	while not robot.forward() do
+		if robot.detect() then
+			if robot.swing() then
 			else
 				return false
 			end
-		elseif turtle.attack() then
+		elseif robot.swing() then --ursprünglich attack
 		else
 			sleep( 0.5 )
 		end
@@ -98,7 +100,7 @@ end
 end
 
 function back()
-	if not turtle.back() then
+	if not robot.back() then
 		return false
 	end
 	currentPosition.x = currentPosition.x - xDirFromF[currentPosition.f]
@@ -109,13 +111,13 @@ function back()
 end
 
  function down()
-	while not turtle.down() do
-		if turtle.detectDown() then
-			if turtle.digDown() then
+	while not robot.down() do
+		if robot.detectDown() then
+			if robot.swingDown() then --ursprünglich digDown
 			else
 				return false
 			end
-		elseif turtle.attackDown() then
+		elseif robot.swingDown() then --ursprünglich attackDown
 		else
 			sleep( 0.5 )
 		end
@@ -127,13 +129,13 @@ end
 end
 
  function up()
-	while not turtle.up() do
-		if turtle.detectUp() then
-			if turtle.digUp() then
+	while not robot.up() do
+		if robot.detectUp() then
+			if robot.swingUp() then
 			else
 				return false
 			end
-		elseif turtle.attackUp() then
+		elseif robot.swingUp() then
 		else
 			sleep( 0.5 )
 		end
@@ -154,7 +156,7 @@ function turnToDir(toF)
 end
 
 function xForward()
-	if not turtle.forward() then
+	if not robot.forward() then
 			up()
 	else
 		currentPosition.x = currentPosition.x + xDirFromF[currentPosition.f]
