@@ -176,7 +176,7 @@ function gt.xForward()
     return true
 end
 
-function gt.goTo( Position)
+function gt.goToPos( Position)
     while currentPosition.y < Position.y do
         gt.up()
     end

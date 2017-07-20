@@ -9,8 +9,8 @@ local pos01 = {x=10,y=10,z=0,f=2}
 gt.initialize()
 gt.setPos(home)
 
-gt.goto(pos1)
-gt.goto(home)
+gt.goToPos(pos1)
+gt.goToPos(home)
 
 
 
