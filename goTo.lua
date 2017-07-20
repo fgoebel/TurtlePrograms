@@ -1,9 +1,12 @@
 -- simple goto API with persistence... maybe gets corrupt if the server shuts down/crashes during move!
 -- originaly written by Keefkalif
+local component = require("component")
+local computer = require("computer")
 local robot = require("robot")
+local filesystem = require("filesystem")
+
+
 local gt = {} -- table with functions...
-
-
 
 
 local currentPosition = {
@@ -37,33 +40,33 @@ zDirFromF[1]=0
 zDirFromF[2]=-1
 zDirFromF[3]=0
 
-function store(sName, stuff)
-        local filePath = filesystem.concat("/.persistance", sName)
+local function store(sName, stuff)
+        local filePath = filesystem.concat("/home", sName)
         if stuff == nil then
                 return filesystem.delete(filePath)
         end
-        local handle = filesystem.open(filePath, "w")
-        handle.write(textutils.serialize(stuff))
-        handle.close()
+        local handle = io.open(filePath, "w")
+        handle:write(textutils.serialize(stuff))
+        handle:close()
 end
  
-function pull(sName)
-    local filePath = filesystem.concat("/.persistance", sName)
+local function pull(sName)
+    local filePath = filesystem.concat("/home", sName)
     local handle = filesystem.open(filePath, "r")
     local stuff = handle.readAll()
     handle.close()
     return textutils.unserialize(stuff)
 end
 
-function exists(sName)
-    local filePath = filesystem.concat("/.persistance", sName)
+local function exists(sName)
+    local filePath = filesystem.concat("/home", sName)
     if not filesystem.exists(filePath) then
         return false
     end
     return true
 end
 
-function syncF()
+local function syncF()
     if currentPosition.f == -1 then
         currentPosition.f = 3
     elseif currentPosition.f == 4 then
@@ -116,7 +119,7 @@ function gt.back()
     return true
 end
 
- function gt.down()
+function gt.down()
     while not robot.down() do
         if robot.detectDown() then
             if robot.swingDown() then --ursprünglich digDown
@@ -125,7 +128,7 @@ end
             end
         elseif robot.swingDown() then --ursprünglich attackDown
         else
-            sleep( 0.5 )
+            os.sleep( 0.5 )
         end
     end
 
@@ -134,7 +137,7 @@ end
     return true
 end
 
- function gt.up()
+function gt.up()
     while not robot.up() do
         if robot.detectUp() then
             if robot.swingUp() then
@@ -152,7 +155,7 @@ end
     return true
 end
 
-function turnToDir(toF)
+function gt.turnToDir(toF)
     local spinCount = math.abs(currentPosition.f-toF);
     local spin = ((toF > currentPosition.f and spinCount < 3) or (currentPosition.f > toF and spinCount > 2)) and turnRight or turnLeft;
     spinCount = (spinCount > 2) and 4-spinCount or spinCount;
@@ -163,7 +166,7 @@ end
 
 function gt.xForward()
     if not robot.forward() then
-            up()
+            gt.up()
     else
         currentPosition.x = currentPosition.x + xDirFromF[currentPosition.f]
         currentPosition.z = currentPosition.z + zDirFromF[currentPosition.f]
@@ -175,38 +178,38 @@ end
 
 function gt.goTo( Position)
     while currentPosition.y < Position.y do
-        up()
+        gt.up()
     end
 
     if currentPosition.x > Position.x then
-        turnToDir(1)
+        gt.turnToDir(1)
         while currentPosition.x > Position.x do
-            xForward()
+            gt.xForward()
         end
     elseif currentPosition.x < Position.x then
-        turnToDir(3)
+        gt.turnToDir(3)
         while currentPosition.x < Position.x do
-            xForward()
+            gt.xForward()
         end
     end
     
     if currentPosition.z > Position.z then
-        turnToDir(2)
+        gt.turnToDir(2)
         while currentPosition.z > Position.z do
-            xForward()
+            gt.xForward()
         end
     elseif currentPosition.z < Position.z then
-        turnToDir(0)
+        gt.turnToDir(0)
         while currentPosition.z < Position.z do
-            xForward()
+            gt.xForward()
         end    
     end
 
     while currentPosition.y > Position.y do
-        down()
+        gt.down()
     end
     
-    turnToDir(Position.f)
+    gt.turnToDir(Position.f)
 end
 
 function gt.getPos()
@@ -218,7 +221,7 @@ function gt.setPos(Position)
     currentPosition.y = Position.y
     currentPosition.z = Position.z
     currentPosition.f = Position.f
-    storePosition(Position)
+    gt.storePosition(Position)
 end
 
 function gt.storePosition(Position)
