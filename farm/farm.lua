@@ -2,8 +2,9 @@ local component = require("component")
 local computer = require("computer")
 local gt = require("gt") -- goto API ;-D
 local rs = component.redstone
-local serial = require("serialization")
+local serialize = require("serialization")
 local robot = require("robot")
+local sides = require("sides")
 
 -- das hier  muss ich m al noch auslagern!! auch in so eine datei!!
 	--progamm um diese Datei zu manipulieren!!
