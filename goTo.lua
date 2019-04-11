@@ -187,12 +187,13 @@ function gt.xForward()
 			--vor mir ist nichts? forward hat trotzdem nicht geklappt? ich bin vermutlich zu hoch!
 			gt.down()
 		end
+		return false --?
     else
-	end
     currentPosition.x = currentPosition.x + xDirFromF[currentPosition.f]
     currentPosition.z = currentPosition.z + zDirFromF[currentPosition.f]
     store("x",currentPosition.x)
     store("z",currentPosition.z)
+	end
     return true
 end
 
