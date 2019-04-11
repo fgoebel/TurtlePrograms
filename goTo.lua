@@ -99,7 +99,7 @@ function gt.forward()
             end
         elseif robot.swing() then --ursprünglich attack
         else
-            sleep( 0.5 )
+            os.sleep( 0.5 )
         end
     end
     currentPosition.x = currentPosition.x + xDirFromF[currentPosition.f]
@@ -147,7 +147,7 @@ function gt.up()
             end
         elseif robot.swingUp() then
         else
-            sleep( 0.5 )
+            os.sleep( 0.5 )
         end
     end
 
