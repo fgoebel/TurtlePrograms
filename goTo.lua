@@ -177,14 +177,22 @@ function gt.turnToDir(toF)
 end
 
 function gt.xForward()
+--xforward ist sowas wie eine entschärfte version von forward!
+-- forward würde sich sonst sofort den weg freibuddeln... das sollten wir beim gotopos vermeiden!
     if not robot.forward() then
-            gt.up()
+		if robot.detect() then
+            -- up nur wenn vor ihm ein block ist!!
+			gt.up()
+		else
+			--vor mir ist nichts? forward hat trotzdem nicht geklappt? ich bin vermutlich zu hoch!
+			gt.down()
+		end
     else
-        currentPosition.x = currentPosition.x + xDirFromF[currentPosition.f]
-        currentPosition.z = currentPosition.z + zDirFromF[currentPosition.f]
-        store("x",currentPosition.x)
-        store("z",currentPosition.z)
-    end
+	end
+    currentPosition.x = currentPosition.x + xDirFromF[currentPosition.f]
+    currentPosition.z = currentPosition.z + zDirFromF[currentPosition.f]
+    store("x",currentPosition.x)
+    store("z",currentPosition.z)
     return true
 end
 
