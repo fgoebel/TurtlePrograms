@@ -1,12 +1,12 @@
 -- load APIs
-if not os.loadAPI("goTo") then
+if not os.loadAPI("goTo.lua") then
 	r = http.get("https://github.com/fgoebel/TurtlePrograms/blob/cct-clique27/goTo.lua")
     f = fs.open("goTo.lua", "w")
     f.write(r.readAll())
     f.close()
     r.close()
 
-	if not os.loadAPI("goTo") then
+	if not os.loadAPI("goTo.lua") then
 	    error("goTo API not present!!! ;-(")
 	end
 end
