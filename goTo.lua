@@ -4,7 +4,6 @@
 -- updated by r-goebel 2020.01.28
 
 local id = os.computerID() 
-
 --Variable to determine Direction F based on change in X and Z
 local fFromXZ = {}
 fFromXZ[0]={}
