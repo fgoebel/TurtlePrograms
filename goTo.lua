@@ -3,16 +3,17 @@
 -- originaly written by Keefkalif
 -- updated by r-goebel 2020.01.28
 
-local fFromXZ = {}
 local id = os.computerID() 
 
+--Variable to determine Direction F based on change in X and Z
+local fFromXZ = {}
 fFromXZ[0]={}
 fFromXZ[1]={}
 fFromXZ[-1]={}
-fFromXZ[0][1] = 0
-fFromXZ[0][-1] = 2
-fFromXZ[1][0] = 3
-fFromXZ[-1][0] = 1
+fFromXZ[0][1] = 1   -- Moved to positive Z Direction --> east
+fFromXZ[0][-1] = 3  -- Moved to negative Z Direction --> west
+fFromXZ[1][0] = 0   -- Moved to positive X Direction --> north
+fFromXZ[-1][0] = 1  -- Moved to negative X Direction --> south
 
 -- Variable to determine new x-Coordinate based on Direction F
 local xDirFromF = {}
@@ -36,33 +37,18 @@ function getPos()
     store("x",currentPosition.x)
     store("y",currentPosition.y)
     store("z",currentPosition.z)
-    f=getDirection(currentPosition)
-    store("f",currentPosition.f)
-    return currentPosition
+    getDirection(currentPosition)
 end
 
 -- determine current Direction
 function getDirection()
-    local State = 1
-    while State == 1 do
-        forward()
-        x,y,z = gps.locate()
-        back()
-        State = 0
-        if x-currentPosition.x > 0 then         -- new x is greater --> moved to north
-            f = 0
-        elseif x-currentPosition.x < 0 then     -- new x is smaller --> moved to south
-            f = 2    
-        elseif z-currentPosition.z > 0 then     -- new z is greater --> moved to east
-            f = 1
-        elseif z-currentPosition.z < 0 then     -- new z is smaller --> moved to west
-            f = 3
-        else                                    -- turtle did not move, turn around and try again
-            t.left()
-            State = 1
-        end
+    while not turtle.forward() do  -- turn if moving foward was not possible and try again
+        turtle.turnLeft()
     end
-    return f
+    x,y,z = gps.locate()           -- get new Position
+    turtle.back()                  -- move back
+    currentPosition.f = fFromXZ[x-currentPosition.x][z-currentPosition.z] --determine Direction based on Position difference
+    store("f",currentPosition.f)
 end
 
 -- sync Direction if it is out of bounds
@@ -84,12 +70,27 @@ function turnLeft()
 	syncF()
 end
 
+--Turn Right
 function turnRight()
 	turtle.turnRight()
 	currentPosition.f = currentPosition.f + 1
 	syncF()
 end
 
+--Move forward
+function forward()
+	if not turtle.forward() then
+		up()
+	else
+		currentPosition.x = currentPosition.x + xDirFromF[currentPosition.f]
+		currentPosition.z = currentPosition.z + zDirFromF[currentPosition.f]
+		store("x",currentPosition.x)
+		store("z",currentPosition.z)
+	end
+	return true
+end
+
+--Force to move forward
 function forwardForce()
 	while not turtle.forward() do
 		if turtle.detect() then
@@ -109,18 +110,31 @@ function forwardForce()
 	return true
 end
 
+--Move back
 function back()
 	if not turtle.back() then
-		return false
-	end
-	currentPosition.x = currentPosition.x - xDirFromF[currentPosition.f]
-	currentPosition.z = currentPosition.z - zDirFromF[currentPosition.f]
-	store("x",currentPosition.x)
-	store("z",currentPosition.z)
+		up()
+    else
+	    currentPosition.x = currentPosition.x - xDirFromF[currentPosition.f]
+	    currentPosition.z = currentPosition.z - zDirFromF[currentPosition.f]
+	    store("x",currentPosition.x)
+        store("z",currentPosition.z)
+    end
 	return true
 end
 
- function down()
+--Move down
+function down()
+	if not turtle.down() then
+        return false
+    end
+	currentPosition.y = currentPosition.y - 1
+	store("y",currentPosition.y)
+	return true
+end
+
+--Force to move down
+function downForce()
 	while not turtle.down() do
 		if turtle.detectDown() then
 			if turtle.digDown() then
@@ -138,7 +152,18 @@ end
 	return true
 end
 
- function up()
+--Move up
+function up()
+	if not turtle.up() then
+        return false
+    end
+	currentPosition.y = currentPosition.y + 1
+	store("y",currentPosition.y)
+	return true
+end
+
+--Force to move up
+function upForce()
 	while not turtle.up() do
 		if turtle.detectUp() then
 			if turtle.digUp() then
@@ -156,6 +181,7 @@ end
 	return true
 end
 
+--Turn to specific direction
 function turnToDir(toF)
 	local spinCount = math.abs(currentPosition.f-toF);
 	local spin = ((toF > currentPosition.f and spinCount < 3) or (currentPosition.f > toF and spinCount > 2)) and turnRight or turnLeft;
@@ -165,47 +191,37 @@ function turnToDir(toF)
 	end
 end
 
-function forward()
-	if not turtle.forward() then
-			up()
-	else
-		currentPosition.x = currentPosition.x + xDirFromF[currentPosition.f]
-		currentPosition.z = currentPosition.z + zDirFromF[currentPosition.f]
-		store("x",currentPosition.x)
-		store("z",currentPosition.z)
-	end
-	return true
-end
-
-function goTo( Position)
-	while currentPosition.y < Position.y do
+--go to Positon
+function goTo(Position)
+    -- first move up
+    while currentPosition.y < Position.y do
 		up()
 	end
-
-	if currentPosition.x > Position.x then
-		turnToDir(1)
+    -- go to new x
+	if currentPosition.x > Position.x then      -- go to south
+		turnToDir(2)
 		while currentPosition.x > Position.x do
 			forward()
 		end
-	elseif currentPosition.x < Position.x then
-		turnToDir(3)
+	elseif currentPosition.x < Position.x then  -- go to north
+		turnToDir(0)
 		while currentPosition.x < Position.x do
 			forward()
 		end
 	end
-	
-	if currentPosition.z > Position.z then
-		turnToDir(2)
+	-- go to new z
+	if currentPosition.z > Position.z then      -- go to west
+		turnToDir(3)
 		while currentPosition.z > Position.z do
 			forward()
 		end
-	elseif currentPosition.z < Position.z then
-		turnToDir(0)
+	elseif currentPosition.z < Position.z then  -- go to east
+		turnToDir(1)
 		while currentPosition.z < Position.z do
 			forward()
 		end	
 	end
-
+    -- go down
 	while currentPosition.y > Position.y do
 		down()
 	end
