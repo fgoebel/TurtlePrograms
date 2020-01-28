@@ -270,15 +270,16 @@ end
 --	end
 --end
 
---function store(sName, stuff)
---        local filePath = fs.combine("/.persistance", sName)
---        if stuff == nil then
---                return fs.delete(filePath)
---        end
---        local handle = fs.open(sName, "w")
---        handle.write(textutils.serialize(stuff))
---        handle.close()
---end
+--Storing values
+function store(sName, stuff)
+        local filePath = fs.combine("/.persistance", sName)
+        if stuff == nil then
+                return fs.delete(filePath)
+        end
+        local handle = fs.open(sName, "w")
+        handle.write(textutils.serialize(stuff))
+        handle.close()
+end
  
 --function pull(sName)
 --        local handle = fs.open(sName, "r")
