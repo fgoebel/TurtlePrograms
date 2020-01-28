@@ -9,7 +9,19 @@ end
 -- Define specific positions
 local home = {x=121,y=64,z=-263,f=0}
 local storage = {x=122,y=63,z=-261,f=2}
+local field = {x=130, y=63, z=-267,f=0}
 
+-- Load field file - change later
+-- function load(name)
+-- 	local file = fs.open(name,"r")
+-- 	local data = file.readAll()
+-- 	file.close()
+-- 	return textutils.unserialize(data)
+-- end
+
+-- local fields = load("fields")
+
+--*********************************************
 -- Basic functions for movement
 function turn()
     left()
@@ -74,6 +86,8 @@ function down(steps)
     end
 end
 
+--*********************************************
+--Functions for harvesting
 function getSeedSlot()
     SeedsSlot = 1
     state = 1
@@ -107,6 +121,8 @@ function havestAndPlant()
     end
 end
 
+--*********************************************
+--refill and drop functions
 function dropInventory()
     Slot = 1
     SeedSlot = getSeedSlot()    -- determine first SeedSlot
@@ -131,9 +147,13 @@ function refillFuel()
     end
 end
 
+--*********************************************
 -- General Farming Programm
 function farming(rows,cols,turnRight)
-    -- got to first Block of field
+    goTo.goTo(storage)              -- go to storage system
+    refillFuel()                    -- refuel if fuel level below Max
+    
+    goTo.goTo(field)                -- got to first Block of field
 
     for j = 1,cols do               --start harvesting
         for i=1,rows-1 do
@@ -157,10 +177,7 @@ function farming(rows,cols,turnRight)
     end
 
     end
-    -- go to storage system, after field is finished
-
+    goTo.gotTo(storage)             -- go to storage system, after field is finished
     dropInventory()                 -- drop wheat and seed (except for 1 stacks)
-    refillFuel()                    -- refuel if fuel level below Max
-
-    -- go home
+    goTo.goTo(home)                 -- go home
 end
