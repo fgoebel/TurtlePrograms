@@ -4,6 +4,13 @@
 -- updated by r-goebel 2020.01.28
 
 local id = os.computerID() 
+local currentPosition = {
+    x = 0,
+    y = 0,
+    z = 0,
+    f = 0
+}
+
 --Variable to determine Direction F based on change in X and Z
 local fFromXZ = {}
 fFromXZ[0]={}
