@@ -97,8 +97,8 @@ function getSeedSlot()
     SeedsSlot = 1
     state = 1
     while state == 1 do
-        if goTo.select(SeedSlot) ~= 0 then                      -- if slot not empty
-            SlotDetails = goTo.getItemDetails(slotSeeds)        -- get item details
+        if turtle.select(SeedSlot) ~= 0 then                      -- if slot not empty
+            SlotDetails = turtle.getItemDetails(slotSeeds)        -- get item details
             if SlotDetails.name == "minecraft:wheat_seeds" then -- if it is a seed
                 state = 0                                       -- leave function
             end
@@ -114,14 +114,14 @@ function havestAndPlant()
 
     if valid then                               -- there is a block below
         if data.metadata == 7 then              --block is fully grown
-            goTo.digDown()                         -- harvest
-            goTo.suckDown()                        -- suck in
-            goTo.digDown()                         -- till field
-            if goTo.getItemCount(SeedSlot) == 0 then -- if SeedSlot is empty, get new slot
+            turtle.digDown()                         -- harvest
+            turtle.suckDown()                        -- suck in
+            turtle.digDown()                         -- till field
+            if turtle.getItemCount(SeedSlot) == 0 then -- if SeedSlot is empty, get new slot
                 SeedSlot = getSeedSlot()
             end
-            goTo.select(SeedSlot)                  --select SeedSlot
-            goTo.placeDown()                       --place Seed
+            turtle.select(SeedSlot)                  --select SeedSlot
+            turtle.placeDown()                       --place Seed
         end
     end
 end
@@ -132,23 +132,23 @@ function dropInventory()
     Slot = 1
     SeedSlot = getSeedSlot()    -- determine first SeedSlot
     while Slot <= 16 do
-        goTo.select(Slot)          -- select next Slot
+        turtle.select(Slot)          -- select next Slot
         if Slot ~= SeedSlot then   -- if it is not the first SeedSlot
-            goTo.dropDown()        -- just drop everthing in the slot
+            turtle.dropDown()        -- just drop everthing in the slot
         end
         Slot = Slot +1
     end
     if SeedSlot == 1 then          -- if the SeedSlot is not slot 1
-        goTo.select(SeedSlot)
-        goTo.transferTo(1)         -- transfer Seeds to slot 1
+        turtle.select(SeedSlot)
+        turtle.transferTo(1)         -- transfer Seeds to slot 1
     end
 end
 
 function refillFuel()
-    if goTo.getFuelLevel()/goTo.getFuelLimit() < 1 then-- get current Fuellevel (percentage) and compare to Limit
-        goTo.select(16)                                -- select last slot
-        goTo.suckDown()                                -- suckDown for fuel
-        goTo.refuel()                                  -- refuel
+    if turtle.getFuelLevel()/turtle.getFuelLimit() < 1 then-- get current Fuellevel (percentage) and compare to Limit
+        turtle.select(16)                                -- select last slot
+        turtle.suckDown()                                -- suckDown for fuel
+        turtle.refuel()                                  -- refuel
     end
 end
 
