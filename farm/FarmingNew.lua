@@ -133,7 +133,7 @@ function dropInventory()
     SeedSlot = getSeedSlot()    -- determine first SeedSlot
     while Slot <= 16 do
         goTo.select(Slot)          -- select next Slot
-        if Slot ~= SeedSlot     -- if it is not the first SeedSlot
+        if Slot ~= SeedSlot then   -- if it is not the first SeedSlot
             goTo.dropDown()        -- just drop everthing in the slot
         end
         Slot = Slot +1
