@@ -63,39 +63,6 @@ function down(steps)
     end
 end
 
-function getPos()
-    x,y,z = gps.locate()
-    currentPosition.x=x
-    currentPosition.y=y
-    currentPosition.z=z
-    currentPosition.f=getDirection(currentPosition)
-    return currentPosition
-end
-
-function getDirection(currentPosition)
-    State = 1
-    while State == 1 do
-        forward()
-        x,y,z = gps.locate()
-        back()
-        State = 0
-        if x-currentPosition.x > 0 then         -- new x is greater --> moved to north
-            f = 1
-        elseif x-currentPosition.x < 0 then     -- new x is smaller --> moved to south
-            f = 3    
-        elseif z-currentPosition.z > 0 then     -- new z is greater --> moved to east
-            f = 2
-        elseif z-currentPosition.z < 0 then     -- new z is smaller --> moved to west
-            f = 4
-        else                                    -- turtle did not move, turn around and try again
-            t.left()
-            State = 1
-        end
-    end
-
-    return f
-end
-
 function getSeedSlot()
     SeedsSlot = 1
     state = 1
