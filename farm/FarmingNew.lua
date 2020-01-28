@@ -1,8 +1,13 @@
 -- load APIs
 if not os.loadAPI("goTo") then
-	shell.run("openp/github get fgoebel/TurtlePrograms/cct-clique27/goTo.lua goTo")
+	r = http.get("https://github.com/fgoebel/TurtlePrograms/blob/cct-clique27/goTo.lua")
+    f = fs.open("goTo.lua", "w")
+    f.write(r.readAll())
+    f.close()
+    r.close()
+    
 	if not os.loadAPI("goTo") then
-	error("goTo API not present!!! ;-(")
+	    error("goTo API not present!!! ;-(")
 	end
 end
 
