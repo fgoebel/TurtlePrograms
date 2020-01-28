@@ -1,3 +1,14 @@
+-- load APIs
+if not os.loadAPI("goTo") then
+	shell.run("openp/github get fgoebel/TurtlePrograms/cct-clique27/goTo.lua goTo")
+	if not os.loadAPI("goTo") then
+	error("goTo API not present!!! ;-(")
+	end
+end
+
+-- Define specific positions
+local home = {x=121,y=64,z=-263,f=0}
+local storage = {x=122,y=63,z=-261,f=2}
 
 -- Basic functions for movement
 function turn()
@@ -5,10 +16,10 @@ function turn()
     left()
 end
 function left()
-    gt.turnLeft()
+    goTo.turnLeft()
 end
 function right()
-    gt.turnRight()
+    goTo.turnRight()
 end
 function forward(steps)
     if steps == nil then
@@ -16,10 +27,10 @@ function forward(steps)
     end
     i=0
     while i < steps do
-        if gt.forward() then
+        if goTo.forward() then
             i=i+1
         else
-            os.sleep(0.5)
+            sleep(0.5)
         end
     end
 end
@@ -29,10 +40,10 @@ function back(steps)
     end
     i=0
     while i < steps do
-        if gt.back() then
+        if goTo.back() then
             i=i+1
         else
-            os.sleep(0.5)
+            sleep(0.5)
         end
     end
 end
@@ -42,10 +53,10 @@ function up(steps)
     end
     i=0
     while i < steps do
-        if gt.up() then
+        if goTo.up() then
             i=i+1
         else
-            os.sleep(0.5)
+            sleep(0.5)
         end
     end
 end
@@ -55,10 +66,10 @@ function down(steps)
     end
     i=0
     while i < steps do
-        if gt.down() then
+        if goTo.down() then
             i=i+1
         else
-            os.sleep(0.5)
+            sleep(0.5)
         end
     end
 end
@@ -67,8 +78,8 @@ function getSeedSlot()
     SeedsSlot = 1
     state = 1
     while state == 1 do
-        if gt.select(SeedSlot) ~= 0                          -- if slot not empty
-            SlotDetails = gt.getItemDetails(slotSeeds)       -- get item details
+        if goTo.select(SeedSlot) ~= 0                          -- if slot not empty
+            SlotDetails = goTo.getItemDetails(slotSeeds)       -- get item details
             if SlotDetails.name == "minecraft:wheat_seeds"  -- if it is a seed
                 state = 0                                   -- leave function
             end
@@ -80,18 +91,18 @@ end
 
 function havestAndPlant()
     SeedSlot = getSeedSlot()                    -- determine current Slot for seeds
-    valid, data = gt.inspectDown()               -- get state of block
+    valid, data = goTo.inspectDown()               -- get state of block
 
     if valid then                               -- there is a block below
         if data.metadata == 7                   --block is fully grown
-            gt.digDown()                         -- harvest
-            gt.suckDown()                        -- suck in
-            gt.digDown()                         -- till field
-            if gt.getItemCount(SeedSlot) == 0    -- if SeedSlot is empty, get new slot
+            goTo.digDown()                         -- harvest
+            goTo.suckDown()                        -- suck in
+            goTo.digDown()                         -- till field
+            if goTo.getItemCount(SeedSlot) == 0    -- if SeedSlot is empty, get new slot
                 SeedSlot = getSeedSlot()
             end
-            gt.select(SeedSlot)                  --select SeedSlot
-            gt.placeDown()                       --place Seed
+            goTo.select(SeedSlot)                  --select SeedSlot
+            goTo.placeDown()                       --place Seed
         end
     end
 end
@@ -100,23 +111,23 @@ function dropInventory()
     Slot = 1
     SeedSlot = getSeedSlot()    -- determine first SeedSlot
     while Slot <= 16 do
-        gt.select(Slot)          -- select next Slot
+        goTo.select(Slot)          -- select next Slot
         if Slot ~= SeedSlot     -- if it is not the first SeedSlot
-            gt.dropDown()        -- just drop everthing in the slot
+            goTo.dropDown()        -- just drop everthing in the slot
         end
         Slot = Slot +1
     end
     if SeedSlot == 1            -- if the SeedSlot is not slot 1
-        gt.select(SeedSlot)
-        gt.transferTo(1)         -- transfer Seeds to slot 1
+        goTo.select(SeedSlot)
+        goTo.transferTo(1)         -- transfer Seeds to slot 1
     end
 end
 
 function refillFuel()
-    if gt.getFuelLevel()/gt.getFuelLimit() < 1 do    -- get current Fuellevel (percentage) and compare to Limit
-        gt.select(16)                                -- select last slot
-        gt.suckDown()                                -- suckDown for fuel
-        gt.refuel()                                  -- refuel
+    if goTo.getFuelLevel()/goTo.getFuelLimit() < 1 do    -- get current Fuellevel (percentage) and compare to Limit
+        goTo.select(16)                                -- select last slot
+        goTo.suckDown()                                -- suckDown for fuel
+        goTo.refuel()                                  -- refuel
     end
 end
 
