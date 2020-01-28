@@ -181,7 +181,6 @@ function farming(rows,cols,turnRight)
         end
     end
 
-    end
     goTo.gotTo(storage)             -- go to storage system, after field is finished
     dropInventory()                 -- drop wheat and seed (except for 1 stacks)
     goTo.goTo(home)                 -- go home
