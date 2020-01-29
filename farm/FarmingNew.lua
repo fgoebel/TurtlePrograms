@@ -97,8 +97,9 @@ function getSeedSlot()
     SeedsSlot = 1
     state = 1
     while state == 1 do
-        if turtle.select(SeedSlot) ~= 0 then                      -- if slot not empty
-            SlotDetails = turtle.getItemDetails(slotSeeds)        -- get item details
+        turtle.select(SeedSlot)
+        if turtle.getItemCount(SeedSlot) ~= 0 then                      -- if slot not empty
+            SlotDetails = turtle.getItemDetails(SeedSlot)        -- get item details
             if SlotDetails.name == "minecraft:wheat_seeds" then -- if it is a seed
                 state = 0                                       -- leave function
             end
