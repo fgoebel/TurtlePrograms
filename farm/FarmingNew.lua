@@ -160,6 +160,7 @@ function farming(rows,cols,turnRight)
     
     goTo.goTo(field)                -- got to first Block of field
 
+    print("Start farming")
     for j = 1,cols do               --start harvesting
         for i=1,rows-1 do
             havestAndPlant()        -- harvest and plant on current block
@@ -180,6 +181,7 @@ function farming(rows,cols,turnRight)
             end
         end
     end
+    print("finished farming")
 
     goTo.gotTo(storage)             -- go to storage system, after field is finished
     dropInventory()                 -- drop wheat and seed (except for 1 stacks)
