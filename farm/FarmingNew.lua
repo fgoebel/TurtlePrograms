@@ -92,36 +92,36 @@ function down(steps)
 end
 
 --*********************************************
---Functions for harvesting
+--Functions for harvesting Wheat
 function getSeedSlot()
     SeedsSlot = 1
     state = 1
     while state == 1 do
-        if turtle.getItemCount(SeedSlot) ~= 0 then                      -- if slot not empty
-            SlotDetails = turtle.getItemDetails(SeedSlot)        -- get item details
-            if SlotDetails.name == "minecraft:wheat_seeds" then -- if it is a seed
-                state = 0                                       -- leave function
+        if turtle.getItemCount(SeedSlot) ~= 0 then                  -- if slot not empty
+            SlotDetails = turtle.getItemDetails(SeedSlot)           -- get item details
+            if SlotDetails.name == "minecraft:wheat_seeds" then     -- if it is a seed
+                state = 0                                           -- leave function
             end
         end
-        SeedSlot = SeedSlot +1                              -- inspect next Slot
+        SeedSlot = SeedSlot +1                                      -- inspect next Slot
     end
-    return SeedsSlot                                        -- return slot number
+    return SeedsSlot                                                -- return slot number
 end
 
 function havestAndPlant()
-    SeedSlot = getSeedSlot()                    -- determine current Slot for seeds
-    valid, data = goTo.inspectDown()               -- get state of block
+    SeedSlot = getSeedSlot()                            -- determine current Slot for seeds
+    valid, data = goTo.inspectDown()                    -- get state of block
 
-    if valid then                               -- there is a block below
-        if data.metadata == 7 then              --block is fully grown
-            turtle.digDown()                         -- harvest
-            turtle.suckDown()                        -- suck in
-            turtle.digDown()                         -- till field
-            if turtle.getItemCount(SeedSlot) == 0 then -- if SeedSlot is empty, get new slot
+    if valid then                                       -- there is a block below
+        if data.metadata == 7 then                      --block is fully grown
+            turtle.digDown()                            -- harvest
+            turtle.suckDown()                           -- suck in
+            turtle.digDown()                            -- till field
+            if turtle.getItemCount(SeedSlot) == 0 then  -- if SeedSlot is empty, get new slot
                 SeedSlot = getSeedSlot()
             end
-            turtle.select(SeedSlot)                  --select SeedSlot
-            turtle.placeDown()                       --place Seed
+            turtle.select(SeedSlot)                     --select SeedSlot
+            turtle.placeDown()                          --place Seed
         end
     end
 end
@@ -130,25 +130,25 @@ end
 --refill and drop functions
 function dropInventory()
     Slot = 1
-    SeedSlot = getSeedSlot()    -- determine first SeedSlot
+    SeedSlot = getSeedSlot()        -- determine first SeedSlot
     while Slot <= 16 do
-        turtle.select(Slot)          -- select next Slot
-        if Slot ~= SeedSlot then   -- if it is not the first SeedSlot
-            turtle.dropDown()        -- just drop everthing in the slot
+        turtle.select(Slot)         -- select next Slot
+        if Slot ~= SeedSlot then    -- if it is not the first SeedSlot
+            turtle.dropDown()       -- just drop everthing in the slot
         end
         Slot = Slot +1
     end
-    if SeedSlot == 1 then          -- if the SeedSlot is not slot 1
+    if SeedSlot == 1 then           -- if the SeedSlot is not slot 1
         turtle.select(SeedSlot)
-        turtle.transferTo(1)         -- transfer Seeds to slot 1
+        turtle.transferTo(1)        -- transfer Seeds to slot 1
     end
 end
 
 function refillFuel()
-    if turtle.getFuelLevel()/turtle.getFuelLimit() < 1 then-- get current Fuellevel (percentage) and compare to Limit
-        turtle.select(16)                                -- select last slot
-        turtle.suckDown()                                -- suckDown for fuel
-        turtle.refuel()                                  -- refuel
+    if turtle.getFuelLevel()/turtle.getFuelLimit() < 1 then     -- get current Fuellevel (percentage) and compare to Limit
+        turtle.select(16)                                       -- select last slot
+        turtle.suckDown()                                       -- suckDown for fuel
+        turtle.refuel()                                         -- refuel
     end
 end
 
