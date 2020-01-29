@@ -39,11 +39,12 @@ zDirFromF[3]=-1     -- Direction west
 -- Initialization of Position:
 -- determine current Position
 function getPos()
-    local x,y,z = gps.locate()
-    store("x",currentPosition.x)
-    store("y",currentPosition.y)
-    store("z",currentPosition.z)
-    getDirection(currentPosition)
+	local x,y,z = gps.locate()
+	currentPosition.x = x
+	currentPosition.y = y
+	currentPosition.z = z
+	currentPosition.f = getDirection()
+	store("currentPosition",currentPosition)
 end
 
 -- determine current Direction
@@ -53,15 +54,8 @@ function getDirection()
     end
     x,y,z = gps.locate()           -- get new Position
 	turtle.back()                  -- move back
-	--if x-currentPosition.x > 0 	   -- moved to north
-	--	f = 0
-	--elseif x-currentPosition.x < 0 -- moved to south
-	--	f = 2
-	--elseif z-currentPosition.z > 0 -- moved to east
-	--	f = 3
-	--elseif z-currentPosition.z < 0 -- moved to west
     f = fFromXZ[x-currentPosition.x][z-currentPosition.z] --determine Direction based on Position difference
-    store("f",currentPosition.f)
+	return f
 end
 
 -- sync Direction if it is out of bounds
@@ -97,8 +91,7 @@ function forward()
 	else
 		currentPosition.x = currentPosition.x + xDirFromF[currentPosition.f]
 		currentPosition.z = currentPosition.z + zDirFromF[currentPosition.f]
-		store("x",currentPosition.x)
-		store("z",currentPosition.z)
+		store("currentPosition",currentPosition)
 	end
 	return true
 end
@@ -118,8 +111,7 @@ function forwardForce()
 	end
 	currentPosition.x = currentPosition.x + xDirFromF[currentPosition.f]
 	currentPosition.z = currentPosition.z + zDirFromF[currentPosition.f]
-	store("x",currentPosition.x)
-	store("z",currentPosition.z)
+	store("currentPosition",currentPosition)
 	return true
 end
 
@@ -130,8 +122,7 @@ function back()
     else
 	    currentPosition.x = currentPosition.x - xDirFromF[currentPosition.f]
 	    currentPosition.z = currentPosition.z - zDirFromF[currentPosition.f]
-	    store("x",currentPosition.x)
-        store("z",currentPosition.z)
+	    store("currentPosition",currentPosition)
     end
 	return true
 end
@@ -142,7 +133,7 @@ function down()
         return false
     end
 	currentPosition.y = currentPosition.y - 1
-	store("y",currentPosition.y)
+	store("currentPosition",currentPosition)
 	return true
 end
 
@@ -161,7 +152,7 @@ function downForce()
 	end
 
 	currentPosition.y = currentPosition.y - 1
-	store("y",currentPosition.y)
+	store("currentPosition",currentPosition)
 	return true
 end
 
@@ -171,7 +162,7 @@ function up()
         return false
     end
 	currentPosition.y = currentPosition.y + 1
-	store("y",currentPosition.y)
+	store("currentPosition",currentPosition)
 	return true
 end
 
@@ -190,7 +181,7 @@ function upForce()
 	end
 
 	currentPosition.y = currentPosition.y + 1
-	store("y",currentPosition.y)
+	store("currentPosition",currentPosition)
 	return true
 end
 
@@ -202,6 +193,8 @@ function turnToDir(toF)
 	for i=1,spinCount do
 		spin();
 	end
+	currentPosition.f=toF
+	store("currentPosition",currentPosition)
 end
 
 --go to Positon
@@ -242,6 +235,24 @@ function goTo(Position)
 	turnToDir(Position.f)
 end
 
+--Storing values
+function store(sName, stuff)
+	if stuff == nil then
+			return fs.delete(sName)
+	end
+	local handle = fs.open(sName, "w")
+	handle.write(textutils.serialize(stuff))
+	handle.close()
+end
+
+-- Read variable from File
+function pull(sName)
+	local handle = fs.open(sName, "r")
+	local stuff = handle.readAll()
+	handle.close()
+	return textutils.unserialize(stuff)
+end
+
 --function getPos()
 --	return {x=currentPosition.x,y=currentPosition.y,z=currentPosition.z,f=currentPosition.f}
 --end
@@ -258,41 +269,7 @@ end
 --    store("x",Position.x)
 --	store("y",Position.y)
 --	store("z",Position.z)
---	store("f",Position.f)
---end
-
-
---function initialize()
---	if exists("x") then
---		currentPosition.x = pull("x")
---	end
---	if exists("y") then
---		currentPosition.y = pull("y")
---	end
---	if exists("z") then
---		currentPosition.z = pull("z")
---	end
---	if exists("f") then
---		currentPosition.f = pull("f")
---	end
---end
-
---Storing values
-function store(sName, stuff)
-        local filePath = fs.combine("/.persistance", sName)
-        if stuff == nil then
-                return fs.delete(filePath)
-        end
-        local handle = fs.open(sName, "w")
-        handle.write(textutils.serialize(stuff))
-        handle.close()
-end
- 
---function pull(sName)
---        local handle = fs.open(sName, "r")
---        local stuff = handle.readAll()
---        handle.close()
---        return textutils.unserialize(stuff)
+--	store("f",Position.f)h.
 --end
 
 --function exists(sName)
