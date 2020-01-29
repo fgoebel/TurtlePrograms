@@ -52,8 +52,15 @@ function getDirection()
         turtle.turnLeft()
     end
     x,y,z = gps.locate()           -- get new Position
-    turtle.back()                  -- move back
-    currentPosition.f = fFromXZ[x-currentPosition.x][z-currentPosition.z] --determine Direction based on Position difference
+	turtle.back()                  -- move back
+	--if x-currentPosition.x > 0 	   -- moved to north
+	--	f = 0
+	--elseif x-currentPosition.x < 0 -- moved to south
+	--	f = 2
+	--elseif z-currentPosition.z > 0 -- moved to east
+	--	f = 3
+	--elseif z-currentPosition.z < 0 -- moved to west
+    f = fFromXZ[x-currentPosition.x][z-currentPosition.z] --determine Direction based on Position difference
     store("f",currentPosition.f)
 end
 
