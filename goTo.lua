@@ -65,7 +65,7 @@ function syncF()
 	elseif currentPosition.f == 4 then
 		currentPosition.f = 0
 	end
-	store("f",currentPosition.f)
+	store("currentPosition",currentPosition)
 end
 
 --*********************************************
