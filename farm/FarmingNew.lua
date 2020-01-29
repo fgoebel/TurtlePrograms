@@ -14,7 +14,7 @@ end
 -- Define specific positions
 local home = {x=121,y=64,z=-263,f=0}
 local storage = {x=122,y=63,z=-261,f=2}
-local field = {x=130, y=63, z=-267,f=0}
+local field = {x=130, y=64, z=-267,f=0}
 
 -- Load field file - change later
 -- function load(name)
