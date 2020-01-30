@@ -155,10 +155,10 @@ end
 function generalField(cols,rows,turnRight)
     for j = 1,cols do               --start harvesting
         for i=1,rows-1 do
-            havestAndPlant()    -- harvest and plant on current block
+            havestAndPlant()        -- harvest and plant on current block
             forward(1)              -- move one block forward
         end                         
-        havestAndPlant()        -- on last block of col only harvest and plant
+        havestAndPlant()            -- on last block of col only harvest and plant
         if j ~= cols then           -- if it is not the last col
             if turnRight then       -- turn right if last turn was left
                 right()
@@ -202,9 +202,9 @@ end
 --refill and drop functions
 function dropInventory()
     goTo.goTo(storage)             -- go to storage system, after field is finished
-    for Slot =1, 16 do
-        turtle.select(Slot)         -- select next Slot
-        turtle.dropDown()       -- just drop everthing in the slot
+    for Slot =2, 16 do             -- there must be something at least in one slot to use put!
+        turtle.select(Slot)        -- select next Slot
+        turtle.dropDown()          -- just drop everthing in the slot
     end
 end
 
