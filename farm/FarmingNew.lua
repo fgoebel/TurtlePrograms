@@ -93,23 +93,23 @@ end
 
 --*********************************************
 --Functions for harvesting Wheat
-function getSeedSlot()
-    SeedSlot = 0
-    state = 1
-    while state == 1 do
-        SeedSlot = SeedSlot + 1                                     -- inspect next Slot
-        if turtle.getItemCount(SeedSlot) ~= 0 then                  -- if slot not empty
-            SlotDetails = turtle.getItemDetail(SeedSlot)            -- get item details
-            if SlotDetails.name == "minecraft:wheat_seeds" then     -- if it is a seed
-                state = 0                                           -- leave function
+function getSlot(ItemName)
+    i = 0
+    while true do
+        i = i + 1                                       -- inspect next Slot
+        if turtle.getItemCount(i) ~= 0 then             -- if slot not empty
+            Detail = turtle.getItemDetail(i)            -- get item details
+            if Detail.name == ItemName then             -- if it is the item
+                return i                                -- leave function
             end
         end                                                         
     end
-    return SeedSlot                                                 -- return slot number
+    return false                                        -- return slot number
 end
 
 function havestAndPlant()
-    SeedSlot = getSeedSlot()                            -- determine current Slot for seeds
+    SeedName = "minecraft:wheat_seeds"
+    SeedSlot = getSlot(SeedName)                        -- determine current Slot for seeds
     valid, data = goTo.inspectDown()                    -- get state of block
 
     if valid then                                       -- there is a block below
@@ -118,7 +118,7 @@ function havestAndPlant()
             turtle.suckDown()                           -- suck in
             turtle.digDown()                            -- till field
             if turtle.getItemCount(SeedSlot) == 0 then  -- if SeedSlot is empty, get new slot
-                SeedSlot = getSeedSlot()
+                SeedSlot = getSlot(SeedName)
             end
             turtle.select(SeedSlot)                     --select SeedSlot
             turtle.placeDown()                          --place Seed
