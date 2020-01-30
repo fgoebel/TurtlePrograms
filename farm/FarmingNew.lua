@@ -160,12 +160,15 @@ function dropInventory()
 end
 
 function refillFuel()
-    while turtle.getFuelLevel()/turtle.getFuelLimit() < 1 do    -- get current Fuellevel (percentage) and compare to Limit
-        turtle.select(16)                                       -- select last slot
-        if turtle.getItemCount(16) == 0 then
-            turtle.suckDown()                                   -- suckDown for fuel
+    if turtle.getFuelLevel() < 5000 then
+        goTo.goTo(storage)              -- go to storage system
+        while turtle.getFuelLevel()/turtle.getFuelLimit() < 1 do    -- get current Fuellevel (percentage) and compare to Limit
+            turtle.select(16)                                       -- select last slot
+            if turtle.getItemCount(16) == 0 then
+                turtle.suckDown()                                   -- suckDown for fuel
+            end
+            turtle.refuel()                                         -- refuel
         end
-        turtle.refuel()                                         -- refuel
     end
 end
 
@@ -186,11 +189,13 @@ end
 
 --*********************************************
 -- General Farming Programm
-function farming(rows,cols,turnRight)
-    goTo.goTo(storage)              -- go to storage system
-    refillFuel()                    -- refuel if fuel level below Max
+function farming(field)
+    refillFuel()                    -- refuel if fuel level below 5000
     
-    goTo.goTo(field)                -- got to first Block of field
+    goTo.goTo(field.pos)            -- got to first Block of field
+    cols = field.cols
+    rows = field.rows
+    turnRight = field.right
 
     print("Start farming")
     for j = 1,cols do               --start harvesting
@@ -223,10 +228,10 @@ function main()
     heartbeat()                                                 -- print heartbeat
     while true do
         if not waiting then                                     -- if waiting is not active
-            for k,v in ipairs(fields) do                        -- for each field
-                print(v.name)           
-                    if v.active then                            -- if field is active
-                        farming(v)                              -- farm field
+            for k,field in ipairs(fields) do                    -- for each field
+                print(field.name)           
+                    if field.active then                        -- if field is active
+                        farming(field)                          -- farm field
                     end
                     up(5)                                       -- go up to avoid crashes
                 heartbeat()                                     -- print heartbeat
