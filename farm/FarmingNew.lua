@@ -94,8 +94,8 @@ end
 --*********************************************
 --Functions for harvesting Wheat
 function getSeedSlot()
-    SeedsSlot = 0
-    state = 1
+    local SeedsSlot = 0
+    local state = 1
     while state == 1 do
         SeedSlot = SeedSlot + 1                                     -- inspect next Slot
         if turtle.getItemCount(SeedSlot) ~= 0 then                  -- if slot not empty
