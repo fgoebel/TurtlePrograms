@@ -94,16 +94,16 @@ end
 --*********************************************
 --Functions for harvesting Wheat
 function getSeedSlot()
-    SeedsSlot = 1
+    SeedsSlot = 0
     state = 1
     while state == 1 do
+        SeedSlot = SeedSlot + 1                                     -- inspect next Slot
         if turtle.getItemCount(SeedSlot) ~= 0 then                  -- if slot not empty
             SlotDetails = turtle.getItemDetail(SeedSlot)            -- get item details
             if SlotDetails.name == "minecraft:wheat_seeds" then     -- if it is a seed
                 state = 0                                           -- leave function
             end
-        end
-        SeedSlot = SeedSlot +1                                      -- inspect next Slot
+        end                                                         
     end
     return SeedsSlot                                                -- return slot number
 end
