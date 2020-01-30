@@ -145,9 +145,11 @@ function dropInventory()
 end
 
 function refillFuel()
-    if turtle.getFuelLevel()/turtle.getFuelLimit() < 1 then     -- get current Fuellevel (percentage) and compare to Limit
+    while turtle.getFuelLevel()/turtle.getFuelLimit() < 1 do    -- get current Fuellevel (percentage) and compare to Limit
         turtle.select(16)                                       -- select last slot
-        turtle.suckDown()                                       -- suckDown for fuel
+        if turtle.getItemCount(16) == 0 then
+            turtle.suckDown()                                   -- suckDown for fuel
+        end
         turtle.refuel()                                         -- refuel
     end
 end
