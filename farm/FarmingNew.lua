@@ -166,35 +166,35 @@ end
 --*********************************************
 -- General Farming Programm
 function farming(rows,cols,turnRight)
-    goTo.goTo(storage)              -- go to storage system
-    refillFuel()                    -- refuel if fuel level below Max
+    --goTo.goTo(storage)              -- go to storage system
+    --refillFuel()                    -- refuel if fuel level below Max
     
-    goTo.goTo(field)                -- got to first Block of field
+    --goTo.goTo(field)                -- got to first Block of field
 
-    print("Start farming")
-    for j = 1,cols do               --start harvesting
-        for i=1,rows-1 do
-            havestAndPlant()        -- harvest and plant on current block
-            forward(1)              -- move one block forward
-        end                         
-        havestAndPlant()            -- on last block of col only harvest and plant
-        if j ~= cols then           -- if it is not the last col
-            if turnRight then       -- turn right if last turn was left
-                right()
-                forward(1)
-                right()
-                turnRight= false
-            else                    -- turn left if last turn was left
-                left()
-                forward(1)
-                left()
-                turnRight=true
-            end
-        end
-    end
-    print("finished farming")
+    --print("Start farming")
+    --for j = 1,cols do               --start harvesting
+    --    for i=1,rows-1 do
+    --        havestAndPlant()        -- harvest and plant on current block
+    --        forward(1)              -- move one block forward
+    --    end                         
+    --    havestAndPlant()            -- on last block of col only harvest and plant
+    --    if j ~= cols then           -- if it is not the last col
+    --        if turnRight then       -- turn right if last turn was left
+    --            right()
+    --            forward(1)
+    --            right()
+    --            turnRight= false
+    --        else                    -- turn left if last turn was left
+    --            left()
+    --            forward(1)
+    --            left()
+    --            turnRight=true
+    --        end
+    --    end
+    --end
+    --print("finished farming")
 
-    goTo.gotTo(storage)             -- go to storage system, after field is finished
+    goTo.goTo(storage)             -- go to storage system, after field is finished
     dropInventory()                 -- drop wheat and seed (except for 1 stacks)
     goTo.goTo(home)                 -- go home
 end
