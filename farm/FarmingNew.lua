@@ -139,7 +139,7 @@ end
 --refill and drop functions
 function dropInventory()
     Slot = 1
-    SeedSlot = getSeedSlot()        -- determine first SeedSlot
+    SeedSlot = getSeedSlot("minecraft:wheat_seeds")        -- determine first SeedSlot
     while Slot <= 16 do
         turtle.select(Slot)         -- select next Slot
         if Slot ~= SeedSlot then    -- if it is not the first SeedSlot
