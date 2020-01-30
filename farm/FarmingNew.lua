@@ -33,6 +33,12 @@ local field = {x=130, y=64, z=-267,f=0}
 -- local fields = load("fields")
 
 --*********************************************
+-- defintion of variables
+local harvestingInterval = 600        -- time between two harvesting cycles 
+local timerCount = 0                  -- counts how often timer was started
+local waiting = false                 -- initially no waiting
+
+--*********************************************
 -- Basic functions for movement
 function turn()
     left()
@@ -200,7 +206,30 @@ function farming(rows,cols,turnRight)
 end
 
 function main()
-    farming(24,9,1)
+    while true do
+        if not waiting then                                     -- if waiting is not active
+            farming(24,9,1)                                     -- farm field
+            waiting = true
+            waitingTimer = os.startTimer(1)                     -- starts time on 1 second
+        end
+
+        event , bottom = os.pullEvent()                         -- waits for event
+
+	    if (event == "timer") and (bottom == waitingTimer) then -- waiting timer "rings"
+		    if timerCount >= harvestingInterval then
+			    waiting = false                                 -- stop waiting
+			    timerCount = 0                                  -- reset Timer
+		    else
+			    timerCount = timerCount + 1                     -- increase timer count by one
+			    waitingTimer = os.startTimer(1)                 -- start new timer
+		    end
+	    elseif (event == "key") and (bottom == keys.x ) then    -- buttom x was pressed
+		    return                                              -- stop everything, leave program
+	    elseif (event == "key") and (bottom == keys.d) then     -- bottom d was pressed
+		    timerCount = harvestingInterval                     -- start harvesting manually
+	    end
+    end
+
 end
 
 goTo.getPos()
