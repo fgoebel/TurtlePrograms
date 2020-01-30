@@ -179,25 +179,60 @@ end
 --*********************************************
 --cactus fiels
 function cactusField(cols,rows,turnRight)
-    for j=1,cols do
-        for i=1,rows do
+-- also Breite/Reihen zu Startpunkt einordnen.
+top = true
+j=1
+    while j < cols do
+        for i = 1, rows do
             turtle.digDown()
             turtle.suckDown()
-            forward(2)
+            if i ~= rows then
+                forward(1)
+            end
         end
-        if j ~= cols then
-            if turnRight then
+        if ((j == cols) and (not top)) then
+            break
+        end
+        if ((j == 1) and top) or ((j == cols-1) and (not(top))) then
+            if turnRight then -- auf gleicher höhe eine Reihe weiter
                 right()
                 forward(1)
                 right()
-                forward()
-                turnRight=false
             else
                 left()
                 forward(1)
                 left()
-                forward(1)
-                turnRight=true
+            end
+            j = j + 1
+        else
+            if top then -- eine Reihe wieder zurück und einen Tiefer.
+                if turnRight then
+                    right()
+                    forward(1)
+                    right()
+                    down(1)
+                else
+                    left()
+                    forward(1)
+                    left()
+                    down(1)
+                end
+                j = j - 1
+                top = false
+            else -- jetzt sind wir also eine höhe Tiefer und müssen zwei vor gehen
+                if turnRight then
+                    up(1)
+                    right()
+                    forward(2)
+                    right()
+                else
+                    up(1)
+                    left()
+                    forward(2)
+                    left()
+                end
+                j = j + 2
+                top = true
             end
         end
     end
