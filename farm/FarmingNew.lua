@@ -194,7 +194,7 @@ function farming(field)
 
     else                            --just everything else (wheat, beetroot, carrot, potato)
         SeedName = determineSeed(crop)
-        generalField()                                      
+        generalField(cols,rows,turnRight)                                      
     end
 
     print("finished farming")
