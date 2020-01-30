@@ -1,6 +1,20 @@
 {
   {
     pos = {
+      z = -274,
+      f = 0,
+      y = 66,
+      x = 130,
+    },
+    name = "cactus",
+    crop = "cactus",
+    rows = 16,
+    cols = 2,
+    right = true,
+    active = true,
+  },
+  {
+    pos = {
       z = -267,
       f = 0,
       y = 64,

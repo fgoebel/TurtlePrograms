@@ -176,6 +176,36 @@ function generalField(cols,rows,turnRight)
     end
 end
 
+--*********************************************
+--cactus fiels
+function cactusField(cols,rows,turnRight)
+    for j=1,cols do
+        for i=1,rows do
+            turtle.digDown()
+            turtle.suckDown()
+            forward(2)
+        end
+        if j ~= cols then
+            if turnRight then
+                right()
+                forward(1)
+                right()
+                forward()
+                turnRight=false
+            else
+                left()
+                forward(1)
+                left()
+                forward(1)
+                turnRight=true
+            end
+        end
+    end
+end
+
+
+--*********************************************
+--overall farming function
 function farming(field)
     refillFuel()                    -- refuel if fuel level below 5000
     dropInventory()                 -- drop wheat and seed (except for 1 stacks)
@@ -251,10 +281,10 @@ function main()
                     up(5)                                       -- go up to avoid crashes
                 heartbeat()                                     -- print heartbeat
             end                                  
-            waiting = true
-            waitingTimer = os.startTimer(1)                     -- starts time on 1 second
-            goTo.goTo(home)                                     -- go home
         end
+        waiting = true
+        waitingTimer = os.startTimer(1)                     -- starts time on 1 second
+        goTo.goTo(home)                                     -- go home
 
         event , bottom = os.pullEvent()                         -- waits for event
 
