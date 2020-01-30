@@ -110,7 +110,7 @@ end
 function havestAndPlant()
     SeedName = "minecraft:wheat_seeds"
     SeedSlot = getSlot(SeedName)                        -- determine current Slot for seeds
-    valid, data = goTo.inspectDown()                    -- get state of block
+    valid, data = turtle.inspectDown()                  -- get state of block
 
     if valid then                                       -- there is a block below
         if data.metadata == 7 then                      --block is fully grown
