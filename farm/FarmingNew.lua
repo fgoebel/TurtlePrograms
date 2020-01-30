@@ -170,6 +170,21 @@ function refillFuel()
 end
 
 --*********************************************
+--function to display heartbeat
+function heartbeat()
+    timeToWait = harvestingInterval - timerCount
+    currentFuelLevel = turtle.getFuelLevel()
+	if waiting then
+		print("current Status: waiting " .. timeToWait .. " Seconds!")
+	else
+		print("current Status: Working")
+	end
+
+    print("fuelLevel: " .. currentFuelLevel)
+	print("press x to exit Program and d to start manually!")
+end
+
+--*********************************************
 -- General Farming Programm
 function farming(rows,cols,turnRight)
     goTo.goTo(storage)              -- go to storage system
@@ -206,6 +221,7 @@ function farming(rows,cols,turnRight)
 end
 
 function main()
+    heartbeat()
     while true do
         if not waiting then                                     -- if waiting is not active
             farming(24,9,1)                                     -- farm field
