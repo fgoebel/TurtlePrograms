@@ -20,17 +20,17 @@ end
 -- Define specific positions
 local home = {x=121,y=66,z=-263,f=0}
 local storage = {x=122,y=63,z=-261,f=2}
-local field = {x=130, y=64, z=-267,f=0}
+--local field = {x=130, y=64, z=-267,f=0}
 
 -- Load field file - change later
--- function load(name)
--- 	local file = fs.open(name,"r")
--- 	local data = file.readAll()
--- 	file.close()
--- 	return textutils.unserialize(data)
--- end
+function load(name)
+	local file = fs.open(name,"r")
+ 	local data = file.readAll()
+ 	file.close()
+ 	return textutils.unserialize(data)
+ end
 
--- local fields = load("fields")
+local fields = load("fields")
 
 --*********************************************
 -- defintion of variables
@@ -217,16 +217,23 @@ function farming(rows,cols,turnRight)
 
     goTo.goTo(storage)             -- go to storage system, after field is finished
     dropInventory()                 -- drop wheat and seed (except for 1 stacks)
-    goTo.goTo(home)                 -- go home
 end
 
 function main()
-    heartbeat()
+    heartbeat()                                                 -- print heartbeat
     while true do
         if not waiting then                                     -- if waiting is not active
-            farming(24,9,1)                                     -- farm field
+            for k,v in ipairs(fields) do                        -- for each field
+                print(v.name)           
+                    if v.active then                            -- if field is active
+                        farming(v)                              -- farm field
+                    end
+                    up(5)                                       -- go up to avoid crashes
+                heartbeat()                                     -- print heartbeat
+            end                                  
             waiting = true
             waitingTimer = os.startTimer(1)                     -- starts time on 1 second
+            goTo.goTo(home)                                     -- go home
         end
 
         event , bottom = os.pullEvent()                         -- waits for event
@@ -243,7 +250,8 @@ function main()
 		    return                                              -- stop everything, leave program
 	    elseif (event == "key") and (bottom == keys.d) then     -- bottom d was pressed
 		    timerCount = harvestingInterval                     -- start harvesting manually
-	    end
+        end
+        heartbeat()                                             -- print heartbeat
     end
 
 end
