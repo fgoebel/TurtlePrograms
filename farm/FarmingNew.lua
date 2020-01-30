@@ -1,3 +1,9 @@
+
+-- Using harvesting, wireless turtle
+-- by using turtle.digDown for harvesting, more than one block was harvested. This is handled by using placeDown instead, which also resulted
+-- in the crop "still be planted" (equal to right klicking on it).
+
+--*********************************************
 -- load APIs
 if not os.loadAPI("goTo.lua") then
 	r = http.get("https://raw.githubusercontent.com/fgoebel/TurtlePrograms/cct-clique27/goTo.lua")
@@ -114,14 +120,16 @@ function havestAndPlant()
 
     if valid then                                       -- there is a block below
         if data.metadata == 7 then                      --block is fully grown
-            turtle.digDown()                            -- harvest
+            turtle.placeDown()                          -- harvest (see comment at top of the document)
             turtle.suckDown()                           -- suck in
-            turtle.digDown()                            -- till field
-            if turtle.getItemCount(SeedSlot) == 0 then  -- if SeedSlot is empty, get new slot
-                SeedSlot = getSlot(SeedName)
+            if turtle.inspectDown() == false then       -- tilling and planting only needed if crop was destroyed
+                turtle.digDown()                        -- till field
+                if turtle.getItemCount(SeedSlot) == 0 then  -- if SeedSlot is empty, get new slot
+                    SeedSlot = getSlot(SeedName)
+                end
+                turtle.select(SeedSlot)                     --select SeedSlot
+                turtle.placeDown()                          --place Seed
             end
-            turtle.select(SeedSlot)                     --select SeedSlot
-            turtle.placeDown()                          --place Seed
         end
     end
 end
