@@ -135,7 +135,7 @@ function havestAndPlant()
     turtle.select(1)
 
     if valid then                                       -- there is a block below
-        if data.metadata == 7 then                      --block is fully grown
+        if ((data.metadata == 7) or (data.metadata == 3 and crop == "beetroot")) then  --block is fully grown
             turtle.placeDown()                          -- harvest (see comment at top of the document)
             turtle.suckDown()                           -- suck in
             if turtle.inspectDown() == false then       -- tilling and planting only needed if crop was destroyed
