@@ -20,7 +20,6 @@ end
 -- Define specific positions
 local home = {x=121,y=66,z=-263,f=0}
 local storage = {x=122,y=63,z=-261,f=2}
---local field = {x=130, y=64, z=-267,f=0}
 
 -- Load field file - change later
 function load(name)
@@ -104,7 +103,7 @@ function down(steps)
 end
 
 --*********************************************
---Functions for harvesting Wheat
+--Functions for harvesting Wheat, Beetroot, Carrots and Potatos
 function getSlot(ItemName)
     i = 0
     while true do
@@ -119,9 +118,21 @@ function getSlot(ItemName)
     return false                                        -- return slot number
 end
 
+function determineSeed(crop)
+    if (crop == "wheat") then
+        seed = "minecraft:wheat_seeds"
+    elseif crop == "beetroot" then
+        seed = "minecraft:beetroot_seeds"
+    elseif crop == "carrot" then
+        seed = "minecraft:carrot"
+    elseif crop == "potato" then
+        seed = "minecraft:potato"
+    end
+    return seed
+end
+
 function havestAndPlant()
-    SeedName = "minecraft:wheat_seeds"
-    SeedSlot = getSlot(SeedName)                        -- determine current Slot for seeds
+    SeedSlot = getSlot(SeedName)                        -- determine current Slot for seeds, returns false if Seed not in inventory
     valid, data = turtle.inspectDown()                  -- get state of block
 
     if valid then                                       -- there is a block below
@@ -131,31 +142,71 @@ function havestAndPlant()
             if turtle.inspectDown() == false then       -- tilling and planting only needed if crop was destroyed
                 turtle.digDown()                        -- till field
                 sleep(0.5)
-                if turtle.getItemCount(SeedSlot) == 0 then  -- if SeedSlot is empty, get new slot
-                    SeedSlot = getSlot(SeedName)
+                if SeedSlot then                        -- only if SeedSlot is not false
+                    if turtle.getItemCount(SeedSlot) == 0 then  -- if SeedSlot is empty, get new slot
+                        SeedSlot = getSlot(SeedName)
+                    end
+                    turtle.select(SeedSlot)                     --select SeedSlot
+                    turtle.placeDown()                          --place Seed
                 end
-                turtle.select(SeedSlot)                     --select SeedSlot
-                turtle.placeDown()                          --place Seed
             end
         end
     end
 end
 
+function generalField(cols,rows,turnRight)
+    for j = 1,cols do               --start harvesting
+        for i=1,rows-1 do
+            havestAndPlant()    -- harvest and plant on current block
+            forward(1)              -- move one block forward
+        end                         
+        havestAndPlant()        -- on last block of col only harvest and plant
+        if j ~= cols then           -- if it is not the last col
+            if turnRight then       -- turn right if last turn was left
+                right()
+                forward(1)
+                right()
+                turnRight= false
+            else                    -- turn left if last turn was left
+                left()
+                forward(1)
+                left()
+                turnRight=true
+            end
+        end
+    end
+end
+
+function farming(field)
+    refillFuel()                    -- refuel if fuel level below 5000
+    dropInventory()                 -- drop wheat and seed (except for 1 stacks)
+    
+    goTo.goTo(field.pos)            -- got to first Block of field
+    cols = field.cols
+    rows = field.rows
+    turnRight = field.right
+    crop = field.crop
+
+    print("Start farming")
+    if (crop == "cactus") then
+
+    elseif (crop == "sugar") then
+
+    else                            --just everything else (wheat, beetroot, carrot, potato)
+        SeedName = determineSeed(crop)
+        generalField()                                      
+    end
+
+    print("finished farming")
+end
+
 --*********************************************
 --refill and drop functions
 function dropInventory()
-    Slot = 1
-    SeedSlot = getSlot("minecraft:wheat_seeds")        -- determine first SeedSlot
-    while Slot <= 16 do
+    goTo.goTo(storage)             -- go to storage system, after field is finished
+    for Slot =1, 16 do
         turtle.select(Slot)         -- select next Slot
-        if Slot ~= SeedSlot then    -- if it is not the first SeedSlot
-            turtle.dropDown()       -- just drop everthing in the slot
-        end
-        Slot = Slot +1
-    end
-    if SeedSlot == 1 then           -- if the SeedSlot is not slot 1
-        turtle.select(SeedSlot)
-        turtle.transferTo(1)        -- transfer Seeds to slot 1
+        turtle.dropDown()       -- just drop everthing in the slot
     end
 end
 
@@ -189,41 +240,6 @@ end
 
 --*********************************************
 -- General Farming Programm
-function farming(field)
-    refillFuel()                    -- refuel if fuel level below 5000
-    
-    goTo.goTo(field.pos)            -- got to first Block of field
-    cols = field.cols
-    rows = field.rows
-    turnRight = field.right
-
-    print("Start farming")
-    for j = 1,cols do               --start harvesting
-        for i=1,rows-1 do
-            havestAndPlant()        -- harvest and plant on current block
-            forward(1)              -- move one block forward
-        end                         
-        havestAndPlant()            -- on last block of col only harvest and plant
-        if j ~= cols then           -- if it is not the last col
-            if turnRight then       -- turn right if last turn was left
-                right()
-                forward(1)
-                right()
-                turnRight= false
-            else                    -- turn left if last turn was left
-                left()
-                forward(1)
-                left()
-                turnRight=true
-            end
-        end
-    end
-    print("finished farming")
-
-    goTo.goTo(storage)             -- go to storage system, after field is finished
-    dropInventory()                 -- drop wheat and seed (except for 1 stacks)
-end
-
 function main()
     heartbeat()                                                 -- print heartbeat
     while true do
