@@ -124,6 +124,7 @@ function havestAndPlant()
             turtle.suckDown()                           -- suck in
             if turtle.inspectDown() == false then       -- tilling and planting only needed if crop was destroyed
                 turtle.digDown()                        -- till field
+                sleep(0.5)
                 if turtle.getItemCount(SeedSlot) == 0 then  -- if SeedSlot is empty, get new slot
                     SeedSlot = getSlot(SeedName)
                 end
