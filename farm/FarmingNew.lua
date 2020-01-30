@@ -132,6 +132,7 @@ end
 function havestAndPlant()
     SeedSlot = getSlot(SeedName)                        -- determine current Slot for seeds, returns false if Seed not in inventory
     valid, data = turtle.inspectDown()                  -- get state of block
+    turtle.select(1)
 
     if valid then                                       -- there is a block below
         if data.metadata == 7 then                      --block is fully grown
