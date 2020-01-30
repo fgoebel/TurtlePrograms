@@ -1,6 +1,20 @@
 {
   {
     pos = {
+      z = -271,
+      f = 0,
+      y = 66,
+      x = 130,
+    },
+    name = "sugar",
+    crop = "sugar",
+    rows = 16,
+    cols = 2,
+    right = true,
+    active = true,
+  },
+  {
+    pos = {
       z = -274,
       f = 0,
       y = 66,

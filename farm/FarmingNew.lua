@@ -183,18 +183,18 @@ function cactusField(cols,rows,turnRight)
 top = true
 j=1
     while true do
-        for i = 1, rows do
+        for i = 1, rows do                      --harvest one col
             turtle.digDown()
             turtle.suckDown()
             if i ~= rows then
                 forward(1)
             end
         end
-        if ((j == cols) and (not top)) then
-            return
+        if ((j == cols) and (not top)) then     -- if current col is last col and not top
+            return                              -- exit loop
         end
-        if ((j == 1) and top) or ((j == cols-1) and (not(top))) then
-            if turnRight then -- auf gleicher höhe eine Reihe weiter
+        if ((j == 1) and top) or ((j == cols-1) and (not(top))) then    -- if first col and top or second last and not top
+            if turnRight then                                           -- height stays the same, but next col
                 right()
                 forward(1)
                 right()
@@ -205,7 +205,7 @@ j=1
             end
             j = j + 1
         else
-            if top then -- eine Reihe wieder zurück und einen Tiefer.
+            if top then                         -- if top of current col, one col back and go one down
                 if turnRight then
                     right()
                     forward(1)
@@ -219,7 +219,7 @@ j=1
                 end
                 j = j - 1
                 top = false
-            else -- jetzt sind wir also eine höhe Tiefer und müssen zwei vor gehen
+            else                                -- currently not in top of col, go to next col and one up
                 if turnRight then
                     up(1)
                     right()
@@ -233,6 +233,53 @@ j=1
                 end
                 j = j + 2
                 top = true
+            end
+        end
+    end
+end
+
+--*********************************************
+--sugar field
+function sugarField(cols,rows,turnRight)
+top = true
+skip = 2
+j=1
+
+    while true do
+        for i=1,rows-1 do
+            turtle.digDown()
+            turtle.suckDown()
+            forward()
+        end
+        turtle.digDown()
+        turtle.suckDown()
+        if ((j==cols) and (not top)) then
+            return
+        end
+        if top then
+            right()
+            right()
+            down()
+            top = false
+        else
+            up()
+            top = true
+            j=j+skip
+            if turnRight then
+                right()
+                forward(skip)
+                right()
+                turnRight = false
+            else
+                left()
+                forward(skip)
+                left()
+                turnRight = true
+            end
+            if skip == 1 then
+                skip = 2
+            else
+                skip = 1
             end
         end
     end
@@ -255,7 +302,7 @@ function farming(field)
     if (crop == "cactus") then
         cactusField(cols,rows,turnRight)
     elseif (crop == "sugar") then
-
+        sugarField(cols,rows,turnRight)
     else                            --just everything else (wheat, beetroot, carrot, potato)
         SeedName = determineSeed(crop)
         generalField(cols,rows,turnRight)                                      
