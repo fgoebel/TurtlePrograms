@@ -94,7 +94,7 @@ end
 --*********************************************
 --Functions for harvesting Wheat
 function getSeedSlot()
-    local SeedsSlot = 0
+    local SeedSlot = 0
     local state = 1
     while state == 1 do
         SeedSlot = SeedSlot + 1                                     -- inspect next Slot
