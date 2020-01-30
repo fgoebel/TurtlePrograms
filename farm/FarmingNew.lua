@@ -105,9 +105,7 @@ end
 --*********************************************
 --Functions for harvesting Wheat, Beetroot, Carrots and Potatos
 function getSlot(ItemName)
-    i = 0
-    while true do
-        i = i + 1                                       -- inspect next Slot
+    for i=1,16 do
         if turtle.getItemCount(i) ~= 0 then             -- if slot not empty
             Detail = turtle.getItemDetail(i)            -- get item details
             if Detail.name == ItemName then             -- if it is the item
