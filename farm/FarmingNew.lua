@@ -184,7 +184,6 @@ currentCol = 1                                  -- variable for currentCol
     while true do
         for i = 1, rows do                      --harvest one col
             turtle.digDown()
-            turtle.suckDown()
             forward(1)
         end                                     -- position now: one block behind last row
 
@@ -246,14 +245,10 @@ local currentCol = 1                        -- variable for currentCol
 
     while currentCol < cols do              -- do for each col
         turtle.digDown()                    -- first block must be removed, to go down()
-        sleep(1)
-        turtle.suckDown()
         down()                              -- go one block down
         for i=1,rows do                     -- start with col
             turtle.digDown()
-            turtle.suckDown()
             turtle.dig()
-            turtle.suck()
             forward(1)
         end
         up()                                -- finished col, go one up
