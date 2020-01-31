@@ -241,48 +241,36 @@ end
 --*********************************************
 --sugar field
 function sugarField(cols,rows,turnRight)
-top = true
-skip = 2
-j=1
+local skip = 1                              -- equals 1 if water must be skipped in next turn, else equals 0
+local currentCol = 1                        -- variable for currentCol
 
-    while true do
-        for i=1,rows-1 do
+    while currentCol < cols do              -- do for each col
+        turtle.digDown()                    -- first block must be removed, to go down()
+        turtle.suckDown()
+        down()                              -- go one block down
+        for i=1,rows do                     -- start with col
             turtle.digDown()
             turtle.suckDown()
-            forward()
+            turtle.dig()
+            turtle.suck()
+            forward(1)
         end
-        turtle.digDown()
-        turtle.suckDown()
-        if ((j==cols) and (not top)) then
-            return
-        end
-        if top then
+        up()                                -- finished col, go one up
+
+        if turnRight then                   -- go to next col
             right()
+            forward(1+skip)                 -- next col depends on skipping active or not
             right()
-            down()
-            top = false
         else
-            up()
-            top = true
-            j=j+skip
-            if turnRight then
-                right()
-                forward(skip)
-                right()
-                turnRight = false
-            else
-                left()
-                forward(skip)
-                left()
-                turnRight = true
-            end
-            if skip == 1 then
-                skip = 2
-            else
-                skip = 1
-            end
+            left()
+            forward(1+skip)
+            left()
         end
+        forward()                           -- go one forward --> now in top of next col
+        j = j + skip                        -- determine current col (might be next or second next one, depending on skip)
+        skip = math.abs((skip-1))           -- invert skipping variable, returns 1 if skip was 0 and 0 if skip was 1
     end
+
 end
 
 
