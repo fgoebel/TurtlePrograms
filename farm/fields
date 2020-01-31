@@ -11,7 +11,7 @@
     rows = 12,
     cols = 2,
     right = true,
-    active = false,
+    active = true,
   },
   {
     pos = {
