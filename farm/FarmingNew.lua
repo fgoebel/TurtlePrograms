@@ -21,7 +21,7 @@ end
 local home = {x=121,y=66,z=-263,f=0}
 local storage = {x=122,y=63,z=-261,f=2}
 
--- Load field file - change later
+-- Load field file
 function load(name)
 	local file = fs.open(name,"r")
  	local data = file.readAll()
@@ -246,6 +246,7 @@ local currentCol = 1                        -- variable for currentCol
 
     while currentCol < cols do              -- do for each col
         turtle.digDown()                    -- first block must be removed, to go down()
+        sleep(1)
         turtle.suckDown()
         down()                              -- go one block down
         for i=1,rows do                     -- start with col
