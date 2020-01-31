@@ -179,22 +179,22 @@ end
 --*********************************************
 --cactus fiels
 function cactusField(cols,rows,turnRight)
--- also Breite/Reihen zu Startpunkt einordnen.
-top = true
-j=1
+top = true                                      -- variable for indicating if turtle is in top of col
+currentCol = 1                                  -- variable for currentCol
     while true do
         for i = 1, rows do                      --harvest one col
             turtle.digDown()
             turtle.suckDown()
-            if i ~= rows then
-                forward(1)
-            end
+            forward(1)
+        end                                     -- position now: one block behind last row
+
+        if ((currentCol == cols) and (not top)) then    -- if current col is last col and not top
+            return                                      -- finished field -- > exit loop
         end
-        if ((j == cols) and (not top)) then     -- if current col is last col and not top
-            return                              -- exit loop
-        end
-        if ((j == 1) and top) or ((j == cols-1) and (not(top))) then    -- if first col and top or second last and not top
-            if turnRight then                                           -- height stays the same, but next col
+
+        if ((currentCol == 1) and top) or ((currentCol == cols-1) and (not(top))) then    
+            -- if first col and top or second last and not top: height stays the same, but next col
+            if turnRight then                   
                 right()
                 forward(1)
                 right()
@@ -203,36 +203,36 @@ j=1
                 forward(1)
                 left()
             end
-            j = j + 1
+            currentCol = currentCol + 1         -- determine new col
         else
-            if top then                         -- if top of current col, one col back and go one down
+            if top then
+                -- if top of current col: next is one col back and one down                         
                 if turnRight then
                     right()
                     forward(1)
                     right()
-                    down(1)
                 else
                     left()
                     forward(1)
                     left()
-                    down(1)
                 end
-                j = j - 1
-                top = false
-            else                                -- currently not in top of col, go to next col and one up
+                down(1)
+                currentCol = currentCol - 1     -- determine new col
+                top = false                     -- reset top variable
+            else                                
+                -- currently not in top of col: next is two col forward and one up (top of new col)
+                up(1)
                 if turnRight then
-                    up(1)
                     right()
                     forward(2)
                     right()
                 else
-                    up(1)
                     left()
                     forward(2)
                     left()
                 end
-                j = j + 2
-                top = true
+                currentCol = currentCol + 2     -- determine new col
+                top = true                      -- reset top variable
             end
         end
     end
