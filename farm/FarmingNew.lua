@@ -351,13 +351,13 @@ function main()
                     end
                     up(5)                                       -- go up to avoid crashes
                 heartbeat()                                     -- print heartbeat
-            end                                  
+            end
+            waiting = true
+            goTo.goTo(home)                                         -- go home
+            waitingTimer = os.startTimer(1)                         -- starts time on 1 second
+    
+            event , bottom = os.pullEvent()                         -- waits for event                                  
         end
-        waiting = true
-        goTo.goTo(home)                                         -- go home
-        waitingTimer = os.startTimer(1)                         -- starts time on 1 second
-
-        event , bottom = os.pullEvent()                         -- waits for event
 
 	    if (event == "timer") and (bottom == waitingTimer) then -- waiting timer "rings"
 		    if timerCount >= harvestingInterval then
@@ -365,7 +365,8 @@ function main()
 			    timerCount = 0                                  -- reset Timer
 		    else
 			    timerCount = timerCount + 1                     -- increase timer count by one
-			    waitingTimer = os.startTimer(1)                 -- start new timer
+                waitingTimer = os.startTimer(1)                 -- start new timer
+                print("restarted timer")
 		    end
 	    elseif (event == "key") and (bottom == keys.x ) then    -- buttom x was pressed
 		    return                                              -- stop everything, leave program
