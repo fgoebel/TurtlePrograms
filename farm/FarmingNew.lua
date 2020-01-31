@@ -353,8 +353,8 @@ function main()
             end                                  
         end
         waiting = true
-        waitingTimer = os.startTimer(1)                         -- starts time on 1 second
         goTo.goTo(home)                                         -- go home
+        waitingTimer = os.startTimer(1)                         -- starts time on 1 second
 
         event , bottom = os.pullEvent()                         -- waits for event
 
