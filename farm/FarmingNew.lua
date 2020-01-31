@@ -257,10 +257,12 @@ local currentCol = 1                        -- variable for currentCol
             right()
             forward(1+skip)                 -- next col depends on skipping active or not
             right()
+            turnRight = false
         else
             left()
             forward(1+skip)
             left()
+            turnRight = true
         end
         forward()                           -- go one forward --> now in top of next col
         currentCol =currentCol + skip       -- determine current col (might be next or second next one, depending on skip)
