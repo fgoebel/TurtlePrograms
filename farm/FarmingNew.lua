@@ -330,7 +330,7 @@ function enderliliField(field)
                 if data.metadata == 7 then          -- if block is mature
                     turtle.digDown()                -- dig Down to harvest
                     sleep(0.5)
-                    lilliSlot = getSlot("extraautils2:enderlilli")
+                    lilliSlot = getSlot("extrautils2:enderlilli")
                     if lilliSlot ~= false then
                         turtle.select(lilliSlot)
                         turtle.placeDown()
