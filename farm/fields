@@ -97,4 +97,18 @@
     right = true,
     active = true,
   },
+    {
+    pos = {
+      z = -267,
+      f = 0,
+      y = 64,
+      x = 163,
+    },
+    name = "wheat02",
+    crop = "wheat",
+    rows = 24,
+    cols = 9,
+    right = true,
+    active = true,
+  },
 }
