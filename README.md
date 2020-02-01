@@ -9,10 +9,10 @@ f = fs.open("goTo.lua", "w")
 f.write(r.readAll())
 f.close()
 r.close()
-if fs.open("fields","r") then
+if fs.exists("fields" then
     fs.delete("fields")
 end
-if fs.open("goTo.lua","r") then
+if fs.exists("goTo.lua") then
     fs.delete("goTo.lua")
 end
 ```
