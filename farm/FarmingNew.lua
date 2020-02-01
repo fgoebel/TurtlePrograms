@@ -296,7 +296,7 @@ end
 
 --*********************************************
 --sugar field
-function sugarField(cols,rows,turnRight)
+function sugarField(field)
 local cols = field.cols
 local rows = field.rows
 local turnRight = field.right
