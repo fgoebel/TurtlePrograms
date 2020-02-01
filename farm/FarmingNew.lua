@@ -377,7 +377,6 @@ function enderliliField(field)
                 end
             end
         end
-    end
 end
 
 --*********************************************
