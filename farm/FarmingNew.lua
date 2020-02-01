@@ -426,7 +426,7 @@ return empty
 end
 
 function dropAndReturn()
-    ReturnPosition = goTo.getPos()
+    ReturnPosition = goTo.returnPos()
     goTo.goTo(storage)
     dropInventory()
     if (crop == "wheat" or crop == "beetroot" or crop == "potato" or crop == "carrot") then
