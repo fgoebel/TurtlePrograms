@@ -1,7 +1,11 @@
 
--- Using harvesting, wireless turtle
--- by using turtle.digDown for harvesting, more than one block was harvested. This is handled by using placeDown instead, which also resulted
+-- Using harvesting, wireless turtle:
+-- by using turtle.digDown for harvesting, more than one block was harvested. 
+-- This is handled by using placeDown instead, which also resulted
 -- in the crop "still be planted" (equal to right klicking on it).
+-- However, this did not work for sugar. Hence, sugar is not harvested if
+-- harvestingTurtle is true.
+-- in case a mining turtle is used: change variable harvestingTurtle to false.
 
 --*********************************************
 -- Define specific positions
@@ -314,8 +318,12 @@ function farming(field)
         goTo.goTo(field.pos)            -- got to first Block of field
         cactusField(cols,rows,turnRight)
     elseif (crop == "sugar") then
-        goTo.goTo(field.pos)            -- got to first Block of field
-        sugarField(cols,rows,turnRight)
+        if harvestingTurtle then
+            print("sugar not possible with harvesting Turtle")
+        else
+            goTo.goTo(field.pos)            -- got to first Block of field
+            sugarField(cols,rows,turnRight)
+        end
     else                                --just everything else (wheat, beetroot, carrot, potato)
         SeedName = determineSeed(crop)
         getSeeds()                      -- get Seeds
