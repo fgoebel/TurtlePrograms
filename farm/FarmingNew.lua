@@ -134,7 +134,7 @@ function getSeeds()
     peri = peripheral.wrap("bottom")                    -- sets ME interface on bottom as pheripheral
     for i=1,9 do                                        -- checks each slot of peripheral
         item = peri.getItemMeta(i)                      -- stores meta data in item variable
-        if item.name == seed then                       -- if name of item in slot is desired seed name
+        if item.name == SeedName then                       -- if name of item in slot is desired seed name
             peri.pushItems("up",i,64,1)                 -- push item in slot i up to turtle, max 64 items in slot 1
             slot = 1                                    
         end
@@ -160,7 +160,7 @@ function havestAndPlant()
         print("no seeds")
         return
     end
-    
+
     valid, data = turtle.inspectDown()                  -- get state of block
 
     if valid then                                       -- there is a block below
@@ -198,7 +198,7 @@ function generalField(field)
 local cols = field.cols
 local rows = field.rows
 local turnRight = field.right
-local SeedName = determineSeed(crop)
+SeedName = determineSeed(crop)
 
 refillFuel()                        -- refuel if fuel level below 5000
 dropInventory()                     -- drop everything
