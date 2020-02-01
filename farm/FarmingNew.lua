@@ -110,6 +110,7 @@ function getSlot(ItemName)
             Detail = turtle.getItemDetail(i)            -- get item details
             if Detail.name == ItemName then             -- if it is the item
                 slot = i                                -- leave function
+                return slot
             end
         end                                                         
     end
