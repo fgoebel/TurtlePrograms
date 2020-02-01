@@ -330,8 +330,9 @@ goTo.goTo(field.pos)                        -- got to first Block of field
             turnRight = true
         end
         forward()                           -- go one forward --> now in top of next col
-        currentCol =currentCol + skip       -- determine current col (might be next or second next one, depending on skip)
+        currentCol = currentCol + skip      -- determine current col (might be next or second next one, depending on skip)
         skip = math.abs((skip-1))           -- invert skipping variable, returns 1 if skip was 0 and 0 if skip was 1
+        print(currentCol)
     end
 
 end
