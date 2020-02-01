@@ -330,7 +330,10 @@ end
 --refill and drop functions
 function dropInventory()
     goTo.goTo(storage)             -- go to storage system, after field is finished
-    for Slot =1, 16 do             -- there must be something at least in one slot to use put!
+    if harvestingTurtle then
+        local startingSlot = 2     -- there must be something at least in one slot to use place!
+    end
+    for Slot =startingSlot, 16 do  -- clear slots
         turtle.select(Slot)        -- select next Slot
         turtle.dropDown()          -- just drop everthing in the slot
     end
