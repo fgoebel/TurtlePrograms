@@ -321,8 +321,6 @@ function enderliliField(field)
     
     refillFuel()                                    -- refuel if fuel level below 5000
     dropInventory()                                 -- drop everything
-    Slot = getSeeds("minecraft:dirt")               -- get dirt, just to have anything to place
-    turtle.select(Slot)
 
     goTo.goTo(field.pos)                            -- got to first Block of field
     
@@ -330,9 +328,13 @@ function enderliliField(field)
             for i=1,rows-1 do
                 valid, data = turtle.inspectDown()  -- get state of block
                 if data.metadata == 7 then          -- if block is mature
-                    turtle.placeDown()              -- place Down to harvest
-                    sleep(1)
-                    turtle.suckDown()       
+                    turtle.digDown()                -- dig Down to harvest
+                    sleep(0.5)
+                    lilliSlot = getSlot("extraautils2:enderlilli")
+                    if lilliSlot ~= false then
+                        turtle.select(lilliSlot)
+                        turtle.placeDown()
+                    end
                 end
                 forward(1)                          -- move one block forward
             end                         
