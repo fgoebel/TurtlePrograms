@@ -419,7 +419,7 @@ function determineEmptySlots()
     local empty = 0
     for i=1,16 do
         if turtle.getItemCount(i) == 0 then
-            empty = empty + +
+            empty = empty + 1
         end
     end
 return empty
