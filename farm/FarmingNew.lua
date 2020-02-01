@@ -13,7 +13,7 @@ local harvestingInterval = 600        -- time between two harvesting cycles
 local timerCount = 0                  -- counts how often timer was started
 local waiting = false                 -- initially no waiting
 
-local harvestingTurtle = true         -- determines type of turtle
+local harvestingTurtle = false        -- determines type of turtle
 
 --*********************************************
 -- load APIs
@@ -146,16 +146,19 @@ end
 function havestAndPlant()
     SeedSlot = getSlot(SeedName)                        -- determine current Slot for seeds, returns false if Seed not in inventory
     if SeedSlot == false then
-        print("no seeds left")
-        -- hier könnte man dann Position speichern un neue Seeds holen
+        print("no seeds")
         return
     end
     valid, data = turtle.inspectDown()                  -- get state of block
-    turtle.select(1)
 
     if valid then                                       -- there is a block below
         if ((data.metadata == 7) or (data.metadata == 3 and crop == "beetroot")) then  --block is fully grown
-            turtle.placeDown()                          -- harvest (see comment at top of the document)
+            if harvestingTurtle then
+                turtle.placeDown()                      -- harvest (see comment at top of the document)
+            else
+                turtle.digDown()
+            end
+            sleep(0.5)
             turtle.suckDown()                           -- suck in
         end
     end
