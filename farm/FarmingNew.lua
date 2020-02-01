@@ -308,7 +308,7 @@ refillFuel()                                -- refuel if fuel level below 5000
 dropInventory()                             -- drop everything
 goTo.goTo(field.pos)                        -- got to first Block of field
 
-    while currentCol < cols do              -- do for each col
+    while currentCol <= cols do             -- do for each col
         turtle.digDown()                    -- first block must be removed, to go down()
         down()                              -- go one block down
         for i=1,rows do                     -- start with col
