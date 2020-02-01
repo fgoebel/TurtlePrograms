@@ -140,7 +140,6 @@ function havestAndPlant()
         if ((data.metadata < 7 and crop ~= "beetroot") or (data.metadata < 3)) then  -- block is not fully grown
             turtle.select(BoneSlot)                                                         -- select BoneMeal slot
             while ((data.metadata < 7 and crop ~= "beetroot") or (data.metadata < 3)) do
-                dropAndReturn()                         -- get new Meal (and clear inventory)
                 turtle.placeDown()                                                          -- place Bone Meal until it is grown
                 valid, data = turtle.inspectDown()                                          -- inspect again
             end
@@ -198,10 +197,10 @@ goTo.goTo(field.pos)                -- got to first Block of field
                 turnRight=true
             end
         end
-    end
-    empty = determineEmptySlots()
-    if empty < 2 then               -- if inventory almost full
-        dropAndReturn()             -- clear inventory and return
+        empty = determineEmptySlots()
+        if empty < 2 then               -- if inventory almost full
+            dropAndReturn()             -- clear inventory and return
+        end
     end
 end
 
