@@ -199,7 +199,8 @@ goTo.goTo(field.pos)                -- got to first Block of field
             end
         end
     end
-    if determineEmptySlots < 2 then -- if inventory almost full
+    empty = determineEmptySlots()
+    if empty < 2 then               -- if inventory almost full
         dropAndReturn()             -- clear inventory and return
     end
 end
@@ -270,7 +271,8 @@ currentCol = 1                                  -- variable for currentCol
                 top = true                      -- reset top variable
             end
         end
-        if determineEmptySlots < 2 then -- if inventory almost full
+        empty = determineEmptySlots()
+        if empty < 2 then               -- if inventory almost full
             dropAndReturn()             -- clear inventory and return
         end
     end
@@ -315,7 +317,8 @@ goTo.goTo(field.pos)                        -- got to first Block of field
         currentCol = currentCol + 1+ skip   -- determine current col (might be next or second next one, depending on skip)
         skip = math.abs((skip-1))           -- invert skipping variable, returns 1 if skip was 0 and 0 if skip was 1
 
-        if determineEmptySlots < 2 then -- if inventory almost full
+        empty = determineEmptySlots()
+        if empty < 2 then               -- if inventory almost full
             dropAndReturn()             -- clear inventory and return
         end
     end
@@ -364,7 +367,8 @@ function enderliliField(field)
                     turnRight=true
                 end
             end
-            if determineEmptySlots < 2 then -- if inventory almost full
+            empty = determineEmptySlots()
+            if empty < 2 then               -- if inventory almost full
                 dropAndReturn()             -- clear inventory and return
             end
         end
