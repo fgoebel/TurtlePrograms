@@ -109,8 +109,7 @@ function getSlot(ItemName)
         if turtle.getItemCount(i) ~= 0 then             -- if slot not empty
             Detail = turtle.getItemDetail(i)            -- get item details
             if Detail.name == ItemName then             -- if it is the item
-                slot = i                                -- leave function
-                return slot
+                slot = i                                -- sets current clot to return variable
             end
         end                                                         
     end
@@ -131,35 +130,37 @@ function determineSeed(crop)
 end
 
 function getSeeds()
+    slot = false
     peri = peripheral.wrap("bottom")                    -- sets ME interface on bottom as pheripheral
     for i=1,9 do                                        -- checks each slot of peripheral
         item = peri.getItemMeta(i)                      -- stores meta data in item variable
         if item.name == seed then                       -- if name of item in slot is desired seed name
             peri.pushItems("up",i,64,1)                 -- push item in slot i up to turtle, max 64 items in slot 1
-            return true
+            slot = 1                                    
         end
     end
-    return false
+    return slot                                         -- returns slot number for seeds if it was available
 end
 
 function getBoneMeal()
+    slot = false
     peri = peripheral.wrap("bottom")                    -- sets ME interface on bottom as pheripheral
     for i=1,9 do                                        -- checks each slot of peripheral
         item = peri.getItemMeta(i)                      -- stores meta data in item variable
         if item.displayName == "Bone Meal" then         -- if name of item in slot is desired seed name
             peri.pushItems("up",i,64,2)                 -- push item in slot i up to turtle, max 64 items in slot 2
-            return 2                                    -- returns slot number for Bone Meal if it was available
+            slot = 2                                    
         end
     end
-    return false                                        -- returns fals if no Bone Meal was available
+    return slot                                         -- returns slot number for Bone Meal if it was available
 end
 
 function havestAndPlant()
-    SeedSlot = getSlot(SeedName)                        -- determine current Slot for seeds, returns false if Seed not in inventory
     if SeedSlot == false then
         print("no seeds")
         return
     end
+    
     valid, data = turtle.inspectDown()                  -- get state of block
 
     if valid then                                       -- there is a block below
@@ -201,7 +202,7 @@ local SeedName = determineSeed(crop)
 
 refillFuel()                        -- refuel if fuel level below 5000
 dropInventory()                     -- drop everything
-getSeeds()                          -- get Seeds, returns false, if no seeds were available
+SeedSlot = getSeeds()               -- get Seeds, returns false, if no seeds were available
 BoneSlot = getBoneMeal()            -- get Bone Meal, returns false, if no Bone meal was available
 goTo.goTo(field.pos)                -- got to first Block of field
 
