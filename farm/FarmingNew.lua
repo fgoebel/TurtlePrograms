@@ -135,7 +135,7 @@ function getSeeds()
     for i=1,9 do                                        -- checks each slot of peripheral
         item = peri.getItemMeta(i)                      -- stores meta data in item variable
         if item.name == seed then                       -- if name of item in slot is desired seed name
-            peri.pushItems("up",i,64,1)                  -- push item in slot i up to turtle, max 64 items in slot 1
+            peri.pushItems("up",i,64,1)                 -- push item in slot i up to turtle, max 64 items in slot 1
             return
         end
     end
@@ -155,19 +155,19 @@ function havestAndPlant()
         if ((data.metadata == 7) or (data.metadata == 3 and crop == "beetroot")) then  --block is fully grown
             turtle.placeDown()                          -- harvest (see comment at top of the document)
             turtle.suckDown()                           -- suck in
-            if turtle.inspectDown() == false then       -- tilling and planting only needed if crop was destroyed
-                turtle.digDown()                        -- till field
-                if turtle.getItemCount(SeedSlot) == 0 then  -- if SeedSlot is empty, get new slot
-                    SeedSlot = getSlot(SeedName)
-                    if SeedSlot == false then
-                    print("no seeds left")
-                    -- hier könnte man dann Position speichern un neue Seeds holen
-                        return
-                    end
+        end
+        if turtle.inspectDown() == false then           -- tilling and planting only needed if crop was destroyed
+            turtle.digDown()                            -- till field
+            if turtle.getItemCount(SeedSlot) == 0 then  -- if SeedSlot is empty, get new slot
+                SeedSlot = getSlot(SeedName)
+                if SeedSlot == false then
+                print("no seeds left")
+                -- hier könnte man dann Position speichern un neue Seeds holen
+                    return
                 end
-                turtle.select(SeedSlot)                     --select SeedSlot
-                turtle.placeDown()                          --place Seed
             end
+            turtle.select(SeedSlot)                     --select SeedSlot
+            turtle.placeDown()                          --place Seed
         end
     end
 end
