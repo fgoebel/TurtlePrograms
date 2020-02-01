@@ -146,7 +146,7 @@ end
 
 function havestAndPlant()
     SeedSlot = getSlot(SeedName)                        -- determine current Slot for seeds, returns false if Seed not in inventory
-    if SeedSlot == false
+    if SeedSlot == false then
         print("no seeds left")
         -- hier könnte man dann Position speichern un neue Seeds holen
         return
