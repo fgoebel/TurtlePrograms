@@ -28,7 +28,7 @@ elseif not os.loadAPI("goTo.lua") then
 end
 
 -- Load field file
-if not fs.open("fields","w")
+if not fs.open("fields","w") then
     r = http.get("https://raw.githubusercontent.com/fgoebel/TurtlePrograms/cct-clique27/farm/fields")
     f = fs.open("fields", "w")
     f.write(r.readAll())
