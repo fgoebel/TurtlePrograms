@@ -162,7 +162,7 @@ function havestAndPlant()
                 turtle.digDown()                        -- till field
                 if turtle.getItemCount(SeedSlot) == 0 then  -- if SeedSlot is empty, get new slot
                     SeedSlot = getSlot(SeedName)
-                    if SeedSlot == false
+                    if SeedSlot == false then
                     print("no seeds left")
                     -- hier könnte man dann Position speichern un neue Seeds holen
                         return
