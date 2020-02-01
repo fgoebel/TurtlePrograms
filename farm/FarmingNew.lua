@@ -337,6 +337,47 @@ goTo.goTo(field.pos)                        -- got to first Block of field
 end
 
 --*********************************************
+--ender lilli field
+function enderliliField(field)
+    local cols = field.cols
+    local rows = field.rows
+    local turnRight = field.right
+    
+    refillFuel()                        -- refuel if fuel level below 5000
+    dropInventory()                     -- drop everything
+    Slot = getSeeds("minecraft:dirt")   -- get dirt, just to have anything to place
+    turtle.select(Slot)
+
+    goTo.goTo(field.pos)                -- got to first Block of field
+    
+        for j = 1,cols do               --start harvesting
+            for i=1,rows-1 do
+                turtle.placeDown()      -- place Down to harvest
+                sleep(1)
+                turtle.suckDown()       
+                forward(1)              -- move one block forward
+            end                         
+            turtle.placeDown()          -- place Down to harvest
+            sleep(1)
+            turtle.suckDown()       
+            if j ~= cols then           -- if it is not the last col
+                if turnRight then       -- turn right if last turn was left
+                    right()
+                    forward(1)
+                    right()
+                    turnRight= false
+                else                    -- turn left if last turn was left
+                    left()
+                    forward(1)
+                    left()
+                    turnRight=true
+                end
+            end
+        end
+    end
+end
+
+--*********************************************
 --refill and drop functions
 function dropInventory()
     goTo.goTo(storage)             -- go to storage system, after field is finished
@@ -390,6 +431,8 @@ function main()
                             cactusField(field)
                         elseif (crop == "sugar") then
                             sugarField(field)
+                        elseif (crop == "enderlilli") then
+                            enderliliField(field)
                         else                                    --just everything else (wheat, beetroot, carrot, potato)
                             generalField(field)                                      
                         end
