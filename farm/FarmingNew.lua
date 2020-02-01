@@ -137,8 +137,24 @@ function determineSeed(crop)
     return seed
 end
 
+function getSeeds()
+    peri = peripheral.wrap("bottom")                    -- sets ME interface on bottom as pheripheral
+    for i=1,9                                           -- checks each slot of peripheral
+        item = peri.getItemMeta(i)                      -- stores meta data in item variable
+        if item.name == seed                            -- if name of item in slot is desired seed name
+            peri.pushItem("up",i,64,1)                  -- push item in slot i up to turtle, max 64 items in slot 1
+            return
+        end
+    end
+end
+
 function havestAndPlant()
     SeedSlot = getSlot(SeedName)                        -- determine current Slot for seeds, returns false if Seed not in inventory
+    if SeedSlot == false
+        print("no seeds left")
+        -- hier könnte man dann Position speichern un neue Seeds holen
+        return
+    end
     valid, data = turtle.inspectDown()                  -- get state of block
     turtle.select(1)
 
@@ -148,14 +164,16 @@ function havestAndPlant()
             turtle.suckDown()                           -- suck in
             if turtle.inspectDown() == false then       -- tilling and planting only needed if crop was destroyed
                 turtle.digDown()                        -- till field
-                sleep(1)
-                if SeedSlot then                                -- only if SeedSlot is not false
-                    if turtle.getItemCount(SeedSlot) == 0 then  -- if SeedSlot is empty, get new slot
-                        SeedSlot = getSlot(SeedName)
+                if turtle.getItemCount(SeedSlot) == 0 then  -- if SeedSlot is empty, get new slot
+                    SeedSlot = getSlot(SeedName)
+                    if SeedSlot == false
+                    print("no seeds left")
+                    -- hier könnte man dann Position speichern un neue Seeds holen
+                        return
                     end
-                    turtle.select(SeedSlot)                     --select SeedSlot
-                    turtle.placeDown()                          --place Seed
                 end
+                turtle.select(SeedSlot)                     --select SeedSlot
+                turtle.placeDown()                          --place Seed
             end
         end
     end
@@ -286,7 +304,6 @@ function farming(field)
     refillFuel()                    -- refuel if fuel level below 5000
     dropInventory()                 -- drop wheat and seed (except for 1 stacks)
     
-    goTo.goTo(field.pos)            -- got to first Block of field
     cols = field.cols
     rows = field.rows
     turnRight = field.right
@@ -294,11 +311,15 @@ function farming(field)
 
     print("Start farming")
     if (crop == "cactus") then
+        goTo.goTo(field.pos)            -- got to first Block of field
         cactusField(cols,rows,turnRight)
     elseif (crop == "sugar") then
+        goTo.goTo(field.pos)            -- got to first Block of field
         sugarField(cols,rows,turnRight)
-    else                            --just everything else (wheat, beetroot, carrot, potato)
+    else                                --just everything else (wheat, beetroot, carrot, potato)
         SeedName = determineSeed(crop)
+        getSeeds()                      -- get Seeds
+        goTo.goTo(field.pos)            -- got to first Block of field
         generalField(cols,rows,turnRight)                                      
     end
 
@@ -309,7 +330,7 @@ end
 --refill and drop functions
 function dropInventory()
     goTo.goTo(storage)             -- go to storage system, after field is finished
-    for Slot =2, 16 do             -- there must be something at least in one slot to use put!
+    for Slot =1, 16 do             -- there must be something at least in one slot to use put!
         turtle.select(Slot)        -- select next Slot
         turtle.dropDown()          -- just drop everthing in the slot
     end
