@@ -135,7 +135,7 @@ end
 
 function getSeeds()
     peri = peripheral.wrap("bottom")                    -- sets ME interface on bottom as pheripheral
-    for i=1,9                                           -- checks each slot of peripheral
+    for i=1,9 do                                        -- checks each slot of peripheral
         item = peri.getItemMeta(i)                      -- stores meta data in item variable
         if item.name == seed                            -- if name of item in slot is desired seed name
             peri.pushItem("up",i,64,1)                  -- push item in slot i up to turtle, max 64 items in slot 1
