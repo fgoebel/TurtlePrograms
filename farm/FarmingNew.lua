@@ -3,9 +3,15 @@
 -- by using turtle.digDown for harvesting, more than one block was harvested. This is handled by using placeDown instead, which also resulted
 -- in the crop "still be planted" (equal to right klicking on it).
 
+--*********************************************
 -- Define specific positions
 local home = {x=121,y=66,z=-263,f=0}
 local storage = {x=122,y=63,z=-261,f=2}
+
+-- defintion of variables
+local harvestingInterval = 600        -- time between two harvesting cycles 
+local timerCount = 0                  -- counts how often timer was started
+local waiting = false                 -- initially no waiting
 
 --*********************************************
 -- load APIs
@@ -38,12 +44,6 @@ function load(name)
  end
 
 local fields = load("fields")
-
---*********************************************
--- defintion of variables
-local harvestingInterval = 600        -- time between two harvesting cycles 
-local timerCount = 0                  -- counts how often timer was started
-local waiting = false                 -- initially no waiting
 
 --*********************************************
 -- Basic functions for movement
