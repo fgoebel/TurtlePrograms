@@ -134,9 +134,22 @@ function getSeeds()
         item = peri.getItemMeta(i)                      -- stores meta data in item variable
         if item.name == seed then                       -- if name of item in slot is desired seed name
             peri.pushItems("up",i,64,1)                 -- push item in slot i up to turtle, max 64 items in slot 1
-            return
+            return true
         end
     end
+    return false
+end
+
+function getBoneMeal()
+    peri = peripheral.wrap("bottom")                    -- sets ME interface on bottom as pheripheral
+    for i=1,9 do                                        -- checks each slot of peripheral
+        item = peri.getItemMeta(i)                      -- stores meta data in item variable
+        if item.name == "minecraft:bone_meal" then      -- if name of item in slot is desired seed name
+            peri.pushItems("up",i,64,2)                 -- push item in slot i up to turtle, max 64 items in slot 2
+            return 2                                    -- returns slot number for Bone Meal if it was available
+        end
+    end
+    return false                                        -- returns fals if no Bone Meal was available
 end
 
 function havestAndPlant()
@@ -148,11 +161,21 @@ function havestAndPlant()
     valid, data = turtle.inspectDown()                  -- get state of block
 
     if valid then                                       -- there is a block below
+        if ((data.metadata < 7) or (data.metadata < 3 and crop == "beetroot")) then         -- block is not fully grown
+            turtle.select(BoneSlot)                                                         -- select BoneMeal slot
+            while ((data.metadata < 7) or (data.metadata < 3 and crop == "beetroot")) do
+                -- hier könnte man dann Position speichern un neues Meal holen, wenn notwendig holen
+                turtle.placeDown()                                                          -- place Bone Meal until it is grown
+                valid, data = turtle.inspectDown()                                          -- inspect again
+            end
+        end
+
         if ((data.metadata == 7) or (data.metadata == 3 and crop == "beetroot")) then  --block is fully grown
-            turtle.digDown()                        -- harvest
+            turtle.digDown()                            -- harvest
             sleep(0.5)
             turtle.suckDown()                           -- suck in
         end
+
     end
     if turtle.inspectDown() == false then               -- tilling and planting only needed if there is nothing below or crop was destroyed
         if turtle.getItemCount(SeedSlot) == 0 then      -- if SeedSlot is empty, get new slot
@@ -176,7 +199,8 @@ local SeedName = determineSeed(crop)
 
 refillFuel()                        -- refuel if fuel level below 5000
 dropInventory()                     -- drop everything
-getSeeds()                          -- get Seeds
+getSeeds()                          -- get Seeds, returns false, if no seeds were available
+BoneSlot = getBoneMeal()            -- get Bone Meal, returns false, if no Bone meal was available
 goTo.goTo(field.pos)                -- got to first Block of field
 
     for j = 1,cols do               --start harvesting
