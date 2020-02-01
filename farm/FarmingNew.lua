@@ -104,16 +104,15 @@ end
 --*********************************************
 --Functions for harvesting Wheat, Beetroot, Carrots and Potatos
 function getSlot(ItemName)
-    slot = false
     for i=1,16 do
         if turtle.getItemCount(i) ~= 0 then             -- if slot not empty
             Detail = turtle.getItemDetail(i)            -- get item details
             if Detail.name == ItemName then             -- if it is the item
-                slot = i                                -- sets current clot to return variable
+                return i                                -- sets current clot to return variable
             end
         end                                                         
     end
-    return slot
+    return false
 end
 
 function determineSeed(crop)
@@ -130,29 +129,27 @@ function determineSeed(crop)
 end
 
 function getSeeds()
-    slot = false
     peri = peripheral.wrap("bottom")                    -- sets ME interface on bottom as pheripheral
     for i=1,9 do                                        -- checks each slot of peripheral
         item = peri.getItemMeta(i)                      -- stores meta data in item variable
-        if item.name == SeedName then                       -- if name of item in slot is desired seed name
+        if item.name == SeedName then                   -- if name of item in slot is desired seed name
             peri.pushItems("up",i,64,1)                 -- push item in slot i up to turtle, max 64 items in slot 1
-            slot = 1                                    
+            return 1                                    -- returns slot number for seeds if it was available
         end
     end
-    return slot                                         -- returns slot number for seeds if it was available
+    return false                                        
 end
 
 function getBoneMeal()
-    slot = false
     peri = peripheral.wrap("bottom")                    -- sets ME interface on bottom as pheripheral
     for i=1,9 do                                        -- checks each slot of peripheral
         item = peri.getItemMeta(i)                      -- stores meta data in item variable
         if item.displayName == "Bone Meal" then         -- if name of item in slot is desired seed name
             peri.pushItems("up",i,64,2)                 -- push item in slot i up to turtle, max 64 items in slot 2
-            slot = 2                                    
+            return 2                                    -- returns slot number for Bone Meal if it was available
         end
     end
-    return slot                                         -- returns slot number for Bone Meal if it was available
+    return false                                        
 end
 
 function havestAndPlant()
