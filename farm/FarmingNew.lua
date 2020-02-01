@@ -13,6 +13,8 @@ local harvestingInterval = 600        -- time between two harvesting cycles
 local timerCount = 0                  -- counts how often timer was started
 local waiting = false                 -- initially no waiting
 
+local harvestingTurtle = true         -- determines type of turtle
+
 --*********************************************
 -- load APIs
 if not fs.exists("goTo.lua") then
@@ -156,19 +158,21 @@ function havestAndPlant()
             turtle.placeDown()                          -- harvest (see comment at top of the document)
             turtle.suckDown()                           -- suck in
         end
-        if turtle.inspectDown() == false then           -- tilling and planting only needed if crop was destroyed
-            turtle.digDown()                            -- till field
-            if turtle.getItemCount(SeedSlot) == 0 then  -- if SeedSlot is empty, get new slot
-                SeedSlot = getSlot(SeedName)
-                if SeedSlot == false then
-                print("no seeds left")
-                -- hier könnte man dann Position speichern un neue Seeds holen
-                    return
-                end
-            end
-            turtle.select(SeedSlot)                     --select SeedSlot
-            turtle.placeDown()                          --place Seed
+    end
+    if turtle.inspectDown() == false then               -- tilling and planting only needed if there is nothing below or crop was destroyed
+        if harvestingTurtle then
+            turtle.digDown()                            -- till field, only possible if harvesting tutle is used
         end
+        if turtle.getItemCount(SeedSlot) == 0 then      -- if SeedSlot is empty, get new slot
+            SeedSlot = getSlot(SeedName)
+            if SeedSlot == false then
+            print("no seeds left")
+            -- hier könnte man dann Position speichern un neue Seeds holen
+                return
+            end
+        end
+        turtle.select(SeedSlot)                     --select SeedSlot
+        turtle.placeDown()                          --place Seed
     end
 end
 
