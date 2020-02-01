@@ -253,9 +253,10 @@ function pull(sName)
 	return textutils.unserialize(stuff)
 end
 
---function getPos()
---	return {x=currentPosition.x,y=currentPosition.y,z=currentPosition.z,f=currentPosition.f}
---end
+function getPos()
+	getPos()				-- to ensure correct position is returned
+	return currentPosition
+end
 
 --function setPos(Position)
 --    currentPosition.x = Position.x

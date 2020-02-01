@@ -140,7 +140,7 @@ function havestAndPlant()
         if ((data.metadata < 7 and crop ~= "beetroot") or (data.metadata < 3)) then  -- block is not fully grown
             turtle.select(BoneSlot)                                                         -- select BoneMeal slot
             while ((data.metadata < 7 and crop ~= "beetroot") or (data.metadata < 3)) do
-                -- hier könnte man dann Position speichern un neues Meal holen, wenn notwendig holen
+                dropAndReturn()                         -- get new Meal (and clear inventory)
                 turtle.placeDown()                                                          -- place Bone Meal until it is grown
                 valid, data = turtle.inspectDown()                                          -- inspect again
             end
@@ -157,8 +157,8 @@ function havestAndPlant()
         if turtle.getItemCount(SeedSlot) == 0 then      -- if SeedSlot is empty, get new slot
             SeedSlot = getSlot(SeedName)
             if SeedSlot == false then
-            print("no seeds left")
-            -- hier könnte man dann Position speichern un neue Seeds holen
+                print("no seeds left")
+                dropAndReturn()                         -- get new Seeds (and clear inventory)
                 return
             end
         end
@@ -198,6 +198,9 @@ goTo.goTo(field.pos)                -- got to first Block of field
                 turnRight=true
             end
         end
+    end
+    if determineEmptySlots < 2 then -- if inventory almost full
+        dropAndReturn()             -- clear inventory and return
     end
 end
 
@@ -267,6 +270,9 @@ currentCol = 1                                  -- variable for currentCol
                 top = true                      -- reset top variable
             end
         end
+        if determineEmptySlots < 2 then -- if inventory almost full
+            dropAndReturn()             -- clear inventory and return
+        end
     end
 end
 
@@ -308,6 +314,10 @@ goTo.goTo(field.pos)                        -- got to first Block of field
         forward()                           -- go one forward --> now in top of next col
         currentCol = currentCol + 1+ skip   -- determine current col (might be next or second next one, depending on skip)
         skip = math.abs((skip-1))           -- invert skipping variable, returns 1 if skip was 0 and 0 if skip was 1
+
+        if determineEmptySlots < 2 then -- if inventory almost full
+            dropAndReturn()             -- clear inventory and return
+        end
     end
 
 end
@@ -353,6 +363,9 @@ function enderliliField(field)
                     left()
                     turnRight=true
                 end
+            end
+            if determineEmptySlots < 2 then -- if inventory almost full
+                dropAndReturn()             -- clear inventory and return
             end
         end
 end
@@ -401,6 +414,28 @@ function getItemFromPeripheral(ItemName,Slot,MaxItems)
     end
     return false                                        
 end
+
+function determineEmptySlots()
+    local empty = 0
+    for i=1,16
+        if turtle.getItemCount(i) == 0
+            empty = empty + +
+        end
+    end
+return empty
+end
+
+function dropAndReturn()
+    ReturnPosition = goTo.getPos()
+    goTo.goTo(storage)
+    dropInventory()
+    if (crop == "wheat" or crop == "beetroot" or crop == "potato" or crop == "carrot") then
+        SeedSlot = getItemFromPeripheral(SeedName,1),64 -- get 64 Seeds, returns false, if no seeds were available
+        BoneSlot = getBoneMeal()            -- get Bone Meal, returns false, if no Bone meal was available
+    end
+    goTo.goTo(ReturnPosition)
+end
+
 
 --*********************************************
 --function to display heartbeat
