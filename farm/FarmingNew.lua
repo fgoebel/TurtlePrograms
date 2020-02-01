@@ -161,9 +161,9 @@ function havestAndPlant()
     valid, data = turtle.inspectDown()                  -- get state of block
 
     if valid then                                       -- there is a block below
-        if ((data.metadata < 7) or (data.metadata < 3 and crop == "beetroot")) then         -- block is not fully grown
+        if ((data.metadata < 7 and crop ~= "beetroot") or (data.metadata < 3)) then  -- block is not fully grown
             turtle.select(BoneSlot)                                                         -- select BoneMeal slot
-            while ((data.metadata < 7) or (data.metadata < 3 and crop == "beetroot")) do
+            while ((data.metadata < 7 and crop ~= "beetroot") or (data.metadata < 3)) do
                 -- hier könnte man dann Position speichern un neues Meal holen, wenn notwendig holen
                 turtle.placeDown()                                                          -- place Bone Meal until it is grown
                 valid, data = turtle.inspectDown()                                          -- inspect again
