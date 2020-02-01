@@ -103,18 +103,6 @@ end
 
 --*********************************************
 --Functions for harvesting Wheat, Beetroot, Carrots and Potatos
-function getSlot(ItemName)
-    for i=1,16 do
-        if turtle.getItemCount(i) ~= 0 then             -- if slot not empty
-            Detail = turtle.getItemDetail(i)            -- get item details
-            if Detail.name == ItemName then             -- if it is the item
-                return i                                -- sets current clot to return variable
-            end
-        end                                                         
-    end
-    return false
-end
-
 function determineSeed(crop)
     if (crop == "wheat") then
         seed = "minecraft:wheat_seeds"
@@ -128,19 +116,7 @@ function determineSeed(crop)
     return seed
 end
 
-function getSeeds()
-    peri = peripheral.wrap("bottom")                    -- sets ME interface on bottom as pheripheral
-    for i=1,9 do                                        -- checks each slot of peripheral
-        item = peri.getItemMeta(i)                      -- stores meta data in item variable
-        if item.name == SeedName then                   -- if name of item in slot is desired seed name
-            peri.pushItems("up",i,64,1)                 -- push item in slot i up to turtle, max 64 items in slot 1
-            return 1                                    -- returns slot number for seeds if it was available
-        end
-    end
-    return false                                        
-end
-
-function getBoneMeal()
+function getBoneMeal()                                  -- does not work with getItemFromPeripheral, since displayName must be checked
     peri = peripheral.wrap("bottom")                    -- sets ME interface on bottom as pheripheral
     for i=1,9 do                                        -- checks each slot of peripheral
         item = peri.getItemMeta(i)                      -- stores meta data in item variable
@@ -199,7 +175,7 @@ SeedName = determineSeed(crop)
 
 refillFuel()                        -- refuel if fuel level below 5000
 dropInventory()                     -- drop everything
-SeedSlot = getSeeds()               -- get Seeds, returns false, if no seeds were available
+SeedSlot = getItemFromPeripheral(SeedName,1),64 -- get 64 Seeds, returns false, if no seeds were available
 BoneSlot = getBoneMeal()            -- get Bone Meal, returns false, if no Bone meal was available
 goTo.goTo(field.pos)                -- got to first Block of field
 
@@ -380,7 +356,7 @@ function enderliliField(field)
 end
 
 --*********************************************
---refill and drop functions
+--refill and drop functions + general functions
 function dropInventory()
     goTo.goTo(storage)             -- go to storage system, after field is finished
     for Slot =1, 16 do              -- clear slots
@@ -394,12 +370,34 @@ function refillFuel()
         goTo.goTo(storage)              -- go to storage system
         while turtle.getFuelLevel()/turtle.getFuelLimit() < 1 do    -- get current Fuellevel (percentage) and compare to Limit
             turtle.select(16)                                       -- select last slot
-            if turtle.getItemCount(16) == 0 then
-                turtle.suckDown()                                   -- suckDown for fuel
-            end
+            getItemFromPeripheral("minecraft:coal",16,16)           -- get 16 coal in slot 16
             turtle.refuel()                                         -- refuel
         end
     end
+end
+
+function getSlot(ItemName)
+    for i=1,16 do
+        if turtle.getItemCount(i) ~= 0 then             -- if slot not empty
+            Detail = turtle.getItemDetail(i)            -- get item details
+            if Detail.name == ItemName then             -- if it is the item
+                return i                                -- sets current clot to return variable
+            end
+        end                                                         
+    end
+    return false
+end
+
+function getItemFromPeripheral(ItemName,Slot,MaxItems)
+    peri = peripheral.wrap("bottom")                    -- sets ME interface on bottom as pheripheral
+    for i=1,9 do                                        -- checks each slot of peripheral
+        item = peri.getItemMeta(i)                      -- stores meta data in item variable
+        if item.name == ItemName then                   -- if name of item in slot is desired seed name
+            peri.pushItems("up",i,MaxItems,Slot)        -- push item in slot i up to turtle, max 64 items in slot 1
+            return Slot                                 -- returns slot number for seeds if it was available
+        end
+    end
+    return false                                        
 end
 
 --*********************************************
