@@ -24,4 +24,7 @@ This was initially handled by using placeDown instead, which resulted in the cro
 However, this did not work for sugar at all, while a lot of crops are left for the remaining plants. 
 Hence, better use mining turtles!
 
+## Applied Energistics
+for equipping the turtle, an ME interface of Applied Energistics is used as peripheral including coal, wheat seeds, beetroot seeds, potato, carrot and a dirt block.
+
 
