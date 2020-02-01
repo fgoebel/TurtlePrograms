@@ -3,6 +3,10 @@
 -- by using turtle.digDown for harvesting, more than one block was harvested. This is handled by using placeDown instead, which also resulted
 -- in the crop "still be planted" (equal to right klicking on it).
 
+-- Define specific positions
+local home = {x=121,y=66,z=-263,f=0}
+local storage = {x=122,y=63,z=-261,f=2}
+
 --*********************************************
 -- load APIs
 if not os.loadAPI("goTo.lua") then
@@ -17,12 +21,16 @@ if not os.loadAPI("goTo.lua") then
 	end
 end
 
--- Define specific positions
-local home = {x=121,y=66,z=-263,f=0}
-local storage = {x=122,y=63,z=-261,f=2}
-
 -- Load field file
 function load(name)
+    if not fs.open("fields","w")
+        r = http.get("https://raw.githubusercontent.com/fgoebel/TurtlePrograms/cct-clique27/farm/fields")
+        f = fs.open("fields", "w")
+        f.write(r.readAll())
+        f.close()
+        r.close()
+    end
+
 	local file = fs.open(name,"r")
  	local data = file.readAll()
  	file.close()
