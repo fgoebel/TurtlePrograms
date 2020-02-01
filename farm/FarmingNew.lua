@@ -183,7 +183,17 @@ function havestAndPlant()
     end
 end
 
-function generalField(cols,rows,turnRight)
+function generalField(field)
+local cols = field.cols
+local rows = field.rows
+local turnRight = field.right
+local SeedName = determineSeed(crop)
+
+refillFuel()                        -- refuel if fuel level below 5000
+dropInventory()                     -- drop everything
+getSeeds()                          -- get Seeds
+goTo.goTo(field.pos)                -- got to first Block of field
+
     for j = 1,cols do               --start harvesting
         for i=1,rows-1 do
             havestAndPlant()        -- harvest and plant on current block
@@ -208,7 +218,15 @@ end
 
 --*********************************************
 --cactus fiels
-function cactusField(cols,rows,turnRight)
+function cactusField(field)
+local cols = field.cols
+local rows = field.rows
+local turnRight = field.right
+
+refillFuel()                                -- refuel if fuel level below 5000
+dropInventory()                             -- drop everything
+goTo.goTo(field.pos)                            -- got to first Block of field
+
 top = true                                      -- variable for indicating if turtle is in top of col
 currentCol = 1                                  -- variable for currentCol
     while true do
@@ -270,8 +288,16 @@ end
 --*********************************************
 --sugar field
 function sugarField(cols,rows,turnRight)
+local cols = field.cols
+local rows = field.rows
+local turnRight = field.right
+
 local skip = 1                              -- equals 1 if water must be skipped in next turn, else equals 0
 local currentCol = 1                        -- variable for currentCol
+
+refillFuel()                                -- refuel if fuel level below 5000
+dropInventory()                             -- drop everything
+goTo.goTo(field.pos)                        -- got to first Block of field
 
     while currentCol < cols do              -- do for each col
         turtle.digDown()                    -- first block must be removed, to go down()
@@ -299,39 +325,6 @@ local currentCol = 1                        -- variable for currentCol
         skip = math.abs((skip-1))           -- invert skipping variable, returns 1 if skip was 0 and 0 if skip was 1
     end
 
-end
-
-
---*********************************************
---overall farming function
-function farming(field)
-    refillFuel()                    -- refuel if fuel level below 5000
-    dropInventory()                 -- drop wheat and seed (except for 1 stacks)
-    
-    cols = field.cols
-    rows = field.rows
-    turnRight = field.right
-    crop = field.crop
-
-    print("Start farming")
-    if (crop == "cactus") then
-        goTo.goTo(field.pos)            -- got to first Block of field
-        cactusField(cols,rows,turnRight)
-    elseif (crop == "sugar") then
-        if harvestingTurtle then
-            print("sugar not possible with harvesting Turtle")
-        else
-            goTo.goTo(field.pos)            -- got to first Block of field
-            sugarField(cols,rows,turnRight)
-        end
-    else                                --just everything else (wheat, beetroot, carrot, potato)
-        SeedName = determineSeed(crop)
-        getSeeds()                      -- get Seeds
-        goTo.goTo(field.pos)            -- got to first Block of field
-        generalField(cols,rows,turnRight)                                      
-    end
-
-    print("finished farming")
 end
 
 --*********************************************
@@ -384,14 +377,30 @@ function main()
             for k,field in ipairs(fields) do                    -- for each field
                 print(field.name)           
                     if field.active then                        -- if field is active
-                        farming(field)                          -- farm field
+                        crop = field.crop
+
+                        print("Start farming")
+                        if (crop == "cactus") then
+                            cactusField(field)
+                        elseif (crop == "sugar") then
+                            if harvestingTurtle then
+                                print("sugar not possible with harvesting Turtle")
+                            else
+                                sugarField(field)
+                            end
+                        else                                    --just everything else (wheat, beetroot, carrot, potato)
+                            generalField(field)                                      
+                        end
+                    
+                        print("finished farming")
+
+                        up(5)                                   -- go up to avoid crashes
                     end
-                    up(5)                                       -- go up to avoid crashes
                 heartbeat()                                     -- print heartbeat
             end
             waiting = true
-            goTo.goTo(home)                                         -- go home
-            waitingTimer = os.startTimer(1)                         -- starts time on 1 second
+            goTo.goTo(home)                                     -- go home
+            waitingTimer = os.startTimer(1)                     -- starts time on 1 second
                                      
         end
 
