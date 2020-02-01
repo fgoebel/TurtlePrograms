@@ -417,8 +417,8 @@ end
 
 function determineEmptySlots()
     local empty = 0
-    for i=1,16
-        if turtle.getItemCount(i) == 0
+    for i=1,16 do
+        if turtle.getItemCount(i) == 0 then
             empty = empty + +
         end
     end
