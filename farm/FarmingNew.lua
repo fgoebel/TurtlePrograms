@@ -15,35 +15,31 @@ local waiting = false                 -- initially no waiting
 
 --*********************************************
 -- load APIs
-if not os.loadAPI("goTo.lua") then
+if not fs.open("goTo.lua","r") then
 	r = http.get("https://raw.githubusercontent.com/fgoebel/TurtlePrograms/cct-clique27/goTo.lua")
     f = fs.open("goTo.lua", "w")
     f.write(r.readAll())
     f.close()
     r.close()
+    os.loadAPI("goTo.lua") 
 
-	if not os.loadAPI("goTo.lua") then
-	    error("goTo API not present!!! ;-(")
-	end
+elseif not os.loadAPI("goTo.lua") then
+    error("goTo API not present!!! ;-(")
 end
 
 -- Load field file
-function load(name)
-    if not fs.open("fields","w")
-        r = http.get("https://raw.githubusercontent.com/fgoebel/TurtlePrograms/cct-clique27/farm/fields")
-        f = fs.open("fields", "w")
-        f.write(r.readAll())
-        f.close()
-        r.close()
-    end
+if not fs.open("fields","w")
+    r = http.get("https://raw.githubusercontent.com/fgoebel/TurtlePrograms/cct-clique27/farm/fields")
+    f = fs.open("fields", "w")
+    f.write(r.readAll())
+    f.close()
+    r.close()
+end
 
-	local file = fs.open(name,"r")
- 	local data = file.readAll()
- 	file.close()
- 	return textutils.unserialize(data)
- end
-
-local fields = load("fields")
+local file = fs.open("fields","r")
+local data = file.readAll()
+file.close()
+fields = textutils.unserialize(data)
 
 --*********************************************
 -- Basic functions for movement
