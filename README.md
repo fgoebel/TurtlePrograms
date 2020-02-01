@@ -9,6 +9,13 @@ f = fs.open("goTo.lua", "w")
 f.write(r.readAll())
 f.close()
 r.close()
+if fs.open("fields","r") then
+    fs.delete("fields")
+end
+if fs.open("goTo.lua","r") then
+    fs.delete("goTo.lua")
+end
 ```
+Delete files to ensure reload of updated versions
 
 
