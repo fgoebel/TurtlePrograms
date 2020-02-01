@@ -253,7 +253,7 @@ function pull(sName)
 	return textutils.unserialize(stuff)
 end
 
-function getPos()
+function returnPos()
 	getPos()				-- to ensure correct position is returned
 	return currentPosition
 end
