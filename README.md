@@ -18,4 +18,10 @@ end
 ```
 Delete files to ensure reload of updated versions
 
+## Harvesting Turtles
+By using turtle.digDown for harvesting, more than one block was harvested. 
+This was initially handled by using placeDown instead, which resulted in the crop "still be planted" (equal to right klicking on it).
+However, this did not work for sugar at all, while a lot of crops are left for the remaining plants. 
+Hence, better use mining turtles!
+
 

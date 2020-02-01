@@ -1,11 +1,5 @@
 
--- Using harvesting, wireless turtle:
--- by using turtle.digDown for harvesting, more than one block was harvested. 
--- This is handled by using placeDown instead, which also resulted
--- in the crop "still be planted" (equal to right klicking on it).
--- However, this did not work for sugar. Hence, sugar is not harvested if
--- harvestingTurtle is true.
--- in case a mining turtle is used: change variable harvestingTurtle to false.
+-- Using Wireless Mining Turtle
 
 --*********************************************
 -- Define specific positions
@@ -16,8 +10,6 @@ local storage = {x=122,y=63,z=-261,f=2}
 local harvestingInterval = 600        -- time between two harvesting cycles 
 local timerCount = 0                  -- counts how often timer was started
 local waiting = false                 -- initially no waiting
-
-local harvestingTurtle = false        -- determines type of turtle
 
 --*********************************************
 -- load APIs
@@ -157,19 +149,12 @@ function havestAndPlant()
 
     if valid then                                       -- there is a block below
         if ((data.metadata == 7) or (data.metadata == 3 and crop == "beetroot")) then  --block is fully grown
-            if harvestingTurtle then
-                turtle.placeDown()                      -- harvest (see comment at top of the document)
-            else
-                turtle.digDown()
-            end
+            turtle.digDown()                        -- harvest
             sleep(0.5)
             turtle.suckDown()                           -- suck in
         end
     end
     if turtle.inspectDown() == false then               -- tilling and planting only needed if there is nothing below or crop was destroyed
-        if harvestingTurtle then
-            turtle.digDown()                            -- till field, only possible if harvesting tutle is used
-        end
         if turtle.getItemCount(SeedSlot) == 0 then      -- if SeedSlot is empty, get new slot
             SeedSlot = getSlot(SeedName)
             if SeedSlot == false then
@@ -331,10 +316,7 @@ end
 --refill and drop functions
 function dropInventory()
     goTo.goTo(storage)             -- go to storage system, after field is finished
-    if harvestingTurtle then
-        local startingSlot = 2     -- there must be something at least in one slot to use place!
-    end
-    for Slot =startingSlot, 16 do  -- clear slots
+    for Slot =1, 16 do              -- clear slots
         turtle.select(Slot)        -- select next Slot
         turtle.dropDown()          -- just drop everthing in the slot
     end
@@ -383,11 +365,7 @@ function main()
                         if (crop == "cactus") then
                             cactusField(field)
                         elseif (crop == "sugar") then
-                            if harvestingTurtle then
-                                print("sugar not possible with harvesting Turtle")
-                            else
-                                sugarField(field)
-                            end
+                            sugarField(field)
                         else                                    --just everything else (wheat, beetroot, carrot, potato)
                             generalField(field)                                      
                         end
