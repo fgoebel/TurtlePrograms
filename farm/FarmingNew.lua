@@ -15,20 +15,17 @@ local waiting = false                 -- initially no waiting
 
 --*********************************************
 -- load APIs
-if not fs.open("goTo.lua","r") then
+if not fs.exists("goTo.lua") then
 	r = http.get("https://raw.githubusercontent.com/fgoebel/TurtlePrograms/cct-clique27/goTo.lua")
     f = fs.open("goTo.lua", "w")
     f.write(r.readAll())
     f.close()
     r.close()
-    os.loadAPI("goTo.lua") 
-
-elseif not os.loadAPI("goTo.lua") then
-    error("goTo API not present!!! ;-(")
 end
+os.loadAPI("goTo.lua") 
 
 -- Load field file
-if not fs.open("fields","w") then
+if not fs.exists("fields") then
     r = http.get("https://raw.githubusercontent.com/fgoebel/TurtlePrograms/cct-clique27/farm/fields")
     f = fs.open("fields", "w")
     f.write(r.readAll())
