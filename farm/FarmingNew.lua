@@ -518,4 +518,4 @@ function main()
 end
 
 goTo.getPos()
-main()
+--main()
