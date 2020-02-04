@@ -450,6 +450,7 @@ end
 --*********************************************
 --function to display heartbeat
 function heartbeat()
+    term.clear()
     timeToWait = harvestingInterval - timerCount
     currentFuelLevel = turtle.getFuelLevel()
 	if waiting then
@@ -472,7 +473,7 @@ function main()
                 print(field.name)           
                     if field.active then                        -- if field is active
                         crop = field.crop
-
+                        term.clear()
                         print("Start farming")
                         if (crop == "cactus") then
                             cactusField(field)
