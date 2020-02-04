@@ -16,21 +16,7 @@ CommitTable = http.get("https://api.github.com/repos/fgoebel/TurtlePrograms/comm
 Commit = json.decode(CommitTable)
 CommitSha = Commit.sha
 
-if fs.exists("lastCommit") then
-    handle = fs.open("lastCommit","r")
-    lastCommitSha = handle.readAll()
-    handle.close()
-    -- compare Commits
-    if lastCommitSha ~= CommitSha then
-        updateFiles()
-    else
-        --print indicator
-        print("no new files available.")
-    end
-else
-    updateFiles()
-end
-
+--Definition of function for updating files
 function updateFiles()
     -- save CurrentCommit as last Commit
     handle = fs.open("lastCommit","w")
@@ -50,4 +36,19 @@ function updateFiles()
     end
     -- print indicator
     print("new files available. updated")
+end
+
+if fs.exists("lastCommit") then
+    handle = fs.open("lastCommit","r")
+    lastCommitSha = handle.readAll()
+    handle.close()
+    -- compare Commits
+    if lastCommitSha ~= CommitSha then
+        updateFiles()
+    else
+        --print indicator
+        print("no new files available.")
+    end
+else
+    updateFiles()
 end
