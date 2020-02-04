@@ -20,7 +20,7 @@ CommitSha = Commit.sha
 function updateFiles()
     -- save CurrentCommit as last Commit
     handle = fs.open("lastCommit","w")
-    handle.write(lastCommitSha)
+    handle.write(CommitSha)
     handle.close()
     -- update files
     r = http.get("https://raw.githubusercontent.com/fgoebel/TurtlePrograms/cct-clique27/farm/FarmingNew.lua")
