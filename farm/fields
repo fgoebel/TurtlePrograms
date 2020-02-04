@@ -106,7 +106,7 @@
     },
     name = "wheat02",
     crop = "wheat",
-    rows = 24,
+    rows = 29,
     cols = 9,
     right = true,
     active = true,
