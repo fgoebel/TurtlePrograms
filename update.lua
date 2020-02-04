@@ -24,7 +24,7 @@ function updateFiles()
     handle.close()
     -- update files
     r = http.get("https://raw.githubusercontent.com/fgoebel/TurtlePrograms/cct-clique27/farm/FarmingNew.lua")
-    f = fs.open("goTo.lua", "w")
+    f = fs.open("farming.lua", "w")
     f.write(r.readAll())
     f.close()
     r.close()
