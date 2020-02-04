@@ -40,6 +40,7 @@ zDirFromF[3]=-1     -- Direction west
 -- determine current Position
 function getPos()
 	local x,y,z = gps.locate()
+	print(x,y,z)
 	currentPosition.x = x
 	currentPosition.y = y
 	currentPosition.z = z
@@ -52,7 +53,8 @@ function getDirection()
     while not turtle.forward() do  -- turn if moving foward was not possible and try again
         turtle.turnLeft()
     end
-    x,y,z = gps.locate()           -- get new Position
+	x,y,z = gps.locate()           -- get new Position
+	print(x,y,z)
 	turtle.back()                  -- move back
     f = fFromXZ[x-currentPosition.x][z-currentPosition.z] --determine Direction based on Position difference
 	return f
