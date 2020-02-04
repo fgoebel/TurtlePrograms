@@ -206,25 +206,25 @@ function goTo(Position)
 		up()
 	end
     -- go to new x
-	if currentPosition.x > Position.x then      -- go to south
-		turnToDir(2)
+	if currentPosition.x > Position.x then      -- go to west
+		turnToDir(3)
 		while currentPosition.x > Position.x do
 			forward()
 		end
-	elseif currentPosition.x < Position.x then  -- go to north
-		turnToDir(0)
+	elseif currentPosition.x < Position.x then  -- go to east
+		turnToDir(1)
 		while currentPosition.x < Position.x do
 			forward()
 		end
 	end
 	-- go to new z
-	if currentPosition.z > Position.z then      -- go to west
-		turnToDir(3)
+	if currentPosition.z > Position.z then      -- go to north
+		turnToDir(0)
 		while currentPosition.z > Position.z do
 			forward()
 		end
-	elseif currentPosition.z < Position.z then  -- go to east
-		turnToDir(1)
+	elseif currentPosition.z < Position.z then  -- go to south
+		turnToDir(2)
 		while currentPosition.z < Position.z do
 			forward()
 		end	
