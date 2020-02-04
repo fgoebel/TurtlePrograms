@@ -16,24 +16,24 @@ local fFromXZ = {}
 fFromXZ[0]={}
 fFromXZ[1]={}
 fFromXZ[-1]={}
-fFromXZ[0][1] = 1   -- Moved to positive Z Direction --> east
-fFromXZ[0][-1] = 3  -- Moved to negative Z Direction --> west
-fFromXZ[1][0] = 0   -- Moved to positive X Direction --> north
-fFromXZ[-1][0] = 1  -- Moved to negative X Direction --> south
+fFromXZ[0][1] = 2   -- Moved to positive Z Direction --> south
+fFromXZ[0][-1] = 0  -- Moved to negative Z Direction --> north
+fFromXZ[1][0] = 1   -- Moved to positive X Direction --> east
+fFromXZ[-1][0] = 3  -- Moved to negative X Direction --> west
 
 -- Variable to determine new x-Coordinate based on Direction F
 local xDirFromF = {}
-xDirFromF[0]=1      -- Direction north
-xDirFromF[1]=0		-- Direction east
-xDirFromF[2]=-1		-- Direction south
-xDirFromF[3]=0		-- Direction west
+xDirFromF[0]=0      -- Direction north
+xDirFromF[1]=1		-- Direction east
+xDirFromF[2]=0		-- Direction south
+xDirFromF[3]=-1		-- Direction west
 
 -- Variable to determine new z-Coordinate based on Direction F
 local zDirFromF = {}
-zDirFromF[0]=0      -- Direction north
-zDirFromF[1]=1		-- Direction east
-zDirFromF[2]=0		-- Direction south
-zDirFromF[3]=-1     -- Direction west
+zDirFromF[0]=-1     -- Direction north
+zDirFromF[1]=0		-- Direction east
+zDirFromF[2]=1		-- Direction south
+zDirFromF[3]=0      -- Direction west
 
 --*********************************************
 -- Initialization of Position:
@@ -54,9 +54,8 @@ function getDirection()
         turtle.turnLeft()
     end
 	x,y,z = gps.locate()           -- get new Position
-	print(x,y,z)
 	turtle.back()                  -- move back
-    f = fFromXZ[x-currentPosition.x][z-currentPosition.z] --determine Direction based on Position difference
+	f = fFromXZ[x-currentPosition.x][z-currentPosition.z] --determine Direction based on Position difference
 	return f
 end
 
