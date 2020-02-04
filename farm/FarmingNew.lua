@@ -10,6 +10,7 @@ local storage = {x=122,y=63,z=-261,f=2}
 local harvestingInterval = 600        -- time between two harvesting cycles 
 local timerCount = 0                  -- counts how often timer was started
 local waiting = false                 -- initially no waiting
+local BoneMealOpt = false             -- Using Bone Meal is optional
 
 --*********************************************
 -- load APIs
@@ -137,11 +138,13 @@ function havestAndPlant()
     valid, data = turtle.inspectDown()                  -- get state of block
 
     if valid then                                       -- there is a block below
-        if ((data.metadata < 7 and crop ~= "beetroot") or (data.metadata < 3)) then  -- block is not fully grown
-            turtle.select(BoneSlot)                                                         -- select BoneMeal slot
-            while ((data.metadata < 7 and crop ~= "beetroot") or (data.metadata < 3)) do
-                turtle.placeDown()                                                          -- place Bone Meal until it is grown
-                valid, data = turtle.inspectDown()                                          -- inspect again
+        if BoneMealOpt then
+            if ((data.metadata < 7 and crop ~= "beetroot") or (data.metadata < 3)) then  -- block is not fully grown
+                turtle.select(BoneSlot)                                                         -- select BoneMeal slot
+                while ((data.metadata < 7 and crop ~= "beetroot") or (data.metadata < 3)) do
+                    turtle.placeDown()                                                          -- place Bone Meal until it is grown
+                    valid, data = turtle.inspectDown()                                          -- inspect again
+                end
             end
         end
 
@@ -175,7 +178,9 @@ SeedName = determineSeed(crop)
 refillFuel()                        -- refuel if fuel level below 5000
 dropInventory()                     -- drop everything
 SeedSlot = getItemFromPeripheral(SeedName,1),64 -- get 64 Seeds, returns false, if no seeds were available
-BoneSlot = getBoneMeal()            -- get Bone Meal, returns false, if no Bone meal was available
+if BoneMealOpt then
+    BoneSlot = getBoneMeal()            -- get Bone Meal, returns false, if no Bone meal was available
+end
 goTo.goTo(field.pos)                -- got to first Block of field
 
     for j = 1,cols do               --start harvesting
@@ -434,7 +439,9 @@ function dropAndReturn()
     dropInventory()
     if (crop == "wheat" or crop == "beetroot" or crop == "potato" or crop == "carrot") then
         SeedSlot = getItemFromPeripheral(SeedName,1),64 -- get 64 Seeds, returns false, if no seeds were available
-        BoneSlot = getBoneMeal()            -- get Bone Meal, returns false, if no Bone meal was available
+        if BoneMealOpt then
+            BoneSlot = getBoneMeal()            -- get Bone Meal, returns false, if no Bone meal was available
+        end
     end
     goTo.goTo(ReturnPosition)
 end
