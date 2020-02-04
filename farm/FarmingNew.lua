@@ -518,4 +518,5 @@ function main()
 end
 
 goTo.getPos()
+goTo.goTo(storage)
 --main()
