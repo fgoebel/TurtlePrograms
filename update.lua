@@ -20,16 +20,16 @@ if fs.exists("lastCommit") then
     lastCommitSha = fs.open("lastCommit","r").readAll()
     -- compare Commpits
     if lastCommitSha ~= CommitSha then
-        update()
+        updateFiles()
     else
         --print indicator
         print("no new files available.")
     end
 else
-    update()
+    updateFiles()
 end
 
-function update()
+function updateFiles()
     -- save CurrentCommit as last Commit
     handle = fs.open("lastCommit","w")
     handle.write(lastCommitSha)
@@ -40,7 +40,7 @@ function update()
     f.write(r.readAll())
     f.close()
     r.close()
-    if fs.exists("fields" then      -- will be reloaded on start of farming
+    if fs.exists("fields") then      -- will be reloaded on start of farming
         fs.delete("fields")
     end
     if fs.exists("goTo.lua") then   -- will be reloaded on start of farming
