@@ -355,9 +355,13 @@ function enderlillyField(field)
                 end
                 forward(1)                          -- move one block forward
             end                         
-            turtle.placeDown()                      -- place Down to harvest
-            sleep(1)
-            turtle.suckDown()       
+            turtle.digDown()                -- dig Down to harvest
+            sleep(0.5)
+            lillySlot = getSlot("extrautils2:enderlilly")
+            if lillySlot ~= false then
+                turtle.select(lillySlot)
+                turtle.placeDown()
+            end   
             if j ~= cols then                       -- if it is not the last col
                 if turnRight then                   -- turn right if last turn was left
                     right()
