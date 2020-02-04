@@ -3,8 +3,8 @@
 
 --*********************************************
 -- Define specific positions
-local home = {x=121,y=66,z=-263,f=0}
-local storage = {x=122,y=63,z=-261,f=2}
+local home = {x=121,y=66,z=-263,f=1}
+local storage = {x=122,y=63,z=-261,f=3}
 
 -- defintion of variables
 local harvestingInterval = 600        -- time between two harvesting cycles 
