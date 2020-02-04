@@ -330,8 +330,8 @@ goTo.goTo(field.pos)                        -- got to first Block of field
 end
 
 --*********************************************
---ender lilli field
-function enderliliField(field)
+--ender lilly field
+function enderlillyField(field)
     local cols = field.cols
     local rows = field.rows
     local turnRight = field.right
@@ -347,9 +347,9 @@ function enderliliField(field)
                 if data.metadata == 7 then          -- if block is mature
                     turtle.digDown()                -- dig Down to harvest
                     sleep(0.5)
-                    lilliSlot = getSlot("extrautils2:enderlilli")
-                    if lilliSlot ~= false then
-                        turtle.select(lilliSlot)
+                    lillySlot = getSlot("extrautils2:enderlilly")
+                    if lillySlot ~= false then
+                        turtle.select(lillySlot)
                         turtle.placeDown()
                     end
                 end
@@ -479,8 +479,8 @@ function main()
                             cactusField(field)
                         elseif (crop == "sugar") then
                             sugarField(field)
-                        elseif (crop == "enderlilli") then
-                            enderliliField(field)
+                        elseif (crop == "enderlilly") then
+                            enderlillyField(field)
                         else                                    --just everything else (wheat, beetroot, carrot, potato)
                             generalField(field)                                      
                         end

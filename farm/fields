@@ -90,12 +90,12 @@
       y = 64,
       x = 130,
     },
-    name = "enderlilli",
-    crop = "enderlilli",
+    name = "enderlilly",
+    crop = "enderlilly",
     rows = 24,
     cols = 4,
     right = true,
-    active = false,
+    active = true,
   },
     {
     pos = {
