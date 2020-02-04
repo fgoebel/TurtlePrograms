@@ -17,8 +17,10 @@ Commit = json.decode(CommitTable)
 CommitSha = Commit.sha
 
 if fs.exists("lastCommit") then
-    lastCommitSha = fs.open("lastCommit","r").readAll()
-    -- compare Commpits
+    handle = fs.open("lastCommit","r")
+    lastCommitSha = handle.readAll()
+    handle.close()
+    -- compare Commits
     if lastCommitSha ~= CommitSha then
         updateFiles()
     else
