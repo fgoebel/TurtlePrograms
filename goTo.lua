@@ -40,13 +40,11 @@ zDirFromF[3]=0      -- Direction west
 -- determine current Position
 function getPos()
 	local x,y,z = gps.locate()
-	print(x,y,z)
 	currentPosition.x = x
 	currentPosition.y = y
 	currentPosition.z = z
 	currentPosition.f = getDirection()
 	store("currentPosition",currentPosition)
-	print(currentPosition.f)
 end
 
 -- determine current Direction
