@@ -35,7 +35,8 @@ function updateFiles()
         fs.delete("goTo.lua")
     end
     -- print indicator
-    print("new files available. updated")
+    print("new files available. updated on Commit:")
+    print(CommitSha)
 end
 
 if fs.exists("lastCommit") then

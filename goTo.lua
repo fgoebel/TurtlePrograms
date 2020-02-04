@@ -47,7 +47,6 @@ function getPos()
 	currentPosition.f = getDirection()
 	store("currentPosition",currentPosition)
 	print(currentPosition.f)
-	sleep(10)
 end
 
 -- determine current Direction
