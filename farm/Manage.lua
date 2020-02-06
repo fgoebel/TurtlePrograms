@@ -5,9 +5,9 @@
 -- defintion of variables
 local time = 0
 local NextField
-local minTime
+local maxTime
 local LastTime = os.time()*1000*0.05 --Time in real-Life seconds
-local RunTime = LastTime
+local RunTime = 0
 
 -- Load field file
 if not fs.exists("fields") then
@@ -38,7 +38,6 @@ end
 -- determine RunTime
 function checkTime()
     local CurrentTime = os.time()*1000*0.05       --Time in real-Life seconds
-    print(CurrentTime)
     if CurrentTime > LastTime then
         TimePassed = CurrentTime - LastTime
     else 
@@ -46,9 +45,6 @@ function checkTime()
     end
     LastTime = CurrentTime
     RunTime = RunTime + TimePassed
-    print(TimePassed)
-    print(RunTime)
-    sleep(5)
     return RunTime
 end
 --*********************************************
@@ -60,12 +56,12 @@ local TurtleAvailable = false
     while true do
         if TurtleAvailable then        -- State: trutle available
             --Check if any field needs to be harvested
-            minTime = 0
+            maxTime = 0
             NextField = "none"
             for k,field in ipairs(fields) do
-                if RunTime - field.lastHarvested + field.interval <= minTime then   
-                    minTime = RunTime - field.lastHarvested + field.interval       -- select field based on smallest value
-                    print(minTime)
+                if RunTime - field.lastHarvested + field.interval >= maxTime then   
+                    maxTime = RunTime - field.lastHarvested + field.interval       -- select field based on highes value
+                    print(maxTime)
                     key, NextField = k, field.name
                 end
             end
