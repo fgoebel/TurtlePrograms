@@ -156,6 +156,7 @@ function generalField(field)
 local cols = field.cols
 local rows = field.rows
 local turnRight = field.right
+crop = field.crop
 SeedName = determineSeed(crop)
 
 dropInventory()                     -- drop everything
@@ -399,7 +400,6 @@ function getSlot(ItemName)
 end
 
 function getItemFromPeripheral(ItemName,Slot,MaxItems)
-    print(ItemName)
     peri = peripheral.wrap("bottom")                    -- sets ME interface on bottom as pheripheral
     for i=1,9 do                                        -- checks each slot of peripheral
         item = peri.getItemMeta(i)                      -- stores meta data in item variable
