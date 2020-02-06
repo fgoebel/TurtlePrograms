@@ -26,6 +26,7 @@ fields = textutils.unserialize(data)
 for k,field in ipairs(fields) do 
     field.lastHarvested = -1*field.interval    -- set initial value for lastHarvested
 end
+store("fields", fields)
 
 --*********************************************
 -- Store fields
