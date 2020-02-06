@@ -3,6 +3,13 @@
 -- depends on goTo API
 
 --*********************************************
+-- Define specific positions
+storage = {x=122,y=63,z=-261,f=3}
+
+-- Define options
+BoneMealOpt = false                   -- Using Bone Meal is optional
+
+--*********************************************
 -- load APIs
 if not fs.exists("goTo.lua") then
 	r = http.get("https://raw.githubusercontent.com/fgoebel/TurtlePrograms/cct-clique27/goTo.lua")

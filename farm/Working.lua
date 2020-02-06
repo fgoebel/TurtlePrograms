@@ -2,11 +2,6 @@
 -- depends on FarmingNew and goTo API
 
 --*********************************************
--- Define specific positions
-home = {x=121,y=66,z=-263,f=1}
-storage = {x=122,y=63,z=-261,f=3}
-BoneMealOpt = false                   -- Using Bone Meal is optional
-
 -- defintion of variables
 local harvestingInterval = 600        -- time between two harvesting cycles 
 local timerCount = 0                  -- counts how often timer was started
@@ -99,7 +94,6 @@ function main()
                 heartbeat()                                     -- print heartbeat
             end
             waiting = true
-            goTo.goTo(home)                                     -- go home
             waitingTimer = os.startTimer(1)                     -- starts time on 1 second
                                      
         end
