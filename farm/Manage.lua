@@ -60,7 +60,7 @@ local TurtleAvailable = false
             for k,field in ipairs(fields) do 
                 if field.lastHarvested + field.interval < RunTime then   
                     minTime = RunTime - field.lastHarvested + field.interval       -- select field based on smallest value
-                    key, NextField = k, field
+                    key, NextField = k, field.name
                 end
             end
 
@@ -79,7 +79,6 @@ local TurtleAvailable = false
             rednet.broadcast("available?")  -- send broadcast massage to check for available turtles
             print("waiting for turtles")
             ID, message = rednet.receive()  -- receive messages for 5s, then ask again
-            print(message)
             if message == "yes" then        -- if message was yes, change state
                 TurtleAvailable = true
             end
