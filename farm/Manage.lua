@@ -77,7 +77,8 @@ local TurtleAvailable = false
         
         if not TurtleAvailable then         -- State: No turtle available
             rednet.broadcast("available?")  -- send broadcast massage to check for available turtles
-            ID, message = rednet.receive(5) -- receive messages for 5s, then ask again
+            print("waiting for turtles")
+            ID, message = rednet.receive(10) -- receive messages for 5s, then ask again
             if message == "yes" then        -- if message was yes, change state
                 TurtleAvailable = true
             end
