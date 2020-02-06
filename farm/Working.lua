@@ -1,4 +1,5 @@
 -- Using Wireless Mining Turtle
+-- Turtle works on its own, no other systems needed
 -- depends on FarmingNew and goTo API
 
 --*********************************************
