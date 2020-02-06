@@ -38,28 +38,29 @@ end
 -- Main Managing function
 
 function main()
-    rednet.broadcast("available?")  -- send broadcast massage to check for available turtles
-    ID, message = rednet.receive(5) -- receive messages for 5s
-    time = time + 5                 -- set time 5s higher
-    if message == "yes" then        -- if message was received
-        minTime = 1
-        NextField = "none"
-        for k,field in ipairs(fields) do 
-            if field.lastHarvested + field.interval - time < minTime then   
-                minTime = field.lastHarvested + field.interval - time       -- select field based on smallest value
-                key, NextField = k, field
+    while true do
+        rednet.broadcast("available?")  -- send broadcast massage to check for available turtles
+        ID, message = rednet.receive(5) -- receive messages for 5s
+        time = time + 5                 -- set time 5s higher
+        if message == "yes" then        -- if message was received
+            minTime = 1
+            NextField = "none"
+            for k,field in ipairs(fields) do 
+                if field.lastHarvested + field.interval - time < minTime then   
+                    minTime = field.lastHarvested + field.interval - time       -- select field based on smallest value
+                    key, NextField = k, field
+                end
+            end
+            
+            if NextField ~= "none" then          -- if any field to harvest was found
+                rednet.send(ID,NextField)        -- send fieldName to available turtle
+                fields[key].lastHarvested = time -- store new values in fields
+                store("fields", fields)
+            else
+                rednet.send(ID,"NoField")
             end
         end
-        
-        if NextField ~= "none" then          -- if any field to harvest was found
-            rednet.send(ID,NextField)        -- send fieldName to available turtle
-            fields[key].lastHarvested = time -- store new values in fields
-            store("fields", fields)
-        else
-            rednet.send(ID,"NoField")
-        end
     end
-
 end
 
 rednet.open("right")
