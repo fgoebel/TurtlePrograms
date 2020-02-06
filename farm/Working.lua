@@ -69,20 +69,12 @@ function main()
                         crop = field.crop
                         print("Start farming")
                         if (crop == "cactus") then
-                            print("cactus")
-                            sleep(2)
-                            --farming.cactusField(field)
+                            farming.cactusField(field)
                         elseif (crop == "sugar") then
-                            print("cactus")
-                            sleep(2)
-                            --farming.sugarField(field)
+                            farming.sugarField(field)
                         elseif (crop == "enderlilly") then
-                            print("cactus")
-                            sleep(2)
-                            --farming.enderlillyField(field)
+                            farming.enderlillyField(field)
                         else                                    --just everything else (wheat, beetroot, carrot, potato)
-                            print("cactus")
-                            sleep(2)
                             farming.generalField(field)                                      
                         end
                     
