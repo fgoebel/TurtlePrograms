@@ -64,9 +64,11 @@ function main()
             ID, message = rednet.receive()    -- wait for message from Manager
             if message == "available?" then     -- answer to available call
                 rednet.send(ID,"yes")
-            elseif message ~= "NoField" then    -- start farming
-                waiting = false
-                fieldName = message
+            else
+                if message ~= "NoField" then    -- start farming
+                    waiting = false
+                    fieldName = message
+                end
             end
             
         end
