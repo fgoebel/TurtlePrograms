@@ -61,7 +61,7 @@ function main()
 
     while true do
         if waiting then                         -- State: Waiting for order
-            ID, message = rednet.receive()      -- wait for message from Manager
+            ID, message = rednet.receive(10)    -- wait for message from Manager
             if message == "available?" then     -- answer to available call
                 rednet.send(ID,"yes")
             elseif message ~= "NoField" then    -- start farming
