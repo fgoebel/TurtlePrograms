@@ -23,8 +23,8 @@ function updateFiles()
     handle.write(CommitSha)
     handle.close()
     -- update files
-    r = http.get("https://raw.githubusercontent.com/fgoebel/TurtlePrograms/cct-clique27/farm/FarmingNew.lua")
-    f = fs.open("farming.lua", "w")
+    r = http.get("https://raw.githubusercontent.com/fgoebel/TurtlePrograms/cct-clique27/farm/Working.lua")
+    f = fs.open("working.lua", "w")
     f.write(r.readAll())
     f.close()
     r.close()
@@ -33,6 +33,9 @@ function updateFiles()
     end
     if fs.exists("goTo.lua") then   -- will be reloaded on start of farming
         fs.delete("goTo.lua")
+    end
+    if fs.exists("farming.lua") then   -- will be reloaded on start of farming
+        fs.delete("farming.lua")
     end
     -- print indicator
     print("new files available. updated on Commit:")
