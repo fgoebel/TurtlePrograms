@@ -4,10 +4,10 @@
 
 --*********************************************
 -- Define specific positions
-storage = {x=122,y=63,z=-261,f=3}
+local storage = {x=122,y=63,z=-261,f=3}
 
 -- Define options
-BoneMealOpt = false                   -- Using Bone Meal is optional
+local BoneMealOpt = false                   -- Using Bone Meal is optional
 
 --*********************************************
 -- load APIs
@@ -322,7 +322,7 @@ function enderlillyField(field)
     local rows = field.rows
     local turnRight = field.right
     crop = field.crop
-    
+
     dropInventory()                                 -- drop everything
     refillFuel()                                    -- refuel if fuel level below 5000
 
