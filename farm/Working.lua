@@ -67,7 +67,6 @@ function main()
                 print(field.name)           
                     if field.active then                        -- if field is active
                         crop = field.crop
-                        term.clear()
                         print("Start farming")
                         if (crop == "cactus") then
                             print("cactus")
