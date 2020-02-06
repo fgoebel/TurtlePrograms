@@ -54,10 +54,12 @@ function main()
             
             if NextField ~= "none" then          -- if any field to harvest was found
                 rednet.send(ID,NextField)        -- send fieldName to available turtle
+                print(NextField)
                 fields[key].lastHarvested = time -- store new values in fields
                 store("fields", fields)
             else
                 rednet.send(ID,"NoField")
+                print(NextField)
             end
         end
     end

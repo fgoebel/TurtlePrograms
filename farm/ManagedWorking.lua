@@ -62,7 +62,7 @@ function main()
     while true do
         heartbeat()                                             -- print heartbeat
         ID, message = rednet.receive()                          -- waits for message 
-
+        print(message)
         if message == "available?" then
             rednet.send(ID,"yes")                               -- answer to available call
         elseif message ~= "NoField" then
@@ -92,7 +92,8 @@ function main()
 
             end
             waiting = true
-            goTo.goTo(waitingPos)                                        
+            goTo.goTo(waitingPos)     
+            print("going waiting")                                   
         end
     end
 
