@@ -119,4 +119,19 @@
     interval = 600,
     active = true,
   },
+  {
+    pos = {
+      z = -237,
+      f = 2,
+      y = 65,
+      x = 163,
+    },
+    name = "wheat03",
+    crop = "wheat",
+    rows = 25,
+    cols = 18,
+    right = true,
+    interval = 600,
+    active = true,
+  },
 }
