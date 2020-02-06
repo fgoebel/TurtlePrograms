@@ -4,7 +4,7 @@
 
 --*********************************************
 -- defintion of variables
-local waiting = true                 -- initially no waiting
+local waiting = true                 -- initially waiting
 local waitingPos = {x=122,y=63,z=-260,f=0}
 
 --*********************************************
@@ -44,7 +44,7 @@ fields = textutils.unserialize(data)
 --*********************************************
 --function to display heartbeat
 function heartbeat()
-    term.clear()
+    -- term.clear()
     currentFuelLevel = turtle.getFuelLevel()
 	if waiting then
 		print("current Status: waiting for input")
@@ -53,24 +53,25 @@ function heartbeat()
 	end
 
     print("fuelLevel: " .. currentFuelLevel)
-	print("press x to exit Program and d to start manually!")
 end
 
 --*********************************************
 -- General Farming Programm
 function main()
+
     while true do
-        heartbeat()                                             -- print heartbeat
-        ID, message = rednet.receive()                          -- waits for message 
-        print(message)
-        if message == "available?" then
-            rednet.send(ID,"yes")                               -- answer to available call
-        elseif message ~= "NoField" then
-            waiting = false                                     -- stop waiting
-            fieldName = message
+        if waiting then                         -- State: Waiting for order
+            ID, message = rednet.receive()      -- wait for message from Manager
+            if message == "available?" then     -- answer to available call
+                rednet.send(ID,"yes")
+            elseif message ~= "NoField" then    -- start farming
+                waiting = false
+                fieldName = message
+            end
+            
         end
 
-        if not waiting then                                     -- if waiting is not active
+        if not waiting then                                     -- State: got order, working now
             for k,field in ipairs(fields) do                    -- for each field
                 if field.name == fieldName then                 -- if field is known
                     print(field.name) 
@@ -92,11 +93,11 @@ function main()
 
             end
             waiting = true
-            goTo.goTo(waitingPos)     
-            print("going waiting")                                   
+            goTo.goTo(waitingPos)                                     
         end
-    end
 
+        heartbeat()
+    end
 end
 
 rednet.open("left")
