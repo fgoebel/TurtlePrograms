@@ -7,7 +7,7 @@ local time = 0
 local NextField
 local minTime
 local LastTime = os.time()*1000*0.05 --Time in real-Life seconds
-local RunTime = 0
+local RunTime = LastTime
 
 -- Load field file
 if not fs.exists("fields") then
