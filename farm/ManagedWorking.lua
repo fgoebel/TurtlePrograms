@@ -61,9 +61,8 @@ function main()
 
     while true do
         if waiting then                         -- State: Waiting for order
-            ID, message = rednet.receive(10)    -- wait for message from Manager
+            ID, message = rednet.receive(5)    -- wait for message from Manager
             print(message)
-            sleep(5)
             if message == "available?" then     -- answer to available call
                 rednet.send(ID,"yes")
             else
