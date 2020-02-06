@@ -59,8 +59,9 @@ local TurtleAvailable = false
             minTime = 0
             NextField = "none"
             for k,field in ipairs(fields) do
-                if RunTime - field.lastHarvested + field.interval < minTime then   
+                if RunTime - field.lastHarvested + field.interval <= minTime then   
                     minTime = RunTime - field.lastHarvested + field.interval       -- select field based on smallest value
+                    print(minTime)
                     key, NextField = k, field.name
                 end
             end

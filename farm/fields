@@ -11,7 +11,7 @@
     rows = 24,
     cols = 9,
     right = true,
-    interval = 6,
+    interval = 600,
     active = true,
   },
   {
