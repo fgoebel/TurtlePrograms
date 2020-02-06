@@ -24,7 +24,7 @@ file.close()
 fields = textutils.unserialize(data)
 
 for k,field in ipairs(fields) do 
-    field.lastHarvested = -1    -- set initial value for lastHarvested
+    field.lastHarvested = -1*field.interval    -- set initial value for lastHarvested
 end
 
 --*********************************************
