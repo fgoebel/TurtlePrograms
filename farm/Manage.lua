@@ -45,6 +45,9 @@ function checkTime()
     end
     LastTime = CurrentTime
     RunTime = RunTime + TimePassed
+    print(TimePassed)
+    print(RunTime)
+    sleep(5)
     return RunTime
 end
 --*********************************************
@@ -59,8 +62,6 @@ local TurtleAvailable = false
             minTime = 0
             NextField = "none"
             for k,field in ipairs(fields) do
-                print(RunTime)
-                print(field.lastHarvested)
                 if RunTime - field.lastHarvested + field.interval <= minTime then   
                     minTime = RunTime - field.lastHarvested + field.interval       -- select field based on smallest value
                     print(minTime)
