@@ -61,7 +61,6 @@ local TurtleAvailable = false
             for k,field in ipairs(fields) do
                 if field.lastHarvested + field.interval - RunTime <= minTime then   
                     minTime = field.lastHarvested + field.interval - RunTime      -- select field based on highes value
-                    print(minTime)
                     key, NextField = k, field.name
                 end
             end
@@ -73,6 +72,7 @@ local TurtleAvailable = false
                 fields[key].lastHarvested = RunTime -- store new values in fields
                 store("fields", fields)
                 TurtleAvailable = false             -- change State
+                sleep(20)                           -- to avoid turtle crashes if multiple are available
             end
         
         end
