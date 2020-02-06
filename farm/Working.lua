@@ -94,7 +94,7 @@ function main()
                     
                         print("finished farming")
 
-                        up(5)                                   -- go up to avoid crashes
+                        farming.up(5)                           -- go up to avoid crashes
                     end
                 heartbeat()                                     -- print heartbeat
             end
