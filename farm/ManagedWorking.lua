@@ -45,7 +45,6 @@ fields = textutils.unserialize(data)
 --function to display heartbeat
 function heartbeat()
     term.clear()
-    timeToWait = harvestingInterval - timerCount
     currentFuelLevel = turtle.getFuelLevel()
 	if waiting then
 		print("current Status: waiting for input")
