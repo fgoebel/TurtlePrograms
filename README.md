@@ -27,7 +27,7 @@ Farming is managed by a computer and different turtles can be used, which are se
 
 For Trutles:
 ``` 
-r = http.get("https://github.com/fgoebel/TurtlePrograms/blob/cct-clique27/farm/updateManaged.lua")
+r = http.get("https://raw.githubusercontent.com/fgoebel/TurtlePrograms/cct-clique27/farm/updateManaged.lua")
 f = fs.open("update.lua", "w")
 f.write(r.readAll())
 f.close()
