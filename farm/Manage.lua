@@ -26,7 +26,6 @@ fields = textutils.unserialize(data)
 for k,field in ipairs(fields) do 
     field.lastHarvested = -1*field.interval    -- set initial value for lastHarvested
 end
-store("fields", fields)
 
 --*********************************************
 -- Store fields
@@ -50,6 +49,7 @@ function checkTime()
 end
 --*********************************************
 -- Main Managing function
+store("fields", fields)
 function main()
 local TurtleAvailable = false
 
