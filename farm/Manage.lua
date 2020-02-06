@@ -38,10 +38,11 @@ end
 -- determine RunTime
 function checkTime()
     local CurrentTime = os.time()*1000*0.05       --Time in real-Life seconds
+    print(CurrentTime)
     if CurrentTime > LastTime then
         TimePassed = CurrentTime - LastTime
     else 
-        TimePassed = CurrentTime + (24000-LastTime)
+        TimePassed = CurrentTime + (24*1000*0.05-LastTime)
     end
     LastTime = CurrentTime
     RunTime = RunTime + TimePassed
