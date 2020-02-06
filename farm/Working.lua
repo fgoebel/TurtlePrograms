@@ -75,12 +75,20 @@ function main()
                         term.clear()
                         print("Start farming")
                         if (crop == "cactus") then
-                            farming.cactusField(field)
+                            print("cactus")
+                            sleep(2)
+                            --farming.cactusField(field)
                         elseif (crop == "sugar") then
-                            farming.sugarField(field)
+                            print("cactus")
+                            sleep(2)
+                            --farming.sugarField(field)
                         elseif (crop == "enderlilly") then
-                            farming.enderlillyField(field)
+                            print("cactus")
+                            sleep(2)
+                            --farming.enderlillyField(field)
                         else                                    --just everything else (wheat, beetroot, carrot, potato)
+                            print("cactus")
+                            sleep(2)
                             farming.generalField(field)                                      
                         end
                     
