@@ -5,7 +5,7 @@
 -- defintion of variables
 local time = 0
 local NextField
-local maxTime
+local minTime
 local LastTime = os.time()*1000*0.05 --Time in real-Life seconds
 local RunTime = 0
 
@@ -56,12 +56,12 @@ local TurtleAvailable = false
     while true do
         if TurtleAvailable then        -- State: trutle available
             --Check if any field needs to be harvested
-            maxTime = 0
+            minTime = 0
             NextField = "none"
             for k,field in ipairs(fields) do
-                if RunTime - field.lastHarvested + field.interval >= maxTime then   
-                    maxTime = RunTime - field.lastHarvested + field.interval       -- select field based on highes value
-                    print(maxTime)
+                if field.lastHarvested + field.interval - RunTime <= minTime then   
+                    minTime = field.lastHarvested + field.interval - RunTime      -- select field based on highes value
+                    print(minTime)
                     key, NextField = k, field.name
                 end
             end
