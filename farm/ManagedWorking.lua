@@ -5,7 +5,9 @@
 --*********************************************
 -- defintion of variables
 local waiting = true                 -- initially waiting
-local waitingPos = {x=122,y=63,z=-260,f=0}
+local waitingPos = {x=124,y=63,z=-260,f=0}
+--local waitingPos = {x=123,y=63,z=-259,f=0}
+--local waitingPos = {x=122,y=63,z=-258,f=0}
 
 --*********************************************
 -- load APIs

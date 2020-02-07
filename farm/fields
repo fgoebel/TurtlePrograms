@@ -12,7 +12,7 @@
     cols = 9,
     right = true,
     interval = 1800,
-    active = true,
+    active = false,
   },
   {
     pos = {
@@ -27,7 +27,7 @@
     cols = 8,
     right = true,
     interval = 1800,
-    active = true,
+    active = false,
   },
   {
     pos = {
@@ -42,7 +42,7 @@
     cols = 9,
     right = true,
     interval = 1800,
-    active = true,
+    active = false,
   },
   {
     pos = {
@@ -102,7 +102,7 @@
     cols = 4,
     right = true,
     interval = 9000,
-    active = true,
+    active = false,
   },
     {
     pos = {
@@ -117,7 +117,7 @@
     cols = 9,
     right = true,
     interval = 1800,
-    active = true,
+    active = false,
   },
   {
     pos = {
@@ -132,6 +132,6 @@
     cols = 18,
     right = true,
     interval = 1800,
-    active = true,
+    active = false,
   },
 }
