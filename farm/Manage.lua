@@ -45,8 +45,8 @@ function checkTime()
     end
     LastTime = CurrentTime
     RunTime = RunTime + TimePassed
+    print("Runtime: " .. RunTime) .. "CurrentTime: " .. CurrentTime .. "TimePassed: " .. TimePassed)
     return RunTime
-    print("Runtime: " .. RunTime)
 end
 --*********************************************
 -- Main Managing function
@@ -60,7 +60,7 @@ local TurtleAvailable = false
             minTime = 0
             NextField = "none"
             for k,field in ipairs(fields) do
-                if ((field.lastHarvested + field.interval >= RunTime) and field.active == true) then   
+                if ((field.lastHarvested + field.interval <= RunTime) and field.active == true) then   
                     minTime = field.lastHarvested + field.interval - RunTime      -- select field based on lowest value
                     key, NextField = k, field.name
                     print("Field: " .. NextField .. ", minTime:" .. minTime)
