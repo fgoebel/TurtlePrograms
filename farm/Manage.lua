@@ -60,8 +60,8 @@ local TurtleAvailable = false
             minTime = 0
             NextField = "none"
             for k,field in ipairs(fields) do
-                if ((field.lastHarvested + field.interval - RunTime <= minTime) and field.active == true) then   
-                    minTime = field.lastHarvested + field.interval - RunTime      -- select field based on highes value
+                if ((field.lastHarvested + field.interval >= RunTime) and field.active == true) then   
+                    minTime = field.lastHarvested + field.interval - RunTime      -- select field based on lowest value
                     key, NextField = k, field.name
                     print("Field: " .. NextField .. ", minTime:" .. minTime)
                 end
