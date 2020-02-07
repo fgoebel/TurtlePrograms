@@ -45,7 +45,6 @@ function checkTime()
     end
     LastTime = CurrentTime
     RunTime = RunTime + TimePassed
-    print("Runtime: " .. RunTime .. "CurrentTime: " .. CurrentTime .. "TimePassed: " .. TimePassed)
     return RunTime
 end
 --*********************************************
@@ -63,14 +62,14 @@ local TurtleAvailable = false
                 if ((field.lastHarvested + field.interval <= RunTime) and field.active == true) then   
                     minTime = field.lastHarvested + field.interval - RunTime      -- select field based on lowest value
                     key, NextField = k, field.name
-                    print("Field: " .. NextField .. ", minTime:" .. minTime)
                 end
+                print("Field: " .. NextField .. ", minTime:" .. minTime)
             end
 
             if NextField == "none" then             -- Sub-State: no field to harvest
                 rednet.send(ID,"NoField")
                 print("currently no field available")
-                sleep(20)
+                sleep(5)
             else                                    -- Sub-State: field to harvest
                 rednet.send(ID,NextField)           -- send fieldName to available turtle
                 fields[key].lastHarvested = RunTime -- store new values in fields
