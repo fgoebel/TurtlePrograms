@@ -45,7 +45,7 @@ function checkTime()
     end
     LastTime = CurrentTime
     RunTime = RunTime + TimePassed
-    print("Runtime: " .. RunTime) .. "CurrentTime: " .. CurrentTime .. "TimePassed: " .. TimePassed)
+    print("Runtime: " .. RunTime .. "CurrentTime: " .. CurrentTime .. "TimePassed: " .. TimePassed)
     return RunTime
 end
 --*********************************************
