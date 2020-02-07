@@ -87,7 +87,7 @@
     cols = 4,
     right = true,
     interval = 1800,
-    active = true,
+    active = false,
   },
     {
     pos = {

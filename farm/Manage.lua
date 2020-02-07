@@ -69,6 +69,7 @@ local TurtleAvailable = false
 
             if NextField == "none" then             -- Sub-State: no field to harvest
                 rednet.send(ID,"NoField")
+                print("currently no field available")
             else                                    -- Sub-State: field to harvest
                 rednet.send(ID,NextField)           -- send fieldName to available turtle
                 fields[key].lastHarvested = RunTime -- store new values in fields
