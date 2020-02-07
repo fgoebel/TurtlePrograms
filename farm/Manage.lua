@@ -63,8 +63,8 @@ local TurtleAvailable = false
                     minTime = field.lastHarvested + field.interval - RunTime      -- select field based on lowest value
                     key, NextField = k, field.name
                 end
-                print("Field: " .. NextField .. ", minTime:" .. minTime)
             end
+            print("Field: " .. NextField .. ", minTime:" .. minTime)
 
             if NextField == "none" then             -- Sub-State: no field to harvest
                 rednet.send(ID,"NoField")
