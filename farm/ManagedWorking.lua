@@ -29,20 +29,6 @@ if not fs.exists("farming.lua") then
 end
 os.loadAPI("farming.lua") 
 
--- Load field file
-if not fs.exists("fields") then
-    r = http.get("https://raw.githubusercontent.com/fgoebel/TurtlePrograms/cct-clique27/farm/fields")
-    f = fs.open("fields", "w")
-    f.write(r.readAll())
-    f.close()
-    r.close()
-end
-
-local file = fs.open("fields","r")
-local data = file.readAll()
-file.close()
-fields = textutils.unserialize(data)
-
 --*********************************************
 --function to display heartbeat
 function heartbeat()
@@ -70,33 +56,14 @@ function main()
             else
                 if message ~= "NoField" then    -- start farming
                     waiting = false
-                    fieldName = message
+                    field = textutils.unserialize(message)
                 end
             end
             
         end
 
         if not waiting then                                     -- State: got order, working now
-            for k,field in ipairs(fields) do                    -- for each field
-                if field.name == fieldName then                 -- if field is known
-                    print(field.name) 
-                    print("Start farming")
-                    if (field.crop == "cactus") then
-                        farming.cactusField(field)
-                    elseif (field.crop == "sugar") then
-                        farming.sugarField(field)
-                    elseif (field.crop == "enderlilly") then
-                        farming.enderlillyField(field)
-                    else                                    --just everything else (wheat, beetroot, carrot, potato)
-                        farming.generalField(field)                                      
-                    end
-                
-                    print("finished farming")
-
-                    farming.up(5)                           -- go up to avoid crashes
-                end
-
-            end
+            farming.start(field)
             waiting = true
             farming.dropInventory()
             goTo.goTo(waitingPos)                                     
