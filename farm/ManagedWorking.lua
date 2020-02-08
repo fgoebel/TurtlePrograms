@@ -98,6 +98,7 @@ function main()
 
             end
             waiting = true
+            farming.dropInventory()
             goTo.goTo(waitingPos)                                     
         end
 
