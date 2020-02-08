@@ -62,18 +62,19 @@ local TurtleAvailable = false
                 if ((field.lastHarvested + field.interval - RunTime <= minTime) and field.active == true) then   
                     minTime = field.lastHarvested + field.interval - RunTime      -- select field based on lowest value
                     key = k
-                    NextFieldName = field.name
+                    NextField = field
                 end
             end
-            print("Field: " .. NextField .. ", minTime:" .. minTime)
+            print("key: ".. key)
+            print("Field: " .. fields[key] .. ", minTime:" .. minTime)
 
             if NextField == "none" then             -- Sub-State: no field to harvest
                 rednet.send(ID,"NoField")
                 print("currently no field available")
                 sleep(5)
             else                                    -- Sub-State: field to harvest
-                rednet.send(ID,textutils.serialize(fields[key])           -- send fieldName to available turtle
-                fields[key].lastHarvested = RunTime -- store new values in fields
+                rednet.send(ID,textutils.serialize(NextField))           -- send fieldName to available turtle
+                NextField.lastHarvested = RunTime -- store new values in fields
                 store("fields", fields)
                 TurtleAvailable = false             -- change State
                 sleep(20)                           -- to avoid turtle crashes if multiple are available
