@@ -439,4 +439,20 @@ function dropAndReturn()
     goTo.goTo(ReturnPosition)
 end
 
+function start(field)
+    print(field.name) 
+    print("Start farming")
+    if (field.crop == "cactus") then
+        cactusField(field)
+    elseif (field.crop == "sugar") then
+        sugarField(field)
+    elseif (field.crop == "enderlilly") then
+        enderlillyField(field)
+    else                                    --just everything else (wheat, beetroot, carrot, potato)
+        generalField(field)                                      
+    end
 
+    print("finished farming")
+
+    up(5)                           -- go up to avoid crashes
+end
