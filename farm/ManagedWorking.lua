@@ -99,13 +99,12 @@ while true do
 
     if (Waiting and not FirstInQueue) then      -- State: Waiting in Queue
         print("waiting in queue")
-        if not turtle.detect() then             -- check if someone is in front
-            goTo.forward()                      -- go forward
-        end
         valid, block = turtle.inspectDown()     -- Check for first position, based on block below (oak-stairs on first Position)
         if valid then
             if block.name == "minecraft:oak_stairs" then -- on first Position
-                FirstInQueue = true             -- change FirstInQueue state
+                FirstInQueue = true                      -- change FirstInQueue state
+            elseif not turtle.detect() then              -- check if someone is in front
+                goTo.forward()                           -- go forward
             end
         end
     
