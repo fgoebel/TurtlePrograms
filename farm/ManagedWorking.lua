@@ -113,10 +113,12 @@ while true do
         ID, message = rednet.receive(5)
         if message == "in queue?" then           -- answer to "in queue?" call
             rednet.send(ID,"yes, in queue")
-        elseif textutils.unserialize(message) ~= nil then -- message was field
-            field = textutils.unserialize(message)
-            Waiting = false                      -- change state of Waiting and First in Queue
-            FirstInQueue = false
+        elseif message ~= nil then
+            if textutils.unserialize(message) ~= nil then -- message was field
+                field = textutils.unserialize(message)
+                Waiting = false                      -- change state of Waiting and First in Queue
+                FirstInQueue = false
+            end
         end
 
     elseif BackHome then                         -- State: Back home
@@ -125,10 +127,12 @@ while true do
             rednet.send(ID,"yes, back home")
         elseif message == "go to queue" then     -- is send to queue
             ToQueue()
-        elseif textutils.unserialize(message) ~= nil then -- message was field
-            field = textutils.unserialize(message)
-            Waiting = false                      -- change state of Waiting and First in Queue
-            BackHome = false
+        elseif message ~= nil then
+            if textutils.unserialize(message) ~= nil then -- message was field
+                field = textutils.unserialize(message)
+                Waiting = false                      -- change state of Waiting and First in Queue
+                BackHome = false
+            end
         end
 
     elseif not Waiting then                      -- State: not waiting, harvesting
