@@ -70,13 +70,13 @@ while true do
     end
 
     -- Queuestate: false--> Noone is waiting in queue, true--> Someone is waiting
-    if Questate == false then
+    if Queuestate == false then
         print("waiting for turtles")
         rednet.broadcast("in queue?")                           -- check for someone in queue
         ID, message = rednet.receive(5)
         if message == "yes, in queue" then                      -- if someone is in queue: store ID, change state
             QueueID = ID
-            Questate = true
+            Queuestate = true
         end        
     end
 
@@ -112,13 +112,13 @@ while true do
         end
         Turtlestate = false                                     -- Change Turtlestate
 
-    elseif (Fieldstate == true and Questate == true) then       -- Field needs to be harvested and someone is available in queue 
+    elseif (Fieldstate == true and Queuestate == true) then     -- Field needs to be harvested and someone is available in queue 
         NextField = textutils.serialize(fields[FieldIndex])     -- serialize field table
         rednet.send(QueueID,NextField)                          -- send field to turtle
         fields[FieldIndex].lastHarvested = Time                 -- update field harvesting time
         store("fields", fields)
         Fieldstate = false                                      -- Change Fieldstate and Queuestate
-        Queuestate = true   
+        Queuestate = false  
     end
 
     rednet.broadcast("New?")
@@ -132,6 +132,7 @@ while true do
     -- check for new fields (Overwriting not possible!!!)
 
     Time = checkTime()                                          -- Update Time
+    print("Fieldstate: "..Fieldstate..", Queuestate: "..Queuestate..", Turtlestate: "..Turtlestate)
 end
 end
 
