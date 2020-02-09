@@ -110,7 +110,7 @@ while true do
     
     elseif (Waiting and FirstInQueue) then       -- State: Waiting and First in Queue
         print("waiting for field")
-        ID, message = rednet.receive(5)
+        ID, message = rednet.receive(2)
         if message == "in queue?" then           -- answer to "in queue?" call
             rednet.send(ID,"yes, in queue")
         elseif message ~= nil then
@@ -122,7 +122,7 @@ while true do
         end
 
     elseif BackHome then                         -- State: Back home
-        ID, message = rednet.receive(5)
+        ID, message = rednet.receive(2)
         if message == "coming home?" then        -- answer to "coming home?" call
             rednet.send(ID,"yes, back home")
         elseif message == "go to queue" then     -- is send to queue

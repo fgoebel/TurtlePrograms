@@ -62,7 +62,7 @@ while true do
     -- Turtlestate: false-->Noone back from field, true-->Someone returned and is now waiting for input
     if Turtlestate == false then
         rednet.broadcast("coming home?")                        -- check for new returnees
-        ID, message = rednet.receive(5)
+        ID, message = rednet.receive(2)
         if message == "yes, back home" then                     -- if someone returned: store ID, change state
             ReturnerID = ID
             Turtlestate = true
@@ -73,7 +73,7 @@ while true do
     if Queuestate == false then
         print("waiting for turtles")
         rednet.broadcast("in queue?")                           -- check for someone in queue
-        ID, message = rednet.receive(5)
+        ID, message = rednet.receive(2)
         if message == "yes, in queue" then                      -- if someone is in queue: store ID, change state
             QueueID = ID
             Queuestate = true
@@ -122,7 +122,7 @@ while true do
     end
 
     rednet.broadcast("New?")
-    NewID, message = rednet.receive(5)
+    NewID, message = rednet.receive(2)
     if message == "I am new" then
         print("found new turtle")
         rednet.send(NewID,storagePos)                           -- send storage position
@@ -132,7 +132,6 @@ while true do
     -- check for new fields (Overwriting not possible!!!)
 
     Time = checkTime()                                          -- Update Time
-    print("Fieldstate: "..Fieldstate..", Queuestate: "..Queuestate..", Turtlestate: "..Turtlestate)
 end
 end
 
