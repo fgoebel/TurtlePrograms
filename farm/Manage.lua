@@ -11,6 +11,16 @@ local Time = 0
 
 local storagePos = textutils.serialize({x=122,y=63,z=-261,f=3})
 
+-- load json API from github if it does not exist yet
+if not fs.exists("json.lua") then
+	r = http.get("https://raw.githubusercontent.com/fgoebel/TurtlePrograms/cct-clique27/json.lua")
+    f = fs.open("json.lua", "w")
+    f.write(r.readAll())
+    f.close()
+    r.close()
+end
+os.loadAPI("json.lua") 
+
 -- Load field file
 if not fs.exists("fields") then
     r = http.get("https://raw.githubusercontent.com/fgoebel/TurtlePrograms/cct-clique27/farm/fields")
@@ -25,10 +35,6 @@ local data = file.readAll()
 file.close()
 fields = textutils.unserialize(data)
 
-for k,field in ipairs(fields) do 
-    field.lastHarvested = -1*field.interval    -- set initial value for lastHarvested
-end
-
 --*********************************************
 -- Store fields
 function store(sName, stuff)
@@ -37,22 +43,15 @@ function store(sName, stuff)
 	handle.close()
 end
 
--- determine RunTime
+-- determine Time
 function checkTime()
-    local CurrentTime = os.time()*1000*0.05       --Time in real-Life seconds
-    if CurrentTime > LastTime then
-        TimePassed = CurrentTime - LastTime
-    else 
-        TimePassed = CurrentTime + (24*1000*0.05-LastTime)
-    end
-    LastTime = CurrentTime
-    Time = Time + TimePassed
+    local TimeTable = http.get("http://worldtimeapi.org/api/timezone/Europe/Berlin").readAll()
+    Time = json.decode(TimeTable).unixtime
     return Time
 end
+
 --*********************************************
 -- Main Managing function
-store("fields", fields)
-
 function main()
 local Turtlestate = false
 local Queuestate = false
