@@ -84,16 +84,16 @@ while true do
     if Fieldstate == false then
         print("waiting for fields")                                 
         minTime = 0                                             -- check for new field
-        NextField = "none"
+        FieldIndex = 0
         for k,field in ipairs(fields) do
             if ((field.lastHarvested + field.interval - Time <= minTime) and field.active == true) then   
                 minTime = field.lastHarvested + field.interval - Time      -- select field based on lowest value
                 FieldIndex = k                                             -- if new field available: store field index
             end
         end
-        if Nextfield ~= "none" then                             -- if new field available: change state
+        if FieldIndex ~= 0 then                             -- if new field available: change state
             Fieldstate = true
-            print("new field to harvest")
+            print("new field to harvest: "..fields[FieldIndex].name)
         end
     end
   
