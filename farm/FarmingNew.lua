@@ -377,6 +377,7 @@ function dropInventory()
         turtle.select(Slot)        -- select next Slot
         turtle.dropDown()          -- just drop everthing in the slot
     end
+    back()
 end
 
 function refillFuel()
@@ -388,6 +389,7 @@ function refillFuel()
             turtle.refuel()                                         -- refuel
         end
     end
+    back()
 end
 
 function getSlot(ItemName)
