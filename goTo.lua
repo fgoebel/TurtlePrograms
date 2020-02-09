@@ -258,6 +258,11 @@ function returnPos()
 	return currentPosition
 end
 
+function goHome(Position)
+	getPos()
+	goTo(Position)
+end
+
 --function setPos(Position)
 --    currentPosition.x = Position.x
 --    currentPosition.y = Position.y
