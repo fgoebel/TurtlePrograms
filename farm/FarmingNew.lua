@@ -159,8 +159,8 @@ local turnRight = field.right
 crop = field.crop
 SeedName = determineSeed(crop)
 
-dropInventory()                     -- drop everything
-refillFuel()                        -- refuel if fuel level below 5000
+dropInventory(storage)              -- drop everything
+refillFuel(storage)                 -- refuel if fuel level below 5000
 SeedSlot = getItemFromPeripheral(SeedName,1),64 -- get 64 Seeds, returns false, if no seeds were available
 if BoneMealOpt then
     BoneSlot = getBoneMeal()            -- get Bone Meal, returns false, if no Bone meal was available
@@ -201,8 +201,7 @@ local rows = field.rows
 local turnRight = field.right
 crop = field.crop
 
-dropInventory()                             -- drop everything
-refillFuel()                                -- refuel if fuel level below 5000
+refillFuel(storage)                             -- refuel if fuel level below 5000
 goTo.goTo(field.pos)                            -- got to first Block of field
 
 top = true                                      -- variable for indicating if turtle is in top of col
@@ -278,8 +277,7 @@ crop = field.crop
 local skip = 1                              -- equals 1 if water must be skipped in next turn, else equals 0
 local currentCol = 1                        -- variable for currentCol
 
-dropInventory()                             -- drop everything
-refillFuel()                                -- refuel if fuel level below 5000
+refillFuel(storage)                         -- refuel if fuel level below 5000
 goTo.goTo(field.pos)                        -- got to first Block of field
 
     while currentCol <= cols do             -- do for each col
@@ -323,8 +321,7 @@ function enderlillyField(field)
     local turnRight = field.right
     crop = field.crop
 
-    dropInventory()                                 -- drop everything
-    refillFuel()                                    -- refuel if fuel level below 5000
+    refillFuel(storage)                             -- refuel if fuel level below 5000
 
     goTo.goTo(field.pos)                            -- got to first Block of field
     
@@ -371,7 +368,7 @@ end
 
 --*********************************************
 --refill and drop functions + general functions
-function dropInventory()
+function dropInventory(storage)
     goTo.goTo(storage)             -- go to storage system, after field is finished
     for Slot =1, 16 do              -- clear slots
         turtle.select(Slot)        -- select next Slot
@@ -380,7 +377,7 @@ function dropInventory()
     back()
 end
 
-function refillFuel()
+function refillFuel(storage)
     if turtle.getFuelLevel() < 5000 then
         goTo.goTo(storage)              -- go to storage system
         while turtle.getFuelLevel()/turtle.getFuelLimit() < 1 do    -- get current Fuellevel (percentage) and compare to Limit
@@ -430,8 +427,7 @@ end
 
 function dropAndReturn()
     ReturnPosition = goTo.returnPos()
-    goTo.goTo(storage)
-    dropInventory()
+    dropInventory(storage)
     if (crop == "wheat" or crop == "beetroot" or crop == "potato" or crop == "carrot") then
         SeedSlot = getItemFromPeripheral(SeedName,1),64 -- get 64 Seeds, returns false, if no seeds were available
         if BoneMealOpt then
@@ -441,7 +437,7 @@ function dropAndReturn()
     goTo.goTo(ReturnPosition)
 end
 
-function start(field)
+function start(field,storage)
     print(field.name) 
     print("Start farming")
     if (field.crop == "cactus") then

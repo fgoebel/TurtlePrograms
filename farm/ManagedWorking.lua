@@ -3,13 +3,6 @@
 -- depends on FarmingNew and goTo API
 
 --*********************************************
--- defintion of variables
-local waiting = true                 -- initially waiting
-local waitingPos = {x=124,y=63,z=-260,f=0}
---local waitingPos = {x=123,y=63,z=-259,f=0}
---local waitingPos = {x=122,y=63,z=-258,f=0}
-
---*********************************************
 -- load APIs
 if not fs.exists("goTo.lua") then
 	r = http.get("https://raw.githubusercontent.com/fgoebel/TurtlePrograms/cct-clique27/goTo.lua")
@@ -44,35 +37,108 @@ function heartbeat()
 end
 
 --*********************************************
+-- Store values
+function store(sName, stuff)
+	local handle = fs.open(sName, "w")
+	handle.write(textutils.serialize(stuff))
+	handle.close()
+end
+
+function ToQueue()
+local EndofQueue = false
+    goTo.up()
+    goTo.turnLeft()
+    goTo.forward()
+    goTo.turnRight()
+    while not EndofQueue do
+        if turtle.inspect() then
+            goTo.turnLeft()
+            goTo.forward()
+            goTo.turnRight()
+        else
+            EndofQueue = true
+        end
+    end
+    goTo.forward()
+    goTo.turnRight()
+end
+
+--*********************************************
+-- Initialization
+function initialization()
+local initialization = false
+if not fs.exists("StoragePos") then
+    initialization = true
+else 
+    local file = fs.open("StoragePos","r")
+    local data = file.readAll()
+    file.close()
+    sorage = textutils.unserialize(data)
+end
+
+    while initialization do         -- initialization store storage and queue Position
+        ID, message = rednet.receive()
+        if message == "New?" then
+            rednet.send(ID,"I am new")
+            ID, StorageMessage = rednet.receive()
+            storage = textutils.unserialize(message)
+            store("StoragePos",storage)
+            initialization = false  -- change initialization state
+        end
+    end
+
+end
+
 -- General Farming Programm
 function main()
+local FirstInQueue = false
+local BackHome = false
+local Waiting = true
 
-    while true do
-        if waiting then                         -- State: Waiting for order
-            ID, message = rednet.receive(5)    -- wait for message from Manager
-            print(message)
-            if message == "available?" then     -- answer to available call
-                rednet.send(ID,"yes")
-            else
-                if message ~= "NoField" then    -- start farming
-                    waiting = false
-                    field = textutils.unserialize(message)
-                end
+while true do
+
+    if (Waiting and not FirstInQueue) then      -- State: Waiting in Queue
+        if not turtle.detect() then             -- check if someone is in front
+            goTo.forward()                      -- go forward
+        end
+        valid, block = turtle.inspectDown()     -- Check for first position, based on block below (oak-stairs on first Position)
+        if valid then
+            if block.name == "minecraft:oak_stairs" then -- on first Position
+                FirstInQueue = true             -- change FirstInQueue state
             end
-            
+        end
+    
+    elseif (Waiting and FirstInQueue) then       -- State: Waiting and First in Queue
+        ID, message = rednet.receive(5)
+        if message == "in queue?" then           -- answer to "in queue?" call
+            rednet.send(ID,"yes, in queue")
+        elseif textutils.unserialize(message) ~= nil then -- message was field
+            field = textutils.unserialize(message)
+            Waiting = false                      -- change state of Waiting and First in Queue
+            FirstInQueue = false
         end
 
-        if not waiting then                                     -- State: got order, working now
-            farming.start(field)
-            waiting = true
-            farming.dropInventory()
-            goTo.goTo(waitingPos)                                     
+    elseif BackHome then                         -- State: Back home
+        ID, message = rednet.receive(5)
+        if message == "coming home?" then        -- answer to "coming home?" call
+            rednet.send(ID,"yes, back home")
+        elseif message == "go to queue" then     -- is send to queue
+            ToQueue()
+        elseif textutils.unserialize(message) ~= nil then -- message was field
+            field = textutils.unserialize(message)
+            Waiting = false                      -- change state of Waiting and First in Queue
+            BackHome = false
         end
 
-        heartbeat()
+    elseif not Waiting then                      -- State: not waiting, harvesting
+        farming.start(field,storage)             -- go working
+        farming.dropInventory(storage)           -- drop everything
+        BackHomeState = true                     -- change BackHomeState
     end
+end
 end
 
 rednet.open("left")
 goTo.getPos()
+initialization()
 main()
