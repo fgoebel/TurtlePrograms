@@ -98,6 +98,7 @@ local Waiting = true
 while true do
 
     if (Waiting and not FirstInQueue) then      -- State: Waiting in Queue
+        print("waiting in queue")
         if not turtle.detect() then             -- check if someone is in front
             goTo.forward()                      -- go forward
         end
@@ -109,6 +110,7 @@ while true do
         end
     
     elseif (Waiting and FirstInQueue) then       -- State: Waiting and First in Queue
+        print("waiting for field")
         ID, message = rednet.receive(5)
         if message == "in queue?" then           -- answer to "in queue?" call
             rednet.send(ID,"yes, in queue")
@@ -131,6 +133,7 @@ while true do
         end
 
     elseif not Waiting then                      -- State: not waiting, harvesting
+        print("Start farming on: ".. field.name)
         farming.start(field,storage)             -- go working
         farming.dropInventory(storage)           -- drop everything
         BackHomeState = true                     -- change BackHomeState

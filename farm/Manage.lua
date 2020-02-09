@@ -71,6 +71,7 @@ while true do
 
     -- Queuestate: false--> Noone is waiting in queue, true--> Someone is waiting
     if Questate == false then
+        print("waiting for turtles")
         rednet.broadcast("in queue?")                           -- check for someone in queue
         ID, message = rednet.receive(5)
         if message == "yes, in queue" then                      -- if someone is in queue: store ID, change state
@@ -80,7 +81,8 @@ while true do
     end
 
     -- Fieldstate: false-->kein Feld verfügbar, true-->Feld verfügbar
-    if Fieldstate == false then                                 
+    if Fieldstate == false then
+        print("waiting for fields")                                 
         minTime = 0                                             -- check for new field
         NextField = "none"
         for k,field in ipairs(fields) do
@@ -91,6 +93,7 @@ while true do
         end
         if Nextfield ~= "none" then                             -- if new field available: change state
             Fieldstate = true
+            print("new field to harvest")
         end
     end
   
@@ -103,6 +106,7 @@ while true do
             store("fields", fields)
             Fieldstate = false                                  -- Change Fieldstate and Queuestate
             Queuestate = true   
+            print(fields[FieldIndex].name)
         else                                                    -- either no field or someone in queue
             rednet.send(ReturnerID,"go to queue")               -- initialize sending to queue
         end
@@ -120,6 +124,7 @@ while true do
     rednet.broadcast("New?")
     NewID, message = rednet.receive(5)
     if message == "I am new" then
+        print("found new turtle")
         rednet.send(NewID,storagePos)                           -- send storage position
     end
    
