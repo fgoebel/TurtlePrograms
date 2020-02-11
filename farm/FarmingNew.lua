@@ -433,9 +433,8 @@ function dropAndReturn()
     goTo.goTo(ReturnPosition)
 end
 
-function start(field,storagePos)
-    --storage = storagePos
-    goTo.gotTo(storage)
+function start(field,storage)
+    goTo.goTo(storage)
     print(field.name) 
     print("Start farming")
     if (field.crop == "cactus") then
