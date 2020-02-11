@@ -73,7 +73,7 @@ else
     local file = fs.open("StoragePos","r")
     local data = file.readAll()
     file.close()
-    sorage = textutils.unserialize(data)
+    storage = textutils.unserialize(data)
 end
 
     while initialization do         -- initialization store storage and queue Position
