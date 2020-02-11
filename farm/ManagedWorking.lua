@@ -135,12 +135,11 @@ while true do
             end
         end
 
-    elseif not Waiting then                      -- State: not waiting, harvesting
+    elseif not Waiting  and not BackHomeState then -- State: not waiting, harvesting
         print("Start farming on: ".. field.name)
         goTo.goTo(storage)
         farming.start(field,storage)             -- go working
         BackHomeState = true                     -- change BackHomeState
-        Waiting = true
     end
 end
 end
