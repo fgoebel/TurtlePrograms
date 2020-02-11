@@ -105,11 +105,13 @@ while true do
         if (Queuestate == false and Fieldstate == true) then    -- Noone is in queue and field is available
             NextField = textutils.serialize(fields[FieldIndex]) -- serialize field table
             rednet.send(ReturnerID,NextField)                   -- send field to turtle
-            fields[FieldIndex].lastHarvested = Time             -- update field harvesting time
-            store("fields", fields)
-            Fieldstate = false                                  -- Change Fieldstate and Queuestate
-            Queuestate = true   
             print(fields[FieldIndex].name)
+            ID,message=rednet.receive(2)
+            if message == "got it" then
+                Fieldstate = false                              -- Change Fieldstate and Queuestate
+                fields[FieldIndex].lastHarvested = Time         -- update field harvesting time
+                store("fields", fields)
+            end
         else                                                    -- either no field or someone in queue
             rednet.send(ReturnerID,"go to queue")               -- initialize sending to queue
         end
@@ -120,10 +122,14 @@ while true do
     if (Fieldstate == true and Queuestate == true) then         -- Field needs to be harvested and someone is available in queue 
         NextField = textutils.serialize(fields[FieldIndex])     -- serialize field table
         rednet.send(QueueID,NextField)                          -- send field to turtle
-        fields[FieldIndex].lastHarvested = Time                 -- update field harvesting time
-        store("fields", fields)
-        Fieldstate = false                                      -- Change Fieldstate and Queuestate
-        Queuestate = false  
+        print(fields[FieldIndex].name)
+        ID,message=rednet.receive(2)
+        if message == "got it" then
+            Fieldstate = false                              -- Change Fieldstate and Queuestate
+            Queuestate = false 
+            fields[FieldIndex].lastHarvested = Time         -- update field harvesting time
+            store("fields", fields)
+        end
     end
 
     rednet.broadcast("New?")

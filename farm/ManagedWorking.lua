@@ -115,6 +115,7 @@ while true do
             rednet.send(ID,"yes, in queue")
         elseif message ~= nil then
             if textutils.unserialize(message) ~= nil then -- message was field
+                rednet.send(ID,"got it")
                 field = textutils.unserialize(message)
                 Waiting = false                      -- change state of Waiting and First in Queue
                 FirstInQueue = false
@@ -131,6 +132,7 @@ while true do
             BackHome = false
         elseif message ~= nil then
             if textutils.unserialize(message) ~= nil then -- message was field
+                rednet.send(ID,"got it")
                 field = textutils.unserialize(message)
                 Waiting = false                      -- change state of Waiting and First in Queue
                 BackHome = false
