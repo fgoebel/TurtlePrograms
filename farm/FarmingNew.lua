@@ -434,7 +434,7 @@ function dropAndReturn()
 end
 
 function start(field, storagePos)
-    storage = storagPos
+    storage = storagePos
     print(storage.x)
     print(field.name) 
     print("Start farming")
