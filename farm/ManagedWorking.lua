@@ -82,7 +82,7 @@ end
             rednet.send(ID,"I am new")
             ID, StorageMessage = rednet.receive()
             storage = textutils.unserialize(message)
-            store("StoragePos",StorageMessage)
+            store("StoragePos",storage)
             initialization = false  -- change initialization state
         end
     end
