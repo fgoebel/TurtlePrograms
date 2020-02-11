@@ -408,7 +408,8 @@ function getItemFromPeripheral(ItemName,Slot,MaxItems)
             end
         end
     end
-    return false                                        
+    return false
+    back()                                        
 end
 
 function determineEmptySlots()
