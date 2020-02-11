@@ -81,7 +81,7 @@ end
         if message == "New?" then
             rednet.send(ID,"I am new")
             ID, StorageMessage = rednet.receive()
-            storage = textutils.unserialize(message)
+            storage = textutils.unserialize(StorageMessage)
             store("StoragePos",storage)
             initialization = false  -- change initialization state
         end
