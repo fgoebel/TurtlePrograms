@@ -197,7 +197,7 @@ local rows = field.rows
 local turnRight = field.right
 
 refillFuel()                                    -- refuel if fuel level below 5000
-print("try to go to field")
+print("try to go to cactus field")
 goTo.goTo(field.pos)                            -- got to first Block of field
 
 top = true                                      -- variable for indicating if turtle is in top of col
@@ -273,7 +273,7 @@ local skip = 1                              -- equals 1 if water must be skipped
 local currentCol = 1                        -- variable for currentCol
 
 refillFuel()                                -- refuel if fuel level below 5000
-print("try to go to field")
+print("try to go to sugar field")
 goTo.goTo(field.pos)                        -- got to first Block of field
 
     while currentCol <= cols do             -- do for each col
@@ -435,8 +435,6 @@ end
 
 function start(field, storagePos)
     storage = storagePos
-    print(storage.x)
-    print(field.name) 
     print("Start farming")
     if (field.crop == "cactus") then
         cactusField(field)
