@@ -137,8 +137,8 @@ while true do
 
     elseif not Waiting then                      -- State: not waiting, harvesting
         print("Start farming on: ".. field.name)
+        goTo.goTo(storage)
         farming.start(field,storage)             -- go working
-        farming.dropInventory(storage)           -- drop everythingexit()
         BackHomeState = true                     -- change BackHomeState
     end
 end

@@ -434,7 +434,6 @@ function dropAndReturn()
 end
 
 function start(field,storage)
-    goTo.goTo(storage)
     print(field.name) 
     print("Start farming")
     if (field.crop == "cactus") then
@@ -448,6 +447,8 @@ function start(field,storage)
     end
 
     print("finished farming")
+
+    dropInventory()
 
     up(5)                           -- go up to avoid crashes
 end
