@@ -423,7 +423,7 @@ end
 
 function dropAndReturn()
     ReturnPosition = goTo.returnPos()
-    dropInventory(storage)
+    dropInventory()
     if (field.crop == "wheat" or field.crop == "beetroot" or field.crop == "potato" or field.crop == "carrot") then
         SeedSlot = getItemFromPeripheral(SeedName,1),64 -- get 64 Seeds, returns false, if no seeds were available
         if BoneMealOpt then
