@@ -11,7 +11,7 @@
     rows = 2,
     cols = 3,
     right = true,
-    interval = 180,
+    interval = 1800,
     lastHarvested = 0,
     active = true,
   },
@@ -27,7 +27,7 @@
     rows = 2,
     cols = 3,
     right = true,
-    interval = 180,
+    interval = 1800,
     lastHarvested = 0,
     active = true,
   },
@@ -45,7 +45,7 @@
     right = true,
     interval = 1800,
     lastHarvested = 0,
-    active = false,
+    active = true,
   },
   {
     pos = {
@@ -61,7 +61,7 @@
     right = true,
     interval = 1800,
     lastHarvested = 0,
-    active = false,
+    active = true,
   },
   {
     pos = {
@@ -77,7 +77,7 @@
     right = true,
     interval = 1800,
     lastHarvested = 0,
-    active = false,
+    active = true,
   },
   {
     pos = {
@@ -93,7 +93,7 @@
     right = true,
     interval = 1800,
     lastHarvested = 0,
-    active = false,
+    active = true,
   },
     {
     pos = {
@@ -109,7 +109,7 @@
     right = true,
     interval = 9000,
     lastHarvested = 0,
-    active = false,
+    active = true,
   },
     {
     pos = {
@@ -125,7 +125,7 @@
     right = true,
     interval = 1800,
     lastHarvested = 0,
-    active = false,
+    active = true,
   },
   {
     pos = {
@@ -141,6 +141,6 @@
     right = true,
     interval = 1800,
     lastHarvested = 0,
-    active = false,
+    active = true,
   },
 }
