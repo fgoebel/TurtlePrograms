@@ -122,7 +122,8 @@ while true do
         end
 
     elseif BackHome then                         -- State: Back home
-        ID, message = rednet.receive()
+        ID, message = rednet.receive(10)
+        print("Message after return: "..message)
         if message == "coming home?" then        -- answer to "coming home?" call
             rednet.send(ID,"yes, back home")
         elseif message == "go to queue" then     -- is send to queue
