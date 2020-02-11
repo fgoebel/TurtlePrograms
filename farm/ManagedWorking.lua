@@ -130,6 +130,7 @@ while true do
         elseif message == "go to queue" then     -- is send to queue
             ToQueue()
             BackHome = false
+            Waiting = true
         elseif message ~= nil then
             if textutils.unserialize(message) ~= nil then -- message was field
                 rednet.send(ID,"got it")
