@@ -129,8 +129,8 @@ end
 
 --Move down
 function down()
-	if not turtle.down() then
-        return false
+	while not turtle.down() do
+        sleep(1)
     end
 	currentPosition.y = currentPosition.y - 1
 	store("currentPosition",currentPosition)
@@ -158,8 +158,8 @@ end
 
 --Move up
 function up()
-	if not turtle.up() then
-        return false
+	while not turtle.up() do
+        sleep(1)
     end
 	currentPosition.y = currentPosition.y + 1
 	store("currentPosition",currentPosition)
