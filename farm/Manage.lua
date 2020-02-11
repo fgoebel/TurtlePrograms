@@ -111,6 +111,7 @@ while true do
                 Fieldstate = false                              -- Change Fieldstate and Queuestate
                 fields[FieldIndex].lastHarvested = Time         -- update field harvesting time
                 store("fields", fields)
+                sleep(10)
             end
         else                                                    -- either no field or someone in queue
             rednet.send(ReturnerID,"go to queue")               -- initialize sending to queue
@@ -129,6 +130,7 @@ while true do
             Queuestate = false 
             fields[FieldIndex].lastHarvested = Time         -- update field harvesting time
             store("fields", fields)
+            sleep(10)
         end
     end
 
