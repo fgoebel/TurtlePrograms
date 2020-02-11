@@ -8,10 +8,10 @@
     },
     name = "sugar",
     crop = "sugar",
-    rows = 24,
-    cols = 9,
+    rows = 2,
+    cols = 3,
     right = true,
-    interval = 1800,
+    interval = 180,
     lastHarvested = 0,
     active = true,
   },
@@ -24,10 +24,10 @@
     },
     name = "cactus",
     crop = "cactus",
-    rows = 24,
-    cols = 8,
+    rows = 2,
+    cols = 3,
     right = true,
-    interval = 1800,
+    interval = 180,
     lastHarvested = 0,
     active = true,
   },
@@ -45,7 +45,7 @@
     right = true,
     interval = 1800,
     lastHarvested = 0,
-    active = true,
+    active = false,
   },
   {
     pos = {
@@ -61,7 +61,7 @@
     right = true,
     interval = 1800,
     lastHarvested = 0,
-    active = true,
+    active = false,
   },
   {
     pos = {
@@ -77,7 +77,7 @@
     right = true,
     interval = 1800,
     lastHarvested = 0,
-    active = true,
+    active = false,
   },
   {
     pos = {
@@ -93,7 +93,7 @@
     right = true,
     interval = 1800,
     lastHarvested = 0,
-    active = true,
+    active = false,
   },
     {
     pos = {
@@ -109,7 +109,7 @@
     right = true,
     interval = 9000,
     lastHarvested = 0,
-    active = true,
+    active = false,
   },
     {
     pos = {
@@ -125,7 +125,7 @@
     right = true,
     interval = 1800,
     lastHarvested = 0,
-    active = true,
+    active = false,
   },
   {
     pos = {
@@ -141,6 +141,6 @@
     right = true,
     interval = 1800,
     lastHarvested = 0,
-    active = true,
+    active = false,
   },
 }
