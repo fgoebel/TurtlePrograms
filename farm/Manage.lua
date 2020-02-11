@@ -10,7 +10,6 @@ local LastTime = os.time()*1000*0.05 --Time in real-Life seconds
 local Time = 0
 
 local storage = {x=122,y=63,z=-261,f=3}
-local storagePos = textutils.serialize(storage)
 
 -- load json API from github if it does not exist yet
 if not fs.exists("json.lua") then
@@ -125,6 +124,7 @@ while true do
     NewID, message = rednet.receive(2)
     if message == "I am new" then
         print("found new turtle")
+        storagePos = textutils.serialize(storage)
         rednet.send(NewID,storagePos)                           -- send storage position
     end
    
