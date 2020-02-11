@@ -140,6 +140,7 @@ while true do
         goTo.goTo(storage)
         farming.start(field,storage)             -- go working
         BackHomeState = true                     -- change BackHomeState
+        Waiting = true
     end
 end
 end
