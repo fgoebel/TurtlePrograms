@@ -3,9 +3,6 @@
 -- depends on goTo API
 
 --*********************************************
--- Define specific positions
-local storage = {x=122,y=63,z=-261,f=3}
-
 -- Define options
 local BoneMealOpt = false                   -- Using Bone Meal is optional
 
@@ -156,11 +153,10 @@ function generalField(field)
 local cols = field.cols
 local rows = field.rows
 local turnRight = field.right
-crop = field.crop
-SeedName = determineSeed(crop)
+SeedName = determineSeed(field.crop)
 
-dropInventory(storage)              -- drop everything
-refillFuel(storage)                 -- refuel if fuel level below 5000
+dropInventory()                     -- drop everything
+refillFuel()                        -- refuel if fuel level below 5000
 SeedSlot = getItemFromPeripheral(SeedName,1),64 -- get 64 Seeds, returns false, if no seeds were available
 if BoneMealOpt then
     BoneSlot = getBoneMeal()            -- get Bone Meal, returns false, if no Bone meal was available
@@ -199,9 +195,9 @@ function cactusField(field)
 local cols = field.cols
 local rows = field.rows
 local turnRight = field.right
-crop = field.crop
 
-refillFuel(storage)                             -- refuel if fuel level below 5000
+refillFuel()                                    -- refuel if fuel level below 5000
+print("try to go to field")
 goTo.goTo(field.pos)                            -- got to first Block of field
 
 top = true                                      -- variable for indicating if turtle is in top of col
@@ -272,12 +268,12 @@ function sugarField(field)
 local cols = field.cols
 local rows = field.rows
 local turnRight = field.right
-crop = field.crop
 
 local skip = 1                              -- equals 1 if water must be skipped in next turn, else equals 0
 local currentCol = 1                        -- variable for currentCol
 
-refillFuel(storage)                         -- refuel if fuel level below 5000
+refillFuel()                                -- refuel if fuel level below 5000
+print("try to go to field")
 goTo.goTo(field.pos)                        -- got to first Block of field
 
     while currentCol <= cols do             -- do for each col
@@ -319,9 +315,8 @@ function enderlillyField(field)
     local cols = field.cols
     local rows = field.rows
     local turnRight = field.right
-    crop = field.crop
 
-    refillFuel(storage)                             -- refuel if fuel level below 5000
+    refillFuel()                                    -- refuel if fuel level below 5000
 
     goTo.goTo(field.pos)                            -- got to first Block of field
     
@@ -368,7 +363,7 @@ end
 
 --*********************************************
 --refill and drop functions + general functions
-function dropInventory(storage)
+function dropInventory()
     goTo.goTo(storage)             -- go to storage system, after field is finished
     for Slot =1, 16 do              -- clear slots
         turtle.select(Slot)        -- select next Slot
@@ -377,7 +372,7 @@ function dropInventory(storage)
     back()
 end
 
-function refillFuel(storage)
+function refillFuel()
     if turtle.getFuelLevel() < 5000 then
         goTo.goTo(storage)              -- go to storage system
         while turtle.getFuelLevel()/turtle.getFuelLimit() < 1 do    -- get current Fuellevel (percentage) and compare to Limit
@@ -429,7 +424,7 @@ end
 function dropAndReturn()
     ReturnPosition = goTo.returnPos()
     dropInventory(storage)
-    if (crop == "wheat" or crop == "beetroot" or crop == "potato" or crop == "carrot") then
+    if (field.crop == "wheat" or field.crop == "beetroot" or field.crop == "potato" or field.crop == "carrot") then
         SeedSlot = getItemFromPeripheral(SeedName,1),64 -- get 64 Seeds, returns false, if no seeds were available
         if BoneMealOpt then
             BoneSlot = getBoneMeal()            -- get Bone Meal, returns false, if no Bone meal was available
@@ -438,7 +433,8 @@ function dropAndReturn()
     goTo.goTo(ReturnPosition)
 end
 
-function start(field,storage)
+function start(field,storagePos)
+    storage = storagePos
     print(field.name) 
     print("Start farming")
     if (field.crop == "cactus") then

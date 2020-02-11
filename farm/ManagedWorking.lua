@@ -82,7 +82,7 @@ end
             rednet.send(ID,"I am new")
             ID, StorageMessage = rednet.receive()
             storage = textutils.unserialize(message)
-            store("StoragePos",storage)
+            store("StoragePos",StorageMessage)
             initialization = false  -- change initialization state
         end
     end
@@ -138,7 +138,7 @@ while true do
     elseif not Waiting then                      -- State: not waiting, harvesting
         print("Start farming on: ".. field.name)
         farming.start(field,storage)             -- go working
-        farming.dropInventory(storage)           -- drop everything
+        farming.dropInventory(storage)           -- drop everythingexit()
         BackHomeState = true                     -- change BackHomeState
     end
 end
