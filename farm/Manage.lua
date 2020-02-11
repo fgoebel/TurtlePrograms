@@ -67,10 +67,25 @@ while true do
     if Turtlestate == false then
         rednet.broadcast("coming home?")                        -- check for new returnees
         ID, message = rednet.receive(2)
+        print("someone came home")
         if message == "yes, back home" then                     -- if someone returned: store ID, change state
             ReturnerID = ID
             Turtlestate = true
         end
+    end
+    if Turtlestate==true then                                   -- Turtle returned from field
+        if (Queuestate == false and Fieldstate == true) then    -- Noone is in queue and field is available
+            NextField = textutils.serialize(fields[FieldIndex]) -- serialize field table
+            rednet.send(ReturnerID,NextField)                   -- send field to turtle
+            fields[FieldIndex].lastHarvested = Time             -- update field harvesting time
+            store("fields", fields)
+            Fieldstate = false                                  -- Change Fieldstate and Queuestate
+            Queuestate = true   
+            print(fields[FieldIndex].name)
+        else                                                    -- either no field or someone in queue
+            rednet.send(ReturnerID,"go to queue")               -- initialize sending to queue
+        end
+        Turtlestate = false                                     -- Change Turtlestate
     end
 
     -- Queuestate: false--> Noone is waiting in queue, true--> Someone is waiting
@@ -102,21 +117,7 @@ while true do
     end
   
     -- Actions:
-    if Turtlestate==true then                                   -- Turtle returned from field
-        if (Queuestate == false and Fieldstate == true) then    -- Noone is in queue and field is available
-            NextField = textutils.serialize(fields[FieldIndex]) -- serialize field table
-            rednet.send(ReturnerID,NextField)                   -- send field to turtle
-            fields[FieldIndex].lastHarvested = Time             -- update field harvesting time
-            store("fields", fields)
-            Fieldstate = false                                  -- Change Fieldstate and Queuestate
-            Queuestate = true   
-            print(fields[FieldIndex].name)
-        else                                                    -- either no field or someone in queue
-            rednet.send(ReturnerID,"go to queue")               -- initialize sending to queue
-        end
-        Turtlestate = false                                     -- Change Turtlestate
-
-    elseif (Fieldstate == true and Queuestate == true) then     -- Field needs to be harvested and someone is available in queue 
+    if (Fieldstate == true and Queuestate == true) then         -- Field needs to be harvested and someone is available in queue 
         NextField = textutils.serialize(fields[FieldIndex])     -- serialize field table
         rednet.send(QueueID,NextField)                          -- send field to turtle
         fields[FieldIndex].lastHarvested = Time                 -- update field harvesting time
