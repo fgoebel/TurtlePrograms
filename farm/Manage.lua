@@ -95,8 +95,8 @@ while true do
     if Turtlestate == false then
         rednet.broadcast("coming home?")                        -- check for new returnees
         ID, message = rednet.receive(2)
-        print("someone came home")
         if message == "yes, back home" then                     -- if someone returned: store ID, change state
+            print("someone came home")
             ReturnerID = ID
             Turtlestate = true
         end
