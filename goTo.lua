@@ -85,15 +85,28 @@ function turnRight()
 end
 
 --Move forward
-function forward()
-	if not turtle.forward() then
-		up()
-	else
-		currentPosition.x = currentPosition.x + xDirFromF[currentPosition.f]
-		currentPosition.z = currentPosition.z + zDirFromF[currentPosition.f]
-		store("currentPosition",currentPosition)
+function forward(steps)
+	if steps == nil then
+		steps = 1
 	end
-	return true
+	i=0
+	counter=0
+	while (i < steps and counter < 50) do
+		if not turtle.forward() then
+			counter = counter + 1
+			sleep(0.5)
+		else
+			i=i+1
+			currentPosition.x = currentPosition.x + xDirFromF[currentPosition.f]
+			currentPosition.z = currentPosition.z + zDirFromF[currentPosition.f]
+			store("currentPosition",currentPosition)
+		end
+	end
+	if counter < 50 then
+		return true
+	else
+		return false
+	end
 end
 
 --Force to move forward
@@ -116,25 +129,52 @@ function forwardForce()
 end
 
 --Move back
-function back()
-	if not turtle.back() then
-		up()
-    else
-	    currentPosition.x = currentPosition.x - xDirFromF[currentPosition.f]
-	    currentPosition.z = currentPosition.z - zDirFromF[currentPosition.f]
-	    store("currentPosition",currentPosition)
-    end
-	return true
+function back(steps)
+	if steps == nil then
+		steps = 1
+	end
+	i=0
+	counter=0
+	while (i < steps and counter < 50) do
+		if not turtle.back() then
+			counter = counter + 1
+			sleep(0.5)
+		else
+			i=i+1
+			currentPosition.x = currentPosition.x - xDirFromF[currentPosition.f]
+			currentPosition.z = currentPosition.z - zDirFromF[currentPosition.f]
+			store("currentPosition",currentPosition)
+		end
+	end
+	if counter < 50 then
+		return true
+	else
+		return false
+	end
 end
 
 --Move down
-function down()
-	while not turtle.down() do
-        sleep(1)
-    end
-	currentPosition.y = currentPosition.y - 1
-	store("currentPosition",currentPosition)
-	return true
+function down(steps)
+	if steps == nil then
+		steps = 1
+	end
+	i=0
+	counter=0
+	while (i < steps and counter < 50) do
+		if not turtle.down() then
+			counter = counter + 1
+			sleep(0.5)
+		else
+			i=i+1
+			currentPosition.y = currentPosition.y - 1
+			store("currentPosition",currentPosition)
+		end
+	end
+	if counter < 50 then
+		return true
+	else
+		return false
+	end
 end
 
 --Force to move down
@@ -157,13 +197,27 @@ function downForce()
 end
 
 --Move up
-function up()
-	while not turtle.up() do
-        sleep(1)
-    end
-	currentPosition.y = currentPosition.y + 1
-	store("currentPosition",currentPosition)
-	return true
+function up(steps)
+	if steps == nil then
+		steps = 1
+	end
+	i=0
+	counter=0
+	while (i < steps and counter < 50) do
+		if not turtle.up() then
+			counter = counter + 1
+			sleep(0.5)
+		else
+			i=i+1
+			currentPosition.y = currentPosition.y + 1
+			store("currentPosition",currentPosition)
+		end
+	end
+	if counter < 50 then
+		return true
+	else
+		return false
+	end
 end
 
 --Force to move up

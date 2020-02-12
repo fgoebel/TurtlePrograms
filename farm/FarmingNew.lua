@@ -18,10 +18,10 @@ end
 os.loadAPI("goTo.lua") 
 
 --*********************************************
--- Basic functions for movement
+-- Basic functions for movement, just for shorter usage
 function turn()
-    left()
-    left()
+    goTo.turnLeft()
+    goTo.turnLeft()
 end
 function left()
     goTo.turnLeft()
@@ -30,56 +30,16 @@ function right()
     goTo.turnRight()
 end
 function forward(steps)
-    if steps == nil then
-        steps = 1
-    end
-    i=0
-    while i < steps do
-        if goTo.forward() then
-            i=i+1
-        else
-            sleep(0.5)
-        end
-    end
+    goTo.forward(steps)
 end
 function back(steps)
-    if steps == nil then
-        steps = 1
-    end
-    i=0
-    while i < steps do
-        if goTo.back() then
-            i=i+1
-        else
-            sleep(0.5)
-        end
-    end
+    goTo.back(steps)
 end
 function up(steps)
-    if steps == nil then
-        steps = 1
-    end
-    i=0
-    while i < steps do
-        if goTo.up() then
-            i=i+1
-        else
-            sleep(0.5)
-        end
-    end
+    goTo.up(steps)
 end
 function down(steps)
-    if steps == nil then
-        steps = 1
-    end
-    i=0
-    while i < steps do
-        if goTo.down() then
-            i=i+1
-        else
-            sleep(0.5)
-        end
-    end
+    goTo.down(steps) then
 end
 
 --*********************************************
