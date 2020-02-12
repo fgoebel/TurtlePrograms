@@ -93,7 +93,7 @@ while true do
 
     if (Waiting and not FirstInQueue) then                      -- State: Waiting in Queue
         print("waiting in queue")
-        valid, block = turtle.detectDown()                      -- Check for first position, based on block below (cobble on first Position)
+        valid, block = turtle.inspectDown()                      -- Check for first position, based on block below (cobble on first Position)
         if valid then
             if block.name == "minecraft:cobblestone" then
                 FirstInQueue = true
