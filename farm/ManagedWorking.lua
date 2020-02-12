@@ -54,7 +54,7 @@ local EndofQueue = false
             EndofQueue = true
         end
     end
-    goTo.foward()
+    goTo.forward()
 end
 
 --*********************************************
