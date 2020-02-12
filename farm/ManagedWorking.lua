@@ -60,13 +60,17 @@ end
 --*********************************************
 -- Initialization
 function initialization()
-    if not fs.exists("StoragePos") then
+    if not fs.exists("StoragePos") or not fs.exists("QueuePos") then
         initialization = true
     else 
         local file = fs.open("StoragePos","r")
         local data = file.readAll()
         file.close()
         storage = textutils.unserialize(data)
+        local file = fs.open("QueuePos","r")
+        local data = file.readAll()
+        file.close()
+        queue = textutils.unserialize(data)
         initialization = false
     end
     ManagerID, message = rednet.receive()               -- waits for a broadcast to receive ID of manager
