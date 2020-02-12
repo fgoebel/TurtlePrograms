@@ -158,8 +158,9 @@ SeedName = determineSeed(field.crop)
 dropInventory()                     -- drop everything
 refillFuel()                        -- refuel if fuel level below 5000
 SeedSlot = getItemFromPeripheral(SeedName,1),64 -- get 64 Seeds, returns false, if no seeds were available
+back()                              -- one back to avoid crashes
 if BoneMealOpt then
-    BoneSlot = getBoneMeal()            -- get Bone Meal, returns false, if no Bone meal was available
+    BoneSlot = getBoneMeal()        -- get Bone Meal, returns false, if no Bone meal was available
 end
 goTo.goTo(field.pos)                -- got to first Block of field
 
@@ -197,7 +198,7 @@ local rows = field.rows
 local turnRight = field.right
 
 refillFuel()                                    -- refuel if fuel level below 5000
-print("try to go to cactus field")
+back()                                          -- one back to avoid crashes
 goTo.goTo(field.pos)                            -- got to first Block of field
 
 top = true                                      -- variable for indicating if turtle is in top of col
@@ -273,7 +274,7 @@ local skip = 1                              -- equals 1 if water must be skipped
 local currentCol = 1                        -- variable for currentCol
 
 refillFuel()                                -- refuel if fuel level below 5000
-print("try to go to sugar field")
+back()                                      -- one back to avoid crashes
 goTo.goTo(field.pos)                        -- got to first Block of field
 
     while currentCol <= cols do             -- do for each col
@@ -317,7 +318,7 @@ function enderlillyField(field)
     local turnRight = field.right
 
     refillFuel()                                    -- refuel if fuel level below 5000
-
+    back()                                          -- one back to avoid crashes
     goTo.goTo(field.pos)                            -- got to first Block of field
     
         for j = 1,cols do                           --start harvesting
@@ -369,7 +370,6 @@ function dropInventory()
         turtle.select(Slot)        -- select next Slot
         turtle.dropDown()          -- just drop everthing in the slot
     end
-    back()
 end
 
 function refillFuel()
@@ -381,7 +381,6 @@ function refillFuel()
             turtle.refuel()                                         -- refuel
         end
     end
-    back()
 end
 
 function getSlot(ItemName)
@@ -408,8 +407,7 @@ function getItemFromPeripheral(ItemName,Slot,MaxItems)
             end
         end
     end
-    return false
-    back()                                        
+    return false                                      
 end
 
 function determineEmptySlots()
@@ -452,5 +450,6 @@ function start(field, storagePos)
     up(5)                                   -- go up to avoid crashes
 
     dropInventory()
+    back()                                  -- one back to avoid crashes
 
 end
