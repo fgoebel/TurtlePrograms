@@ -76,7 +76,7 @@ function initialization()
         initialization = false
     end
     ManagerID, message = rednet.receive()               -- waits for a broadcast to receive ID of manager
-    
+
     -- initialization store storage Position
     if initialization then
         rednet.send(ManagerID,"I am new","New")             -- send message to manager using protocol "New"
@@ -109,6 +109,7 @@ while true do
         print("waiting for field")
         rednet.send(ManagerID,"I am first","Queue")             -- send message to manager using protocol "Queue"
         ID, message = rednet.receive("Queue",2)                 -- listening to messages on protocol "Queue"
+        print(message)
         if message ~= nil then
             if textutils.unserialize(message) ~= nil then       -- message was field
                 rednet.send(ID,"got it", "Field")               -- send message to manager using protocol "Field"

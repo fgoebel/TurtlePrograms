@@ -166,6 +166,7 @@ function main()
         -- Processing Message:
         -- Protocol = "Queue" --> Trutle is waiting on first position
         if protocol == "Queue" then
+            print("found someone on queue")
             QueueID = ID
             Queuestate = true       
 
@@ -220,7 +221,8 @@ function main()
             end
             Turtlestate = false                                                 -- Change Turtlestate
 
-        elseif (Fieldstate == true and Queuestate == true) then                 -- Field needs to be harvested and someone is available in queue 
+        elseif (Fieldstate == true and Queuestate == true) then                 -- Field needs to be harvested and someone is available in queue
+            print("try to send field") 
             NextField = textutils.serialize(fields[FieldIndex])                 -- serialize field table
             rednet.send(QueueID,NextField,"Queue")                              -- send field to turtle using protocol "Queue"
             print(fields[FieldIndex].name)
