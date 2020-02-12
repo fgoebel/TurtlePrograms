@@ -44,7 +44,7 @@ function store(sName, stuff)
 	handle.close()
 end
 
-function ToQueue(queue)
+function ToQueue()
 local EndofQueue = false
     goTo.goTo(queue)
     while not EndofQueue do
