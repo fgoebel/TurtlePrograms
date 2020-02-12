@@ -138,6 +138,15 @@ while true do
             NextField = textutils.serialize(fields[FieldIndex])             -- serialize field table
             rednet.send(ReturnerID,NextField,"BackHome")                    -- send field to turtle using protocol "BackHome"
             print(fields[FieldIndex].name)
+            ID, message, protocol = rednet.receive(2)                       -- check for messages
+            -- Protocol = "Field" --> Turtle received field and starts harvesting
+            if protocol == "Field" then 
+                Fieldstate = false                                                  -- Change Fieldstate and Queuestate
+                Queuestate = false                                                  
+                fields[FieldIndex].lastHarvested = Time                             -- update field harvesting time
+                store("fields", fields)
+                sleep(10)
+            end
         else                                                                -- either no field or someone in queue
             rednet.send(ReturnerID,"go to queue","BackHome")                -- initialize sending to queue using protocol "BackHome"
         end
