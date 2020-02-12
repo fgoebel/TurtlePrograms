@@ -114,6 +114,7 @@ while true do
             if ((field.lastHarvested + field.interval - Time <= minTime) and field.active == true) then   
                 minTime = field.lastHarvested + field.interval - Time       -- select field based on lowest value
                 FieldIndex = k                                              -- if new field available: store field index
+            end
         end
         if FieldIndex ~= 0 then                                             -- if new field available: change state
             Fieldstate = true
