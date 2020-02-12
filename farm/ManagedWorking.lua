@@ -67,18 +67,18 @@ end
 -- Initialization
 function initialization()
     if not fs.exists("StoragePos") then
-        local initialization = true
+        initialization = true
     else 
         local file = fs.open("StoragePos","r")
         local data = file.readAll()
         file.close()
         storage = textutils.unserialize(data)
-        local initialization = false
+        initialization = false
     end
-
+    ManagerID, message = rednet.receive()               -- waits for a broadcast to receive ID of manager
+    
     -- initialization store storage Position
     if initialization then
-        ManagerID, message = rednet.receive()               -- waits for a broadcast to receive ID of manager
         rednet.send(ManagerID,"I am new","New")             -- send message to manager using protocol "New"
         ManagerID, StorageMessage = rednet.receive("New")   -- listening to messages on protocol "New"
         storage = textutils.unserialize(StorageMessage)
