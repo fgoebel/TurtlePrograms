@@ -57,8 +57,11 @@ end
 
 -- determine Time
 function checkTime()
-    local TimeTable = http.get("http://worldtimeapi.org/api/timezone/Europe/Berlin").readAll()
-    Time = json.decode(TimeTable).unixtime
+    local TimeTable = http.get("http://worldtimeapi.org/api/timezone/Europe/Berlin").
+    if TimeTable ~= nil then
+        TimeTable = TimeTable.readAll()
+        Time = json.decode(TimeTable).unixtime
+    end
     return Time
 end
 
