@@ -109,7 +109,7 @@ function getBoneMeal()                                  -- does not work with ge
     return false                                        
 end
 
-function havestAndPlant()
+function havestAndPlant(crop)
     if SeedSlot == false then
         print("no seeds")
         return
@@ -119,16 +119,16 @@ function havestAndPlant()
 
     if valid then                                       -- there is a block below
         if BoneMealOpt then
-            if ((data.metadata < 7 and field.crop ~= "beetroot") or (data.metadata < 3)) then  -- block is not fully grown
+            if ((data.metadata < 7 and crop ~= "beetroot") or (data.metadata < 3)) then  -- block is not fully grown
                 turtle.select(BoneSlot)                                                         -- select BoneMeal slot
-                while ((data.metadata < 7 and field.crop ~= "beetroot") or (data.metadata < 3)) do
+                while ((data.metadata < 7 and crop ~= "beetroot") or (data.metadata < 3)) do
                     turtle.placeDown()                                                          -- place Bone Meal until it is grown
                     valid, data = turtle.inspectDown()                                          -- inspect again
                 end
             end
         end
 
-        if ((data.metadata == 7) or (data.metadata == 3 and field.crop == "beetroot")) then  --block is fully grown
+        if ((data.metadata == 7) or (data.metadata == 3 and crop == "beetroot")) then  --block is fully grown
             turtle.digDown()                            -- harvest
             sleep(0.5)
             turtle.suckDown()                           -- suck in
@@ -166,7 +166,7 @@ goTo.goTo(field.pos)                -- got to first Block of field
 
     for j = 1,cols do               --start harvesting
         for i=1,rows-1 do
-            havestAndPlant()        -- harvest and plant on current block
+            havestAndPlant(field.crop)        -- harvest and plant on current block
             forward(1)              -- move one block forward
         end                         
         havestAndPlant()            -- on last block of col only harvest and plant
