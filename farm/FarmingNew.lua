@@ -119,16 +119,16 @@ function havestAndPlant()
 
     if valid then                                       -- there is a block below
         if BoneMealOpt then
-            if ((data.metadata < 7 and crop ~= "beetroot") or (data.metadata < 3)) then  -- block is not fully grown
+            if ((data.metadata < 7 and field.crop ~= "beetroot") or (data.metadata < 3)) then  -- block is not fully grown
                 turtle.select(BoneSlot)                                                         -- select BoneMeal slot
-                while ((data.metadata < 7 and crop ~= "beetroot") or (data.metadata < 3)) do
+                while ((data.metadata < 7 and field.crop ~= "beetroot") or (data.metadata < 3)) do
                     turtle.placeDown()                                                          -- place Bone Meal until it is grown
                     valid, data = turtle.inspectDown()                                          -- inspect again
                 end
             end
         end
 
-        if ((data.metadata == 7) or (data.metadata == 3 and crop == "beetroot")) then  --block is fully grown
+        if ((data.metadata == 7) or (data.metadata == 3 and field.crop == "beetroot")) then  --block is fully grown
             turtle.digDown()                            -- harvest
             sleep(0.5)
             turtle.suckDown()                           -- suck in
