@@ -106,6 +106,15 @@ while true do
                 minTime = field.lastHarvested + field.interval - Time       -- select field based on lowest value
                 FieldIndex = k                                              -- if new field available: store field index
             end
+            ID, message, protocol = rednet.receive(2)                       -- check for messages
+            -- Protocol = "Field" --> Turtle received field and starts harvesting
+            if protocol == "Field" then 
+                Fieldstate = false                                                  -- Change Fieldstate and Queuestate
+                Queuestate = false                                                  
+                fields[FieldIndex].lastHarvested = Time                             -- update field harvesting time
+                store("fields", fields)
+                sleep(10)
+            end
         end
         if FieldIndex ~= 0 then                                             -- if new field available: change state
             Fieldstate = true
@@ -130,6 +139,15 @@ while true do
         NextField = textutils.serialize(fields[FieldIndex])                 -- serialize field table
         rednet.send(QueueID,NextField,"Queue")                              -- send field to turtle using protocol "Queue"
         print(fields[FieldIndex].name)
+        ID, message, protocol = rednet.receive(2)                       -- check for messages
+        -- Protocol = "Field" --> Turtle received field and starts harvesting
+        if protocol == "Field" then 
+            Fieldstate = false                                                  -- Change Fieldstate and Queuestate
+            Queuestate = false                                                  
+            fields[FieldIndex].lastHarvested = Time                             -- update field harvesting time
+            store("fields", fields)
+            sleep(10)
+        end
     end
     
     -- check for new fields (Overwriting not possible!!!)
