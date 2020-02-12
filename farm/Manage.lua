@@ -170,12 +170,12 @@ function main()
             Queuestate = true       
 
         -- Protocol = BackHome --> Turtle came back home and waits for input
-        elseif protocol = "BackHome" then
+        elseif protocol == "BackHome" then
             ReturnerID = ID
             Turtlestate = true        
 
         -- Protocol = "Field" --> Turtle received field and starts harvesting
-        elseif protocol = "Field" then 
+        elseif protocol == "Field" then 
             Fieldstate = false                                                  -- Change Fieldstate and Queuestate
             Queuestate = false                                                  
             fields[FieldIndex].lastHarvested = Time                             -- update field harvesting time
