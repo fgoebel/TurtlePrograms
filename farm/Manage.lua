@@ -106,7 +106,7 @@ while true do
     
     -- Update Fieldstate
     -- Fieldstate: false-->no field available/turtle was send, true-->field available
-    if Fieldstate == false then
+    if (Fieldstate == false and LastCheck+5<Time) then
         print("waiting for fields")                                 
         minTime = 0                                                         -- check for new field
         FieldIndex = 0
@@ -114,20 +114,12 @@ while true do
             if ((field.lastHarvested + field.interval - Time <= minTime) and field.active == true) then   
                 minTime = field.lastHarvested + field.interval - Time       -- select field based on lowest value
                 FieldIndex = k                                              -- if new field available: store field index
-            end
-            ID, message, protocol = rednet.receive(2)                       -- check for messages
-            -- Protocol = "Field" --> Turtle received field and starts harvesting
-            if protocol == "Field" then 
-                Fieldstate = false                                                  -- Change Fieldstate and Queuestate
-                Queuestate = false                                                  
-                fields[FieldIndex].lastHarvested = Time                             -- update field harvesting time
-                store("fields", fields)
-                sleep(10)
-            end
         end
         if FieldIndex ~= 0 then                                             -- if new field available: change state
             Fieldstate = true
             print("new field to harvest: "..fields[FieldIndex].name)
+        else 
+            LastCheck = Time                                                -- check for field next time in five seconds
         end
     end
 
