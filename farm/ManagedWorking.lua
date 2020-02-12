@@ -108,7 +108,7 @@ while true do
     elseif (Waiting and FirstInQueue) then                      -- State: Waiting and First in Queue
         print("waiting for field")
         rednet.send(ManagerID,"I am first","Queue")             -- send message to manager using protocol "Queue"
-        ID, message = rednet.receive("Queue",2)                 -- listening to messages on protocol "Queue"
+        ID, message = rednet.receive("Queue",5)                 -- listening to messages on protocol "Queue"
         print(message)
         if message ~= nil then
             if textutils.unserialize(message) ~= nil then       -- message was field
