@@ -6,7 +6,7 @@
 local time = 0
 local NextField
 local minTime
-local LastTime = os.time()*1000*0.05 --Time in real-Life seconds
+local LastCheck = 0
 local Time = 0
 
 local storage = {
@@ -64,6 +64,7 @@ end
 
 --*********************************************
 -- Main Managing function
+
 function main()
 local Turtlestate = false
 local Queuestate = false
