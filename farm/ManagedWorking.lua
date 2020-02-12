@@ -66,27 +66,24 @@ end
 --*********************************************
 -- Initialization
 function initialization()
-local initialization = false
-if not fs.exists("StoragePos") then
-    initialization = true
-else 
-    local file = fs.open("StoragePos","r")
-    local data = file.readAll()
-    file.close()
-    storage = textutils.unserialize(data)
-end
-
-    while initialization do         -- initialization store storage and queue Position
-        ID, message = rednet.receive()
-        if message == "New?" then
-            rednet.send(ID,"I am new")
-            ID, StorageMessage = rednet.receive()
-            storage = textutils.unserialize(StorageMessage)
-            store("StoragePos",storage)
-            initialization = false  -- change initialization state
-        end
+    if not fs.exists("StoragePos") then
+        local initialization = true
+    else 
+        local file = fs.open("StoragePos","r")
+        local data = file.readAll()
+        file.close()
+        storage = textutils.unserialize(data)
+        local initialization = false
     end
 
+    -- initialization store storage Position
+    if initialization then
+        ManagerID, message = rednet.receive()               -- waits for a broadcast to receive ID of manager
+        rednet.send(ManagerID,"I am new","New")             -- send message to manager using protocol "New"
+        ManagerID, StorageMessage = rednet.receive("New")   -- listening to messages on protocol "New"
+        storage = textutils.unserialize(StorageMessage)
+        store("StoragePos",storage)
+    end
 end
 
 -- General Farming Programm
@@ -97,54 +94,51 @@ local Waiting = true
 
 while true do
 
-    if (Waiting and not FirstInQueue) then      -- State: Waiting in Queue
+    if (Waiting and not FirstInQueue) then                      -- State: Waiting in Queue
         print("waiting in queue")
-        valid, block = turtle.inspectDown()     -- Check for first position, based on block below (oak-stairs on first Position)
+        valid, block = turtle.inspectDown()                     -- Check for first position, based on block below (oak-stairs on first Position)
         if valid then
-            if block.name == "minecraft:oak_stairs" then -- on first Position
-                FirstInQueue = true                      -- change FirstInQueue state
-            elseif not turtle.detect() then              -- check if someone is in front
-                goTo.forward()                           -- go forward
+            if block.name == "minecraft:oak_stairs" then        -- on first Position
+                FirstInQueue = true                             -- change FirstInQueue state
+            elseif not turtle.detect() then                     -- check if someone is in front
+                goTo.forward()                                  -- go forward
             end
         end
     
-    elseif (Waiting and FirstInQueue) then       -- State: Waiting and First in Queue
+    elseif (Waiting and FirstInQueue) then                      -- State: Waiting and First in Queue
         print("waiting for field")
-        ID, message = rednet.receive(2)
-        if message == "in queue?" then           -- answer to "in queue?" call
-            rednet.send(ID,"yes, in queue")
-        elseif message ~= nil then
-            if textutils.unserialize(message) ~= nil then -- message was field
-                rednet.send(ID,"got it")
+        rednet.send(ManagerID,"I am first","Queue")             -- send message to manager using protocol "Queue"
+        ID, message = rednet.receive("Queue",2)                 -- listening to messages on protocol "Queue"
+        if message ~= nil then
+            if textutils.unserialize(message) ~= nil then       -- message was field
+                rednet.send(ID,"got it", "Field")               -- send message to manager using protocol "Field"
                 field = textutils.unserialize(message)
-                Waiting = false                      -- change state of Waiting and First in Queue
+                Waiting = false                                 -- change state of Waiting and First in Queue
                 FirstInQueue = false
             end
         end
 
-    elseif BackHome then                         -- State: Back home
-        ID, message = rednet.receive(10)
-        print("Message after return: "..message)
-        if message == "coming home?" then        -- answer to "coming home?" call
-            rednet.send(ID,"yes, back home")
-        elseif message == "go to queue" then     -- is send to queue
+    elseif BackHome then                                        -- State: Back home
+        rednet.send(ManagerID,"I am back","BackHome")           -- send message to manager to announce returning using protocol "BackHome"
+        ID, message, protocol = rednet.receive("BackHome",2)    -- listening to messages on protocol "BackHome"
+        if message == "go to queue" then                        -- is send to queue
             ToQueue()
             BackHome = false
             Waiting = true
         elseif message ~= nil then
-            if textutils.unserialize(message) ~= nil then -- message was field
-                rednet.send(ID,"got it")
+            if textutils.unserialize(message) ~= nil then       -- message was field
+                rednet.send(ID,"got it","Field")                -- send message to manager using protocol "Field"
                 field = textutils.unserialize(message)
-                Waiting = false                      -- change state of Waiting and First in Queue
+                Waiting = false                                 -- change state of Waiting and First in Queue
                 BackHome = false
             end
         end
 
-    elseif not Waiting and not BackHome then     -- State: not waiting, harvesting
+    elseif not Waiting and not BackHome then                    -- State: not waiting, harvesting
         print("Start farming on: ".. field.name)
         goTo.goTo(storage)
-        farming.start(field,storage)             -- go working
-        BackHome = true                          -- change BackHomeState
+        farming.start(field,storage)                            -- go working
+        BackHome = true                                         -- change BackHomeState
     end
 end
 end
