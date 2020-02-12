@@ -44,23 +44,17 @@ function store(sName, stuff)
 	handle.close()
 end
 
-function ToQueue()
+function ToQueue(queue)
 local EndofQueue = false
-    goTo.up()
-    goTo.turnLeft()
-    goTo.forward()
-    goTo.turnRight()
+    goTo.goTo(queue)
     while not EndofQueue do
         if turtle.inspect() then
-            goTo.turnLeft()
-            goTo.forward()
-            goTo.turnRight()
+            goTo.up()
         else
             EndofQueue = true
         end
     end
-    goTo.forward()
-    goTo.turnRight()
+    goTo.foward()
 end
 
 --*********************************************
@@ -81,8 +75,11 @@ function initialization()
     if initialization then
         rednet.send(ManagerID,"I am new","New")             -- send message to manager using protocol "New"
         ManagerID, StorageMessage = rednet.receive("New")   -- listening to messages on protocol "New"
+        ManagerID, QueueMessage = rednet.receive("New")     -- listening to messages on protocol "New"
         storage = textutils.unserialize(StorageMessage)
         store("StoragePos",storage)
+        queue = textutils.unserialize(QueueMessage)
+        store("QueuePos",queue)
     end
 end
 
@@ -96,13 +93,9 @@ while true do
 
     if (Waiting and not FirstInQueue) then                      -- State: Waiting in Queue
         print("waiting in queue")
-        valid, block = turtle.inspectDown()                     -- Check for first position, based on block below (oak-stairs on first Position)
-        if valid then
-            if block.name == "minecraft:oak_stairs" then        -- on first Position
-                FirstInQueue = true                             -- change FirstInQueue state
-            elseif not turtle.detect() then                     -- check if someone is in front
-                goTo.forward()                                  -- go forward
-            end
+        valid, block = turtle.detectDown()                      -- Check for first position, based on block below (oak-stairs on first Position)
+        if not valid then
+            goTo.down()
         end
     
     elseif (Waiting and FirstInQueue) then                      -- State: Waiting and First in Queue

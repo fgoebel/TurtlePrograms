@@ -16,6 +16,13 @@ local storage = {
     f=3
 }
 
+local queue = {
+    x=123,
+    y=63,
+    z=-260,
+    f=3
+}
+
 -- load json API from github if it does not exist yet
 if not fs.exists("json.lua") then
 	r = http.get("https://raw.githubusercontent.com/fgoebel/TurtlePrograms/cct-clique27/json.lua")
@@ -93,6 +100,8 @@ while true do
         NewID = ID
         storagePos = textutils.serialize(storage)
         rednet.send(NewID,storagePos,"New")                                 -- send storage position using protocol "New"
+        queuePos = textutils.serialize(queue)
+        rednet.send(NewID,queuePos,"New")                                   -- send queue position using protocol "New"
     end
     
     -- Update Fieldstate
