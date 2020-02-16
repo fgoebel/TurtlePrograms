@@ -460,6 +460,8 @@ function enderlillyField(field)
     if field.aero then
         buildFrame(field)
         buildGround(field,"minecraft:dirt", "minecraft:end_stone")
+    else
+        changeGround(field,"minecraft:end_stone")
     end
 
     -- place enderlilly
