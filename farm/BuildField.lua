@@ -48,6 +48,19 @@ function getItemFromPeripheral(ItemName,Slot,MaxItems)
     return false                                      
 end
 
+function determineSeed(crop)
+    if (crop == "wheat") then
+        seed = "minecraft:wheat_seeds"
+    elseif crop == "beetroot" then
+        seed = "minecraft:beetroot_seeds"
+    elseif crop == "carrot" then
+        seed = "minecraft:carrot"
+    elseif crop == "potato" then
+        seed = "minecraft:potato"
+    end
+    return seed
+end
+
 --*********************************************
 -- build Frame
 function buildFrame(field)
@@ -177,7 +190,7 @@ for i = 1, cols do
             turtle.select(slot2)
             turtle.place()
             goTo.turnLeft()
-            turnRight = ture 
+            turnRight = true 
         end
     else
         goTo.up()
@@ -501,6 +514,113 @@ function enderlillyField(field)
                 goTo.turnLeft()
                 turnRight=true
             end
+        end
+    end
+
+    dropInventory()
+end
+
+--*********************************************
+-- build egeneral field
+function generalField(field)
+    local cols = field.cols
+    local rows = field.rows
+    local turnRight = field.turnRight
+
+    seed = determineSeed(field.crop)
+    
+    refillFuel()
+    dropInventory()
+
+    -- build frame and ground if aero field
+    if field.aero then
+        buildFrame(field)
+        buildGround(field)
+    else
+        changeGround(field)
+    end
+
+    -- Build water blocks
+    turnRight = field.turnRight
+    local waterCols = math.floor((cols-1)/9)        -- returns number of necessary watercols
+    local waterRows = math.floor((rows-1)/9)
+    for i=1,15 do                                   -- leave one slot empty for dirt
+        getItemFromPeripheral("minecraft:water_bucket",i,1)
+    end
+    goTo.goTo(field.pos)
+    if turnRight then                               -- go to first water col
+        goTo.turnLeft()
+        goTo.forward(4)
+        goTo.turnRight()
+    else
+        goTo.turnRight()
+        goTo.forward(4)
+        goTo.turnLeft()
+    end
+    goTo.back()
+
+    for j = 1, waterCols do
+        for i = 1, waterRows do
+            goTo.forward(5)
+            slot=getSlot("minecraft:water_bucket")
+            if slot == false then                   -- refill if no water is left
+                print("run out of water")
+                ReturnPosition = goTo.returnPos()
+                dropInventory()
+                for n=1,15 do
+                    getItemFromPeripheral("minecraft:water_bucket",n,1)
+                end
+                goTo.goTo(ReturnPosition)
+                slot=getSlot("minecraft:water_bucket")
+            else
+                turtle.select(slot)
+            end
+            turtle.digDown()
+            turtle.placeDown()
+        end
+        goTo.forward(4)
+        if turnRight then
+            goTo.turnRight()
+            goTo.forward(5)
+            goTo.turnRight()
+            turnRight = false
+        else
+            goTo.turnLeft()
+            goTo.forward(5)
+            goTo.turnLeft()
+            turnRight = true
+        end
+    end
+
+    -- till an place seeds
+    turnRight = field.turnRight
+    for i=1,16 do
+        getItemFromPeripheral(seed,i,64)
+    end
+    goTo.goTo(field.pos)
+    goTo.up()
+
+    for j=1,cols do
+        for i=1,rows do
+            valid, data = turtle.inspectDown()
+            if valid and data.name ~= "minecraft:water" then
+                slot=getSlot(seed)
+                if slot == false then                   -- refill if no water is left
+                    print("run out of seed")
+                    ReturnPosition = goTo.returnPos()
+                    dropInventory()
+                    for n=1,16 do
+                        getItemFromPeripheral(seed,n,64)
+                    end
+                    goTo.goTo(ReturnPosition)
+                    slot=getSlot(seed))
+                else
+                    turtle.select(slot)
+                end
+                turtle.digDown()
+                turtle.placeDown()
+            end
+            goTo.forward()
         end
     end
 
