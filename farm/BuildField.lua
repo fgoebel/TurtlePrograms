@@ -50,7 +50,11 @@ end
 
 --*********************************************
 -- build Frame
-function buildFrame()
+function buildFrame(field)
+    local cols = field.cols
+    local rows = field.rows
+    local turnRight = field.turnRight
+
     for i = 1, 16 do                -- get cobblestone
         getItemFromPeripheral("minecraft:cobblestone",i,64)
     end
@@ -110,7 +114,11 @@ end
 
 --*********************************************
 -- build ground
-function buildGround(ItemLayerOne, ItemLayerTwo)
+function buildGround(field, ItemLayerOne, ItemLayerTwo)
+local cols = field.cols
+local rows = field.rows
+local turnRight = field.turnRight
+
 if ItemLayerOne == nil then
     ItemLayerOne = "minecraft:dirt"
 end
@@ -183,21 +191,81 @@ dropInventory()
 end
 
 --*********************************************
+-- change ground
+function changeGround(field, ItemName)
+    local cols = field.cols
+    local rows = field.rows
+    local turnRight = field.turnRight
+
+    if ItemName = nil then
+        ItemName = "minecraft:dirt"
+    end
+
+    for i = 1, 8 do                                 -- get Item, leave half of the slots empty
+        getItemFromPeripheral(ItemName,i,64)
+    end
+    goTo.goTo(field.pos)
+
+    for j=1,cols do
+        for i=1,rows do
+            valid, data = turtle.inspectDown()
+            if (valid and data.name ~= ItemName) or not valid then
+                exchange = true
+            end
+            
+            if exchange then
+                slot=getSlot(ItemName)
+                if slot == false then                   -- refill if no sugar is left
+                    print("run out of"..ItemName)
+                    ReturnPosition = goTo.returnPos()
+                    for n=1,8 do
+                        getItemFromPeripheral(ItemName,n,64)
+                    end
+                    goTo.goTo(ReturnPosition)
+                    slot=getSlot(ItemName)
+                else
+                    turtle.select(slot)
+                end
+                turtle.digDown()
+                turtle.placeDown()
+            end
+            goTo.forward()
+        end
+
+        if turnRight then
+            goTo.turnRight()
+            goTo.forward()
+            goTo.turnRight()
+            turnRight = false
+        else
+            goTo.turnLeft()
+            goTo.forward()
+            goTo.turnLeft()
+            turnRight = true
+        end
+        goTo.forward()
+    end
+    
+    dropInventory()   
+end
+
+--*********************************************
 -- build sugar field
 function sugarField(field)
-local cols = field.cols
-local rows = field.rows
-local turnRight = field.turnRight
-local waterCols = cols/3                                -- determine number of water cols
+    local cols = field.cols
+    local rows = field.rows
+    local turnRight = field.turnRight
+    local waterCols = cols/3                                -- determine number of water cols
 
-refillFuel()
-dropInventory()
+    refillFuel()
+    dropInventory()
     
 -- build frame and ground if aero field
     if field.aero then
-        buildFrame()
-        turnRight = field.turnRight
-        buildGround()
+        buildFrame(field)
+        buildGround(field)
+    else
+        changeGround(field)
     end
 
 -- build water cols
@@ -285,7 +353,7 @@ dropInventory()
                     getItemFromPeripheral("minecraft:sugar_cane",n,64)
                 end
                 goTo.goTo(ReturnPosition)
-                slot=getSlot("minecraft:dirt")
+                slot=getSlot("minecraft:sugar_cane")
             else
                 turtle.select(slot)
             end
@@ -328,9 +396,10 @@ function cactusField(field)
         
     -- build frame and ground if aero field
     if field.aero then
-        buildFrame()
-        turnRight = field.turnRight
-        buildGround("minecraft:dirt", "minecraft:sand")
+        buildFrame(field)
+        buildGround(field,"minecraft:dirt", "minecraft:sand")
+    else
+        changeGround(field,"minecraft:sand")
     end
 
     -- place cacti
@@ -353,12 +422,72 @@ function cactusField(field)
                     getItemFromPeripheral("minecraft:cactus",n,64)
                 end
                 goTo.goTo(ReturnPosition)
-                slot=getSlot("minecraft:dirt")
+                slot=getSlot("minecraft:cactus")
+            else
+                turtle.select(slot)
+            end
+        end
+        turtle.placeDown()
+        goTo.forward(2)            
+        if turnRight then                           -- move to next row
+            goTo.turnRight()
+            goTo.forward()
+            goTo.turnRight()
+            turnRight = false
+        else 
+            goTo.turnLeft()
+            goTo.forward()
+            goTo.turnLeft()
+            turnRight=true
+        end
+    end
+
+    dropInventory()
+
+end
+
+--*********************************************
+-- build enderlilly field
+function enderlillyField(field)
+    local cols = field.cols
+    local rows = field.rows
+    local turnRight = field.turnRight
+    
+    refillFuel()
+    dropInventory()
+
+    -- build frame and ground if aero field
+    if field.aero then
+        buildFrame(field)
+        buildGround(field,"minecraft:dirt", "minecraft:end_stone")
+    end
+
+    -- place enderlilly
+    dropInventory()
+    refillFuel()
+    for i=1,16 do
+        getItemFromPeripheral("extrautils2:enderlilly",i,64)
+    end
+    turnRight = field.turnRight
+    goTo.goTo(field.pos)
+    goTo.up()
+
+    for j = 1,cols do
+        for i = 1,rows do
+            slot=getSlot("extrautils2:enderlilly")
+            if slot == false then                   -- refill if no cactus is left
+                print("run out of enderlilly")
+                ReturnPosition = goTo.returnPos()
+                for n=1,16 do
+                    getItemFromPeripheral("extrautils2:enderlilly",n,64)
+                end
+                goTo.goTo(ReturnPosition)
+                slot=getSlot("extrautils2:enderlilly")
             else
                 turtle.select(slot)
             end
             turtle.placeDown()
-            goTo.forward(2)            
+            goTo.forward()            
             if turnRight then                       -- move to next row
                 goTo.turnRight()
                 goTo.forward()
@@ -374,5 +503,4 @@ function cactusField(field)
     end
 
     dropInventory()
-
 end
