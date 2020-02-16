@@ -55,6 +55,8 @@ function buildFrame(field)
     local rows = field.rows
     local turnRight = field.turnRight
 
+    dropInventory()
+    refillFuel()
     for i = 1, 16 do                -- get cobblestone
         getItemFromPeripheral("minecraft:cobblestone",i,64)
     end
@@ -126,6 +128,8 @@ if ItemLayerTwo == nil then
     ItemLayerTwo = "minecraft:dirt"
 end
 
+dropInventory()
+refillFuel()
 for i = 1, 8 do                     -- get ItemLayerOne
     getItemFromPeripheral(ItemLayerOne,i,64)
 end
@@ -201,6 +205,8 @@ function changeGround(field, ItemName)
         ItemName = "minecraft:dirt"
     end
 
+    dropInventory()
+    refillFuel()
     for i = 1, 8 do                                 -- get Item, leave half of the slots empty
         getItemFromPeripheral(ItemName,i,64)
     end
@@ -257,8 +263,8 @@ function sugarField(field)
     local turnRight = field.turnRight
     local waterCols = cols/3                                -- determine number of water cols
 
-    refillFuel()
     dropInventory()
+    refillFuel()
     
 -- build frame and ground if aero field
     if field.aero then
@@ -343,8 +349,8 @@ function cactusField(field)
     local rows = field.rows
     local turnRight = field.turnRight
     
-    refillFuel()
     dropInventory()
+    refillFuel()
         
     -- build frame and ground if aero field
     if field.aero then
@@ -365,8 +371,8 @@ function enderlillyField(field)
     local rows = field.rows
     local turnRight = field.turnRight
     
-    refillFuel()
     dropInventory()
+    refillFuel()
 
     -- build frame and ground if aero field
     if field.aero then
@@ -385,11 +391,9 @@ function generalField(field)
     local cols = field.cols
     local rows = field.rows
     local turnRight = field.turnRight
-
-    seed = determineSeed(field.crop)
     
-    refillFuel()
     dropInventory()
+    refillFuel()
 
     -- build frame and ground if aero field
     if field.aero then
