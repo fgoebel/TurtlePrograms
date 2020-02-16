@@ -122,6 +122,7 @@ back()                              -- one back to avoid crashes
 if BoneMealOpt then
     BoneSlot = getBoneMeal()        -- get Bone Meal, returns false, if no Bone meal was available
 end
+field.pos.y = field.pos.y + 1       -- correct harvesting height based on crop
 goTo.goTo(field.pos)                -- got to first Block of field
 
     for j = 1,cols do               --start harvesting
@@ -159,6 +160,7 @@ local turnRight = field.right
 
 refillFuel()                                    -- refuel if fuel level below 5000
 back()                                          -- one back to avoid crashes
+field.pos.y = field.pos.y + 3                   -- correct harvesting height based on crop
 goTo.goTo(field.pos)                            -- got to first Block of field
 
 top = true                                      -- variable for indicating if turtle is in top of col
@@ -235,6 +237,7 @@ local currentCol = 1                        -- variable for currentCol
 
 refillFuel()                                -- refuel if fuel level below 5000
 back()                                      -- one back to avoid crashes
+field.pos.y = field.pos.y + 3               -- correct harvesting height based on crop
 goTo.goTo(field.pos)                        -- got to first Block of field
 
     while currentCol <= cols do             -- do for each col
@@ -279,6 +282,7 @@ function enderlillyField(field)
 
     refillFuel()                                    -- refuel if fuel level below 5000
     back()                                          -- one back to avoid crashes
+    field.pos.y = field.pos.y + 1                   -- correct harvesting height based on crop
     goTo.goTo(field.pos)                            -- got to first Block of field
     
         for j = 1,cols do                           --start harvesting
