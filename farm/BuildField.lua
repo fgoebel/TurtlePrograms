@@ -48,13 +48,6 @@ function getItemFromPeripheral(ItemName,Slot,MaxItems)
     return false                                      
 end
 
-function getAndReturn(ItemName,Slot,MaxItems,NumSlots,Return)
-    ReturnPosition = goTo.returnPos()
-    for i=1,NumSlots do
-        getItemFromPeripheral(ItemName,Slot,MaxItems)
-    end
-    goTo.goTo(ReturnPosition)
-    end
 --*********************************************
 -- build Frame
 function buildFrame()
@@ -64,16 +57,15 @@ function buildFrame()
     
     goTo.goTo(field.pos)
 
-    if turnRight then               -- go to first pos of frame (one block left, one down)
+    if turnRight then               -- go to first pos of frame (one block left)
         goTo.turnLeft()
         goTo.forward()
-        goTo.turnLeft()             -- for facing backwards
-    else                            -- go to first pos of frame (one block left, one down)
+        goTo.turnRight()         
+    else                            -- go to first pos of frame (one block right)
         goTo.turnRight()
         goTo.forward()
-        goTo.turnRight()            -- for facing backwards
+        goTo.turnLeft()
     end
-    goTo.down(1)
 
     local side = 1
     local blocks = rows
@@ -84,8 +76,8 @@ function buildFrame()
             if slot == false then                   -- refill if no dirt is left
                 print("run out of stone")
                 ReturnPosition = goTo.returnPos()
-                for i=1,NumSlots do
-                    getItemFromPeripheral(ItemName,Slot,MaxItems)
+                for n=1,16 do
+                    getItemFromPeripheral("minecraft:cobblestone",n,64)
                 end
                 goTo.goTo(ReturnPosition)
                 slot=getSlot("minecraft:cobblestone")
@@ -93,8 +85,7 @@ function buildFrame()
                 turtle.select(slot)
             end
             turtle.placeDown()
-            goTo.back()
-            turtle.place()
+            goTo.forward()
         end                         -- turtle is now above last block of current side/ first block of next side of frame
 
         if turnRight then
@@ -112,8 +103,6 @@ function buildFrame()
     end
     
     turtle.placeDown()              -- do last blocks of frame
-    goTo.up()
-    turtle.placeDown()
 
     dropInventory()
 
@@ -121,10 +110,19 @@ end
 
 --*********************************************
 -- build ground
-function buildGround()
+function buildGround(ItemLayerOne, ItemLayerTwo)
+if ItemLayerOne == nil then
+    ItemLayerOne = "minecraft:dirt"
+end
+if ItemLayerTwo == nil then
+    ItemLayerTwo = "minecraft:dirt"
+end
 
-for i = 1, 16 do                -- get dirt
-    getItemFromPeripheral("minecraft:dirt",i,64)
+for i = 1, 8 do                     -- get ItemLayerOne
+    getItemFromPeripheral(ItemLayerOne,i,64)
+end
+for i = 9, 16 do                     -- get ItemLayerTwo
+    getItemFromPeripheral(ItemLayerTwo,i,64)
 end
 goTo.goTo(field.pos)
 goTo.down(1)
@@ -133,45 +131,54 @@ goTo.turnLeft()                     -- turtle is facing backwards and at first b
 
 for i = 1, cols do
     for j=1,rows-1 do
-        slot=getSlot("minecraft:dirt")
-        if slot == false then                   -- refill if no dirt is left
-            print("run out of dirt")
+        slot1=getSlot(ItemLayerOne)
+        slot2=getSlot(itemLayerTwo)
+        if slot1 == false or slot 2 == false then                   -- refill
+            print("run out of Items")
             ReturnPosition = goTo.returnPos()
-            for i=1,NumSlots do
-                getItemFromPeripheral(ItemName,Slot,MaxItems)
+            dropInventory()
+            for n=1,8 do
+                getItemFromPeripheral(ItemLayerOne,n,64)
+            end
+            for n=9,16 do
+                getItemFromPeripheral(ItemLayerTwo,n,64)
             end
             goTo.goTo(ReturnPosition)
-            slot=getSlot("minecraft:dirt")
-        else
-            turtle.select(slot)
+            slot1=getSlot(ItemLayerOne)
+            slot2=getSlot(ItemLayerTwo)
         end
+        turtle.select(slot1)
         turtle.placeDown()
         goTo.back()
+        turtle.select(slot2)
         turtle.place()
     end
+    turtle.select(slot1)
     turtle.placeDown()
     if i ~= cols then
         if turnRight then
             goTo.turnRight()
             goTo.back()
+            turtle.select(slot2)
             turtle.place()
             goTo.turnRight()
             turnRight = false
         else
             goTo.turnLeft()
             goTo.back()
+            turtle.select(slot2)
             turtle.place()
             goTo.turnLeft()
             turnRight = ture 
         end
     else
         goTo.up()
+        turtle.select(slot2)
         turtle.placeDown()
     end
 
-    dropInventory()
-
 end
+dropInventory()
 
 end
 
@@ -223,7 +230,7 @@ dropInventory()
             slot=getSlot("minecraft:water_bucket")      -- select water bucket
             if not slot then                            -- no water in inventory
                 goTo.back(2)                            -- go back 2 blocks, were water is available
-                for j=1,3 do                            -- refill water
+                for n=1,3 do                            -- refill water
                     slot=getSlot("minecraft:bucket")    -- get empty bucket
                     turtle.select(slot)
                     turtle.placeDown()                  -- get water   
@@ -236,7 +243,7 @@ dropInventory()
             goTo.forward()
         end
         goTo.back(1)                            -- go back 1 blocks, were water is available
-        for j=1,3 do                            -- refill water
+        for n=1,3 do                            -- refill water
             slot=getSlot("minecraft:bucket")    -- get empty bucket
             turtle.select(slot)
             turtle.placeDown()                  -- get water   
@@ -274,8 +281,8 @@ dropInventory()
             if slot == false then                   -- refill if no sugar is left
                 print("run out ofsugar cane")
                 ReturnPosition = goTo.returnPos()
-                for i=1,NumSlots do
-                    getItemFromPeripheral(ItemName,Slot,MaxItems)
+                for n=1,16 do
+                    getItemFromPeripheral("minecraft:sugar_cane",n,64)
                 end
                 goTo.goTo(ReturnPosition)
                 slot=getSlot("minecraft:dirt")
@@ -294,7 +301,7 @@ dropInventory()
         else
             goTo.turnLeft()
             goTo.forward(1+skip)
-            goToturnLeft()
+            goTo.turnLeft()
             turnRight = true 
         end
         if skip == 1 then
@@ -303,6 +310,67 @@ dropInventory()
             skip = 1
         end
 
+    end
+
+    dropInventory()
+
+end
+
+--*********************************************
+-- build cactus field
+function cactusField(field)
+    local cols = field.cols
+    local rows = field.rows
+    local turnRight = field.turnRight
+    
+    refillFuel()
+    dropInventory()
+        
+    -- build frame and ground if aero field
+    if field.aero then
+        buildFrame()
+        turnRight = field.turnRight
+        buildGround("minecraft:dirt", "minecraft:sand")
+    end
+
+    -- place cacti
+    dropInventory()
+    refillFuel()
+    for i=1,16 do
+        getItemFromPeripheral("minecraft:cactus",i,64)
+    end
+    turnRight = field.turnRight
+    goTo.goTo(field.pos)
+    goTo.up()
+
+    for j = 1,cols do
+        for i = 1,rows/2 do
+            slot=getSlot("minecraft:cactus")
+            if slot == false then                   -- refill if no cactus is left
+                print("run out of cactus")
+                ReturnPosition = goTo.returnPos()
+                for n=1,16 do
+                    getItemFromPeripheral("minecraft:cactus",n,64)
+                end
+                goTo.goTo(ReturnPosition)
+                slot=getSlot("minecraft:dirt")
+            else
+                turtle.select(slot)
+            end
+            turtle.placeDown()
+            goTo.forward(2)            
+            if turnRight then                       -- move to next row
+                goTo.turnRight()
+                goTo.forward()
+                goTo.turnRight()
+                turnRight = false
+            else 
+                goTo.turnLeft()
+                goTo.forward()
+                goTo.turnLeft()
+                turnRight=true
+            end
+        end
     end
 
     dropInventory()
