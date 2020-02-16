@@ -48,19 +48,6 @@ function getItemFromPeripheral(ItemName,Slot,MaxItems)
     return false                                      
 end
 
-function determineSeed(crop)
-    if (crop == "wheat") then
-        seed = "minecraft:wheat_seeds"
-    elseif crop == "beetroot" then
-        seed = "minecraft:beetroot_seeds"
-    elseif crop == "carrot" then
-        seed = "minecraft:carrot"
-    elseif crop == "potato" then
-        seed = "minecraft:potato"
-    end
-    return seed
-end
-
 --*********************************************
 -- build Frame
 function buildFrame(field)
@@ -345,54 +332,6 @@ function sugarField(field)
 
     end
     
--- plant sugar on field
-    dropInventory()
-    refillFuel()
-    for i = 1, 16 do                -- get sugar cane
-        getItemFromPeripheral("minecraft:sugar_cane",i,64)
-    end
-    goTo.goTo(field.pos)
-    goTo.up(1)
-    turnRight = field.turnRight
-    local skip = 1
-
-    for j=1,cols do
-        for i=1,rows-1 do
-            slot=getSlot("minecraft:sugar_cane")
-            if slot == false then                   -- refill if no sugar is left
-                print("run out ofsugar cane")
-                ReturnPosition = goTo.returnPos()
-                for n=1,16 do
-                    getItemFromPeripheral("minecraft:sugar_cane",n,64)
-                end
-                goTo.goTo(ReturnPosition)
-                slot=getSlot("minecraft:sugar_cane")
-            else
-                turtle.select(slot)
-            end
-            turtle.placeDown()
-            goTo.forward()
-        end
-        turtle.placeDown()
-        if turnRight then
-            goTo.turnRight()
-            goTo.forward(1+skip)
-            goTo.turnRight()
-            turnRight = false
-        else
-            goTo.turnLeft()
-            goTo.forward(1+skip)
-            goTo.turnLeft()
-            turnRight = true 
-        end
-        if skip == 1 then
-            skip = 0
-        else
-            skip = 1
-        end
-
-    end
-
     dropInventory()
 
 end
@@ -415,46 +354,6 @@ function cactusField(field)
         changeGround(field,"minecraft:sand")
     end
 
-    -- place cacti
-    dropInventory()
-    refillFuel()
-    for i=1,16 do
-        getItemFromPeripheral("minecraft:cactus",i,64)
-    end
-    turnRight = field.turnRight
-    goTo.goTo(field.pos)
-    goTo.up()
-
-    for j = 1,cols do
-        for i = 1,rows/2 do
-            slot=getSlot("minecraft:cactus")
-            if slot == false then                   -- refill if no cactus is left
-                print("run out of cactus")
-                ReturnPosition = goTo.returnPos()
-                for n=1,16 do
-                    getItemFromPeripheral("minecraft:cactus",n,64)
-                end
-                goTo.goTo(ReturnPosition)
-                slot=getSlot("minecraft:cactus")
-            else
-                turtle.select(slot)
-            end
-        end
-        turtle.placeDown()
-        goTo.forward(2)            
-        if turnRight then                           -- move to next row
-            goTo.turnRight()
-            goTo.forward()
-            goTo.turnRight()
-            turnRight = false
-        else 
-            goTo.turnLeft()
-            goTo.forward()
-            goTo.turnLeft()
-            turnRight=true
-        end
-    end
-
     dropInventory()
 
 end
@@ -475,46 +374,6 @@ function enderlillyField(field)
         buildGround(field,"minecraft:dirt", "minecraft:end_stone")
     else
         changeGround(field,"minecraft:end_stone")
-    end
-
-    -- place enderlilly
-    dropInventory()
-    refillFuel()
-    for i=1,16 do
-        getItemFromPeripheral("extrautils2:enderlilly",i,64)
-    end
-    turnRight = field.turnRight
-    goTo.goTo(field.pos)
-    goTo.up()
-
-    for j = 1,cols do
-        for i = 1,rows do
-            slot=getSlot("extrautils2:enderlilly")
-            if slot == false then                   -- refill if no cactus is left
-                print("run out of enderlilly")
-                ReturnPosition = goTo.returnPos()
-                for n=1,16 do
-                    getItemFromPeripheral("extrautils2:enderlilly",n,64)
-                end
-                goTo.goTo(ReturnPosition)
-                slot=getSlot("extrautils2:enderlilly")
-            else
-                turtle.select(slot)
-            end
-            turtle.placeDown()
-            goTo.forward()            
-            if turnRight then                       -- move to next row
-                goTo.turnRight()
-                goTo.forward()
-                goTo.turnRight()
-                turnRight = false
-            else 
-                goTo.turnLeft()
-                goTo.forward()
-                goTo.turnLeft()
-                turnRight=true
-            end
-        end
     end
 
     dropInventory()
@@ -589,38 +448,6 @@ function generalField(field)
             goTo.forward(5)
             goTo.turnLeft()
             turnRight = true
-        end
-    end
-
-    -- till an place seeds
-    turnRight = field.turnRight
-    for i=1,16 do
-        getItemFromPeripheral(seed,i,64)
-    end
-    goTo.goTo(field.pos)
-    goTo.up()
-
-    for j=1,cols do
-        for i=1,rows do
-            valid, data = turtle.inspectDown()
-            if valid and data.name ~= "minecraft:water" then
-                slot=getSlot(seed)
-                if slot == false then                   -- refill if no water is left
-                    print("run out of seed")
-                    ReturnPosition = goTo.returnPos()
-                    dropInventory()
-                    for n=1,16 do
-                        getItemFromPeripheral(seed,n,64)
-                    end
-                    goTo.goTo(ReturnPosition)
-                    slot=getSlot(seed))
-                else
-                    turtle.select(slot)
-                end
-                turtle.digDown()
-                turtle.placeDown()
-            end
-            goTo.forward()
         end
     end
 
