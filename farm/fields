@@ -41,7 +41,7 @@
     name = "cactus01",
     crop = "cactus",
     rows = 24,
-    cols = 8,
+    cols = 9,
     right = true,
     interval = 1800,
     lastHarvested = 0,
