@@ -256,6 +256,70 @@ function changeGround(field, ItemName)
 end
 
 --*********************************************
+-- add light
+function addLight(field)
+    local cols = field.cols
+    local rows = field.rows
+    local turnRight = field.turnRight
+
+    dropInventory()
+    refillFuel()
+    getItemFromPeripheral("minecraft:torch",1,64)
+    getItemFromPeripheral("minecraft:planks",1,64)
+
+    local lightCols = math.floor((cols-1)/9)        -- returns number of necessary watercols
+    local lightRows = math.floor((rows-1)/9)
+    goTo.goTo(field.pos)
+    goTo.up(5)
+    if turnRight then                               -- go to first light col
+        goTo.turnLeft()
+        goTo.forward(4)
+        goTo.turnRight()
+    else
+        goTo.turnRight()
+        goTo.forward(4)
+        goTo.turnLeft()
+    end
+    goTo.back()
+
+    for j = 1, lightCols do
+        goTo.forward()
+        for i = 1, lightRows do
+            goTo.forward(4)
+            turtle.select(2)
+            turtle.placeDown()
+            turtle.select(1)
+
+            goTo.turnRight()                -- first light
+            goTo.forward()
+            turtle.placeDown()
+            goTo.turnRight()
+            for i = 1,3 do                 -- remaining three lights
+                goTo.forward()
+                goTo.turnRight()
+                goTo.forward()
+                turtle.placeDown()
+            end
+            goTo.turnLeft()
+        end
+        goTo.forward(4)
+        if turnRight then
+            goTo.turnRight()
+            goTo.forward(5)
+            goTo.turnRight()
+            turnRight = false
+        else
+            goTo.turnLeft()
+            goTo.forward(5)
+            goTo.turnLeft()
+            turnRight = true
+        end
+    end
+
+end
+
+
+--*********************************************
 -- build sugar field
 function sugarField(field)
     local cols = field.cols
@@ -338,6 +402,9 @@ function sugarField(field)
 
     end
     
+    -- build light
+    addLight(field)
+
     dropInventory()
 
 end
@@ -360,6 +427,9 @@ function cactusField(field)
         changeGround(field,"minecraft:sand")
     end
 
+    -- build light
+    addLight(field)
+    
     dropInventory()
 
 end
@@ -382,6 +452,9 @@ function enderlillyField(field)
         changeGround(field,"minecraft:end_stone")
     end
 
+    -- build light
+    addLight(field)
+    
     dropInventory()
 end
 
@@ -455,5 +528,8 @@ function generalField(field)
         end
     end
 
+    -- build light
+    addLight(field)
+    
     dropInventory()
 end
