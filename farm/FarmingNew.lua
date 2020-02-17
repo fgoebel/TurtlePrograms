@@ -39,7 +39,7 @@ function up(steps)
     goTo.up(steps)
 end
 function down(steps)
-    goTo.down(steps) then
+    goTo.down(steps)
 end
 
 --*********************************************
