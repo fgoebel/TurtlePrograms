@@ -53,7 +53,7 @@ end
 function buildFrame(field)
     local cols = field.cols
     local rows = field.rows
-    local turnRight = field.turnRight
+    local turnRight = field.right
 
     dropInventory()
     refillFuel()
@@ -119,7 +119,7 @@ end
 function buildGround(field, ItemLayerOne, ItemLayerTwo)
 local cols = field.cols
 local rows = field.rows
-local turnRight = field.turnRight
+local turnRight = field.right
 
 if ItemLayerOne == nil then
     ItemLayerOne = "minecraft:dirt"
@@ -199,7 +199,7 @@ end
 function changeGround(field, ItemName)
     local cols = field.cols
     local rows = field.rows
-    local turnRight = field.turnRight
+    local turnRight = field.right
 
     if ItemName = nil then
         ItemName = "minecraft:dirt"
@@ -260,7 +260,7 @@ end
 function addLight(field)
     local cols = field.cols
     local rows = field.rows
-    local turnRight = field.turnRight
+    local turnRight = field.right
 
     dropInventory()
     refillFuel()
@@ -324,7 +324,7 @@ end
 function sugarField(field)
     local cols = field.cols
     local rows = field.rows
-    local turnRight = field.turnRight
+    local turnRight = field.right
     local waterCols = cols/3                                -- determine number of water cols
 
     dropInventory()
@@ -343,7 +343,7 @@ function sugarField(field)
         getItemFromPeripheral("minecraft:water_bucket",i,1)
     end
     goTo.goTo(field.pos)                                -- go to first water block
-    turnRight = field.turnRight                         -- reset turnRight
+    turnRight = field.right                         -- reset turnRight
     if turnRight then
         goTo.turnRight()
         goTo.forward()
@@ -414,7 +414,7 @@ end
 function cactusField(field)
     local cols = field.cols
     local rows = field.rows
-    local turnRight = field.turnRight
+    local turnRight = field.right
     
     dropInventory()
     refillFuel()
@@ -439,7 +439,7 @@ end
 function enderlillyField(field)
     local cols = field.cols
     local rows = field.rows
-    local turnRight = field.turnRight
+    local turnRight = field.right
     
     dropInventory()
     refillFuel()
@@ -463,7 +463,7 @@ end
 function generalField(field)
     local cols = field.cols
     local rows = field.rows
-    local turnRight = field.turnRight
+    local turnRight = field.right
     
     dropInventory()
     refillFuel()
@@ -477,7 +477,7 @@ function generalField(field)
     end
 
     -- Build water blocks
-    turnRight = field.turnRight
+    turnRight = field.right
     local waterCols = math.floor((cols-1)/9)        -- returns number of necessary watercols
     local waterRows = math.floor((rows-1)/9)
     for i=1,15 do                                   -- leave one slot empty for dirt
