@@ -13,9 +13,23 @@ end
 function addField()
     print("For adding new field enter 'new', for editing fields endet 'edit'.")
     local input = read()
-    if input == "y" then
-        local NewField = {}
-        local NewField.pos={}
+    if input == "new" then
+        local NewField = {
+            pos = {
+              z = 0,
+              f = 0,
+              y = 0,
+              x = 0,
+            },
+            name = "",
+            crop = "",
+            rows = 0,
+            cols = 0,
+            right = false,
+            interval = 0,
+            lastHarvested = 0,
+            active = false,
+          }
 
         print("Please enter field name: ")
         NewField.name = read()
@@ -76,9 +90,8 @@ function addField()
             end
         end
 
-        NewField.lastHarvested = 0
-
         store("newfield", NewField)
+    
     end
 
 end
