@@ -109,7 +109,7 @@ function editField()
     elseif input == "right" then
         print("Set to true or false?")
         input = read()
-        if input == true
+        if input == true then
             field.right = true
         else
             field.right = false
@@ -122,7 +122,7 @@ function editField()
     elseif input == "active" then
         print("Set to true or false?")
         input = read()
-        if input == true
+        if input == true then
             field.active = true
         else
             field.active = false
