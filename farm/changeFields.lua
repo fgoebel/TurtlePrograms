@@ -35,25 +35,25 @@ function addField()
     NewField.crop = read()
 
     print("Please enter harvesting interval: ")
-    NewField.interval = read()
+    NewField.interval = tonumber(read())
 
     print("Number of rows?")
-    NewField.rows = read()
+    NewField.rows = tonumber(read())
 
     print("Number of columns?")
-    NewField.cols = read()
+    NewField.cols = tonumber(read())
 
     print("Please add coordinates of first block. z?")
-    NewField.pos.z = read()
+    NewField.pos.z = tonumber(read())
 
     print("x?")
-    NewField.pos.x = read()
+    NewField.pos.x = tonumber(read())
 
     print("y?")
-    NewField.pos.y = read()
+    NewField.pos.y = tonumber(read())
 
     print("f?")
-    NewField.pos.f = read()
+    NewField.pos.f = tonumber(read())
 
     print("Turn right on first turn? (y/n)")
     input = read()
@@ -98,13 +98,13 @@ function editField()
     input = read()
     if input == "pos" then
         print("x?")
-        field.pos.x = read()
+        field.pos.x = tonumber(read())
         print("y?")
-        field.pos.y = read()
+        field.pos.y = tonumber(read())
         print("z?")
-        field.pos.z = read()
+        field.pos.z = tonumber(read())
         print("f?")
-        field.pos.f = read()
+        field.pos.f = tonumber(read())
 
     elseif input == "right" then
         print("Set to true or false?")
@@ -117,7 +117,7 @@ function editField()
 
     elseif input == "interval" then
         print("new interval?")
-        field.interval = read()
+        field.interval = tonumber(read())
 
     elseif input == "active" then
         print("Set to true or false?")
