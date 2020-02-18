@@ -92,8 +92,7 @@ end
 
 --*********************************************
 -- edit field
-function editField()
-    field = getField()
+function editField(field)
     print("Which property should be edited? (pos/right/interval/active)")
     input = read()
     if input == "pos" then
@@ -131,6 +130,38 @@ function editField()
 return field
 end
 
+--*********************************************
+-- get field
+function getField()
+    while true do
+        -- get current field file from manager
+
+        -- ask for field name
+        print("type field name of the field, which is to edit. Type help to get list of all field names.")
+        local input = read()
+        if input == "help" then
+            for k,field in ipairs(fields) do
+                print(field.name .. ", ")
+            end
+        else                                -- search for field
+            name = input
+            fieldIndex = 0
+            for k,field in ipairs(fields) do
+                if field.name == name then
+                    fieldIndex = k
+                end
+            end
+            if fieldIndex = 0 then
+                print("field not known.")
+            else
+                return fields[fieldIndex]
+            end
+        end
+    end
+end
+
+--*********************************************
+-- user input manager
 function userInput()
     while true do
         print("For adding new field enter 'new', for editing fields endet 'edit'.")
@@ -140,7 +171,8 @@ function userInput()
             store("newfield", field)
 
         elseif input == "edit" then
-            field=editField()
+            field = getField()
+            field = editField(field)
             store("editedfield", field)
         end
     end
