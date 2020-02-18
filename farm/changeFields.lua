@@ -139,7 +139,7 @@ function userInput()
             field=addField()
             store("newfield", field)
 
-        elseif input = "edit" then
+        elseif input == "edit" then
             field=editField()
             store("editedfield", field)
         end
