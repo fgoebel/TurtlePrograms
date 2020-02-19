@@ -533,3 +533,19 @@ function generalField(field)
     
     dropInventory()
 end
+
+--*********************************************
+-- select building function
+function building(field,storagePos)
+    storage = storagePos
+    if field.crop == "sugar" then
+        sugarField(field)
+    elseif field.crop == "cactus" then
+        cactusField(field)
+    elseif field.crop == "enderlilly" then
+        enderlillyField(field)
+    else
+        generalField(field)
+    end
+
+end

@@ -146,8 +146,12 @@ while true do
 
     -- Protocol = "Plant" --> turtle finished building, next step is planting of field
     elseif protocol == "FinishedBuilding" then
-        toPlantIndex = tonumber(message)
-        fields[toPlantIndex].toplant = true
+        toPlantName = message
+        for k,field in ipairs(fields) do
+            if field.name == toPlantName then   
+                field.toplant = true                                       -- store field, which needs to be planted
+            end
+        end
 
     --Protocol = "Input" --> User input on fields
     elseif protocol == "Input" then

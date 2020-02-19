@@ -1,6 +1,6 @@
 -- Using Wireless Mining Turtle
 -- Turtle is send by computer using Manage.lua
--- depends on FarmingNew and goTo API
+-- depends on FarmingNew, BuildingField and goTo API
 
 --*********************************************
 -- load APIs
@@ -21,6 +21,15 @@ if not fs.exists("farming.lua") then
     r.close()
 end
 os.loadAPI("farming.lua") 
+
+if not fs.exists("building.lua") then
+	r = http.get("https://raw.githubusercontent.com/fgoebel/TurtlePrograms/cct-clique27/farm/BuildField.lua")
+    f = fs.open("building.lua", "w")
+    f.write(r.readAll())
+    f.close()
+    r.close()
+end
+os.loadAPI("building.lua") 
 
 --*********************************************
 --function to display heartbeat
@@ -87,7 +96,7 @@ function initialization()
     end
 end
 
--- General Farming Programm
+-- General Farming/Building Programm
 function main()
 local FirstInQueue = false
 local BackHome = false
@@ -110,18 +119,33 @@ while true do
     elseif (Waiting and FirstInQueue) then                      -- State: Waiting and First in Queue
         print("waiting for field")
         rednet.send(ManagerID,"I am first","Queue")             -- send message to manager using protocol "Queue"
-        ID, message = rednet.receive("Queue",5)                 -- listening to messages on protocol "Queue"
+        ID, message = rednet.receive("Queue",2)                 -- listening to messages on protocol "Queue"
         print(message)
-        if message ~= nil then
-            if textutils.unserialize(message) ~= nil then       -- message was field
-                rednet.send(ID,"got it", "Field")               -- send message to manager using protocol "Field"
-                field = textutils.unserialize(message)
-                Waiting = false                                 -- change state of Waiting and First in Queue
-                FirstInQueue = false
+            if message ~= nil then
+                if textutils.unserialize(message) ~= nil then   -- message was field
+                    rednet.send(ID,"got it", "Field")           -- send message to manager using protocol "Field"
+                    field = textutils.unserialize(message)
+                    Waiting = false                             -- change state of Waiting and First in Queue
+                    FirstInQueue = false
+                end
             end
-        end
+        ID, message = rednet.receive("Build",2)                 -- listening to messages on protocol "Build"
+        print(message)
+            if message ~= nil then
+                if textutils.unserialize(message) ~= nil then   -- message was field
+                    rednet.send(ID,"got it", "Build")           -- send message to manager using protocol "Field"
+                    field = textutils.unserialize(message)
+                    Waiting = false                             -- change state of Waiting and First in Queue
+                    FirstInQueue = false
+                    Building = true
+                end
+            end
 
     elseif BackHome then                                        -- State: Back home
+        if Building then
+            rednet.send(ManagerID,field.name,"FinishedBuilding")
+            sleep(2)
+        end
         rednet.send(ManagerID,"I am back","BackHome")           -- send message to manager to announce returning using protocol "BackHome"
         ID, message, protocol = rednet.receive("BackHome",2)    -- listening to messages on protocol "BackHome"
         if message == "go to queue" then                        -- is send to queue
@@ -138,9 +162,14 @@ while true do
         end
 
     elseif not Waiting and not BackHome then                    -- State: not waiting, harvesting
-        print("Start farming on: ".. field.name)
-        goTo.goTo(storage)
-        farming.start(field,storage)                            -- go working
+        if not Building then
+            print("Start farming on: ".. field.name)
+            goTo.goTo(storage)
+            farming.start(field,storage)                        -- go working
+        else 
+            print("Start building on: ".. field.name)
+            building.building(field,storage)
+        end    
         BackHome = true                                         -- change BackHomeState
     end
 end
