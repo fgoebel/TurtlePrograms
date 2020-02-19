@@ -40,7 +40,7 @@ function getItemFromPeripheral(ItemName,Slot,MaxItems)
         item = peri.getItemMeta(i)                      -- stores meta data in item variable
         if item ~= nil then
             if item.name == ItemName then                   -- if name of item in slot is desired seed name
-                peri.pushItems("left",i,MaxItems,Slot)        -- push item in slot i up to turtle, max 64 items in slot 1
+                peri.pushItems("south",i,MaxItems,Slot)        -- push item in slot i up to turtle, max 64 items in slot 1
                 return Slot                                 -- returns slot number for seeds if it was available
             end
         end
