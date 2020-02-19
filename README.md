@@ -49,3 +49,11 @@ f.write(r.readAll())
 f.close()
 r.close()
 ```
+For Planting turtles:
+``` 
+r = http.get("https://raw.githubusercontent.com/fgoebel/TurtlePrograms/cct-clique27/farm/updatePlanting.lua")
+f = fs.open("update.lua", "w")
+f.write(r.readAll())
+f.close()
+r.close()
+```
