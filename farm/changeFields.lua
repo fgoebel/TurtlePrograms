@@ -136,11 +136,16 @@ end
 function getField()
     while true do
         -- get current field file from manager
-        rednet.send(ManagerID,"send fields","Input")            -- ask for fields table
-        ID, message = rednet.receive("Input")                      -- wait for answer
-        if message ~= nil then
-            if textutils.unserialize(message) ~= nil then       -- message was fields
-                fields = textutils.unserialize(message)
+        gotFields = false
+        while not gotFields do
+            rednet.send(ManagerID,"send fields","Input")        -- ask for fields table
+            ID, message = rednet.receive("Input",2)             -- wait for answer
+
+            if message ~= nil then
+                if textutils.unserialize(message) ~= nil then       -- message was fields
+                    fields = textutils.unserialize(message)
+                    gotFields = true
+                end
             end
         end
         -- ask for field name
