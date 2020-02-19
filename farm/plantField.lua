@@ -252,7 +252,7 @@ function generalField(field)
                         getItemFromPeripheral(seed,n,64)
                     end
                     goTo.goTo(ReturnPosition)
-                    slot=getSlot(seed))
+                    slot=getSlot(seed)
                 else
                     turtle.select(slot)
                 end

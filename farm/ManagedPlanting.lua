@@ -20,7 +20,7 @@ if not fs.exists("planting.lua") then
     f.close()
     r.close()
 end
-os.loadAPI("building.lua") 
+os.loadAPI("planting.lua") 
 
 --*********************************************
 --function to display heartbeat
