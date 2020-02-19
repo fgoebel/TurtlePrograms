@@ -35,12 +35,12 @@ end
 
 function getItemFromPeripheral(ItemName,Slot,MaxItems)
     goTo.goTo(storage)  
-    peri = peripheral.wrap("bottom")                    -- sets ME interface on bottom as pheripheral
+    peri = peripheral.wrap("right")                    -- sets ME interface on bottom as pheripheral
     for i=1,9 do                                        -- checks each slot of peripheral
         item = peri.getItemMeta(i)                      -- stores meta data in item variable
         if item ~= nil then
             if item.name == ItemName then                   -- if name of item in slot is desired seed name
-                peri.pushItems("up",i,MaxItems,Slot)        -- push item in slot i up to turtle, max 64 items in slot 1
+                peri.pushItems("left",i,MaxItems,Slot)        -- push item in slot i up to turtle, max 64 items in slot 1
                 return Slot                                 -- returns slot number for seeds if it was available
             end
         end
