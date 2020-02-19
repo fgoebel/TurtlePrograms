@@ -33,7 +33,7 @@ f.write(r.readAll())
 f.close()
 r.close()
 ```
-For Computer:
+For Computer/Manager:
 ``` 
 r = http.get("https://raw.githubusercontent.com/fgoebel/TurtlePrograms/cct-clique27/farm/updateManage.lua")
 f = fs.open("update.lua", "w")
@@ -41,5 +41,11 @@ f.write(r.readAll())
 f.close()
 r.close()
 ```
-
-
+For Input Computer:
+``` 
+r = http.get("https://raw.githubusercontent.com/fgoebel/TurtlePrograms/cct-clique27/farm/updateInput.lua")
+f = fs.open("update.lua", "w")
+f.write(r.readAll())
+f.close()
+r.close()
+```
