@@ -137,7 +137,7 @@ function getField()
     while true do
         -- get current field file from manager
         rednet.send(ManagerID,"send fields","Input")            -- ask for fields table
-        ID, messagerednet.receive("Input")                      -- wait for answer
+        ID, message = rednet.receive("Input")                      -- wait for answer
         if message ~= nil then
             if textutils.unserialize(message) ~= nil then       -- message was fields
                 fields = textutils.unserialize(message)
@@ -158,7 +158,7 @@ function getField()
                     fieldIndex = k
                 end
             end
-            if fieldIndex = 0 then
+            if fieldIndex == 0 then
                 print("field not known.")
             else
                 return fields[fieldIndex]
@@ -173,7 +173,7 @@ function sendField(field)
     while true do
         local field = textutils.serialize(field)       -- serialize fields table
         rednet.send(ManagerID,field,"Input") 
-        ID,message = rednet.receive(2,"Input")
+        ID,message = rednet.receive("Input",2)
         if message == "got it" then
             return
         end

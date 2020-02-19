@@ -88,8 +88,10 @@ function processInput(message,ID)
             end
             if fieldIndex ~= 0 then
                 fields[fieldIndex] = fieldInput             -- update field
+                print("editing")
             else
-                fields[numfields]+1 =  fieldInput           -- append field
+                fields[numFields+1] =  fieldInput           -- append field
+                print("appending")
             end
         end
     end
@@ -173,6 +175,7 @@ while true do
             rednet.send(ReturnerID,NextField,"BackHome")                    -- send field to turtle using protocol "BackHome"
             print(fields[FieldIndex].name)
             ID, message, protocol = rednet.receive(2)                       -- check for messages
+
             -- Protocol = "Field" --> Turtle received field and starts harvesting
             if protocol == "Field" then 
                 Fieldstate = false                                                  -- Change Fieldstate and Queuestate
