@@ -21,6 +21,13 @@ local storage = {
 local queue = {
     x=123,
     y=63,
+    z=-259,
+    f=3
+}
+
+local harvestingqueue = {
+    x=123,
+    y=63,
     z=-260,
     f=3
 }
@@ -104,11 +111,11 @@ end
 -- Main Managing function
 
 function main()
-local Turtlestate = false
 local Queuestate = false
 local Fieldstate = false
 local BuildState = false
 local Plantingstate = false
+local Plantingqueuestate = false
 
 while true do
     Time = checkTime()                                                      -- Update Time
@@ -120,12 +127,7 @@ while true do
     if protocol == "Queue" then
         print("found someone on queue")
         QueueID = ID
-        Queuestate = true       
-
-    -- Protocol = BackHome --> Turtle came back home and waits for input
-    elseif protocol == "BackHome" then
-        ReturnerID = ID
-        Turtlestate = true
+        Queuestate = true
 
     -- Protocol = "Field" --> Turtle received field and starts harvesting
     elseif protocol == "Field" then 
@@ -140,9 +142,14 @@ while true do
         print("found new turtle")
         NewID = ID
         storagePos = textutils.serialize(storage)
-        rednet.send(NewID,storagePos,"New")                                 -- send storage position using protocol "New"
-        queuePos = textutils.serialize(queue)
-        rednet.send(NewID,queuePos,"New")                                   -- send queue position using protocol "New"
+        rednet.send(NewID,storagePos,"New")                             -- send storage position using protocol "New"
+        if message == "I am new planting then"
+            harvestingqueuePos = textutils.serialize(harvestingqueue)
+            rednet.send(NewID,harvestingqueuePos,"New")                -- send queue position using protocol "New"
+        else
+            queuePos = textutils.serialize(queue)
+            rednet.send(NewID,queuePos,"New")                           -- send queue position using protocol "New"
+        end
 
     -- Protocol = "Plant" --> turtle finished building, next step is planting of field
     elseif protocol == "FinishedBuilding" then
@@ -152,11 +159,29 @@ while true do
                 field.toplant = true                                       -- store field, which needs to be planted
             end
         end
+        store("fields", fields)
 
     --Protocol = "Input" --> User input on fields
     elseif protocol == "Input" then
         print("User input on fields")
         processInput(message,ID)
+
+    -- Protocol = "PlantQueue" --> Trutle is waiting on first position in Plantqueue
+    elseif protocol = "PlantQueue" then
+        PlantQueueID = ID
+        Plantqueuestate = true
+    
+    -- Protocol = "FinishedPlanting" --> turtle finished planting, next step is activating field
+    elseif protocol = "FinishedPlanting" then
+        toPlantName = message
+        for k,field in ipairs(fields) do
+            if field.name == toPlantName then   
+                field.toplant = false                                       -- store field, which is now active
+                field.active = true
+                field.lastHarvested = Time
+            end
+        end
+        store("fields", fields)
 
     end
     
@@ -216,27 +241,7 @@ while true do
 
     -- Send Turtle
     -- Turtlestate: false-->Noone back from field, true-->Someone returned and is now waiting for input
-    if Turtlestate==true then                                              -- Turtle returned from field
-        if (Queuestate == false and Fieldstate == true) then                -- Noone is in queue and field is available
-            NextField = textutils.serialize(fields[FieldIndex])             -- serialize field table
-            rednet.send(ReturnerID,NextField,"BackHome")                    -- send field to turtle using protocol "BackHome"
-            print(fields[FieldIndex].name)
-            ID, message, protocol = rednet.receive(2)                       -- check for messages
-
-            -- Protocol = "Field" --> Turtle received field and starts harvesting
-            if protocol == "Field" then 
-                Fieldstate = false                                                  -- Change Fieldstate and Queuestate
-                Queuestate = false                                                  
-                fields[FieldIndex].lastHarvested = Time                             -- update field harvesting time
-                store("fields", fields)
-                sleep(10)
-            end
-        else                                                                -- either no field or someone in queue
-            rednet.send(ReturnerID,"go to queue","BackHome")                -- initialize sending to queue using protocol "BackHome"
-        end
-        Turtlestate = false                                                 -- Change Turtlestate
-
-    elseif (Fieldstate == true and Queuestate == true) then                 -- Field needs to be harvested and someone is available in queue
+    if (Fieldstate == true and Queuestate == true) then                 -- Field needs to be harvested and someone is available in queue
         print("try to send field") 
         NextField = textutils.serialize(fields[FieldIndex])                 -- serialize field table
         rednet.send(QueueID,NextField,"Queue")                              -- send field to turtle using protocol "Queue"
@@ -264,7 +269,7 @@ while true do
 
     if Plantingstate = true then                                                -- send harvesting turtle to plant field
         PlantingField = textutils.serialize(fields[toPlantIndex])               -- serialize field table
-        rednet.broadcast(PlantingField,"Planting")
+        rednet.send(PlantQueueID,PlantingField,"PlantQueue")
         ID, message, protocol = rednet.receive(2)
         -- Protocol = "Planting" --> turtle received field and starts planting
         if protocol == "Planting" then

@@ -99,7 +99,6 @@ end
 -- General Farming/Building Programm
 function main()
 local FirstInQueue = false
-local BackHome = false
 local Waiting = true
 
 while true do
@@ -141,27 +140,7 @@ while true do
                 end
             end
 
-    elseif BackHome then                                        -- State: Back home
-        if Building then
-            rednet.send(ManagerID,field.name,"FinishedBuilding")
-            sleep(2)
-        end
-        rednet.send(ManagerID,"I am back","BackHome")           -- send message to manager to announce returning using protocol "BackHome"
-        ID, message, protocol = rednet.receive("BackHome",2)    -- listening to messages on protocol "BackHome"
-        if message == "go to queue" then                        -- is send to queue
-            ToQueue()
-            BackHome = false
-            Waiting = true
-        elseif message ~= nil then
-            if textutils.unserialize(message) ~= nil then       -- message was field
-                rednet.send(ID,"got it","Field")                -- send message to manager using protocol "Field"
-                field = textutils.unserialize(message)
-                Waiting = false                                 -- change state of Waiting and First in Queue
-                BackHome = false
-            end
-        end
-
-    elseif not Waiting and not BackHome then                    -- State: not waiting, harvesting
+    elseif not Waiting then                                     -- State: not waiting, harvesting
         if not Building then
             print("Start farming on: ".. field.name)
             goTo.goTo(storage)
@@ -169,8 +148,10 @@ while true do
         else 
             print("Start building on: ".. field.name)
             building.building(field,storage)
+            rednet.send(ManagerID,field.name,"FinishedBuilding")
+            sleep(2)
         end    
-        BackHome = true                                         -- change BackHomeState
+        ToQueue()                                               -- go to queue
     end
 end
 end
