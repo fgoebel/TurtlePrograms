@@ -1,4 +1,5 @@
-
+-- used in an additional computer to handle user inputs to update
+-- and add fields to the fields list
 
 --*********************************************
 -- Store values
