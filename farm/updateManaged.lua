@@ -37,6 +37,9 @@ function updateFiles()
     if fs.exists("farming.lua") then   -- will be reloaded on start of farming
         fs.delete("farming.lua")
     end
+    if fs.exists("building.lua") then   -- will be reloaded on start of farming
+        fs.delete("building.lua")
+    end
     -- print indicator
     print("new files available. updated on Commit:")
     print(CommitSha)

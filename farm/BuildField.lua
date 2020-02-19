@@ -201,7 +201,7 @@ function changeGround(field, ItemName)
     local rows = field.rows
     local turnRight = field.right
 
-    if ItemName =dele= nil then
+    if ItemName == nil then
         ItemName = "minecraft:dirt"
     end
 
