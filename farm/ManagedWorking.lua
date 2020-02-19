@@ -152,6 +152,7 @@ while true do
             sleep(2)
         end    
         ToQueue()                                               -- go to queue
+        Waiting = true
     end
 end
 end
