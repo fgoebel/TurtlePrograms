@@ -73,7 +73,7 @@ function initialization()
         queue = textutils.unserialize(data)
         initialization = false
     end
-    ManagerID, message = rednet.receive()               -- waits for a broadcast to receive ID of manager
+    ManagerID, message = rednet.receive("Init")              -- waits for a broadcast to receive ID of manager
 
     -- initialization store storage Position
     if initialization then
