@@ -14,6 +14,9 @@
     interval = 9000,
     lastHarvested = 0,
     active = true,
+    aero = false,
+    tobuild = false,
+    toplant = false,
   },
   {
     pos = {
@@ -30,6 +33,9 @@
     interval = 1800,
     lastHarvested = 0,
     active = true,
+    aero = false,
+    tobuild = false,
+    toplant = false,
   },
   {
     pos = {
@@ -46,6 +52,9 @@
     interval = 1800,
     lastHarvested = 0,
     active = true,
+    aero = false,
+    tobuild = false,
+    toplant = false,
   },
   {
     pos = {
@@ -62,6 +71,9 @@
     interval = 1800,
     lastHarvested = 0,
     active = true,
+    aero = false,
+    tobuild = false,
+    toplant = false,
   },
   {
     pos = {
@@ -78,6 +90,9 @@
     interval = 1800,
     lastHarvested = 0,
     active = true,
+    aero = false,
+    tobuild = false,
+    toplant = false,
   },
   {
     pos = {
@@ -94,6 +109,9 @@
     interval = 1800,
     lastHarvested = 0,
     active = true,
+    aero = false,
+    tobuild = false,
+    toplant = false,
   },
   {
     pos = {
@@ -110,5 +128,8 @@
     interval = 1800,
     lastHarvested = 0,
     active = true,
+    aero = false,
+    tobuild = false,
+    toplant = false,
   },
 }
