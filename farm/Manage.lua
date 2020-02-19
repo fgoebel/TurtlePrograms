@@ -65,6 +65,37 @@ function checkTime()
     return Time
 end
 
+-- Process user input
+function processInput(message,ID)
+    
+    -- message == "send fields" --> send list of fields
+    if message == "send fields" then
+        local FieldsStr = textutils.serialize(fields)       -- serialize fields table
+        rednet.send(ID,FieldsStr,"Input") 
+
+    -- message == table --> received field, add to list or update if field is known
+    elseif message ~= nil then
+        if textutils.unserialize(message) ~= nil then       -- message was field
+            rednet.send(ID,"got it", "Input")               -- send message to manager using protocol "Input"
+            fieldInput = textutils.unserialize(message)
+
+            fieldIndex = 0
+            for k,field in ipairs(fields) do                -- check if field is known
+                if field.name == fieldInput.name then
+                    fieldIndex = k
+                end
+                numFields = k
+            end
+            if fieldIndex ~= 0 then
+                fields[fieldIndex] = fieldInput             -- update field
+            else
+                fields[numfields]+1 =  fieldInput           -- append field
+            end
+        end
+    end
+
+end
+
 --*********************************************
 -- Main Managing function
 
@@ -72,10 +103,11 @@ function main()
 local Turtlestate = false
 local Queuestate = false
 local Fieldstate = false
+local FieldInput = false
 
 while true do
     Time = checkTime()                                                      -- Update Time
-    rednet.broadcast("just a broadcast")                                    -- Broadcast message to find new turtles
+    rednet.broadcast("just a broadcast","Init")                             -- Broadcast message to find new turtles using protocol "Init"
     ID, message, protocol = rednet.receive(2)                               -- check for messages
 
     -- Processing Message:
@@ -106,6 +138,11 @@ while true do
         rednet.send(NewID,storagePos,"New")                                 -- send storage position using protocol "New"
         queuePos = textutils.serialize(queue)
         rednet.send(NewID,queuePos,"New")                                   -- send queue position using protocol "New"
+
+    --Protocol = "Input" --> User input on fields
+    elseif protocol == "Input" then
+        print("User input on fields")
+        processInput(message,ID)
     end
     
     -- Update Fieldstate

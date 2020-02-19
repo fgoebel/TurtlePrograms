@@ -135,7 +135,13 @@ end
 function getField()
     while true do
         -- get current field file from manager
-
+        rednet.send(ManagerID,"send fields","Input")            -- ask for fields table
+        ID, messagerednet.receive("Input")                      -- wait for answer
+        if message ~= nil then
+            if textutils.unserialize(message) ~= nil then       -- message was fields
+                fields = textutils.unserialize(message)
+            end
+        end
         -- ask for field name
         print("type field name of the field, which is to edit. Type help to get list of all field names.")
         local input = read()
@@ -161,21 +167,39 @@ function getField()
 end
 
 --*********************************************
--- user input manager
+-- send field to manager
+function sendField(field)
+    while true do
+        local field = textutils.serialize(field)       -- serialize fields table
+        rednet.send(ManagerID,field,"Input") 
+        ID,message = rednet.receive(2,"Input")
+        if message == "got it" then
+            return
+        end
+    end
+end
+
+--*********************************************
+-- user input manager/ main function
 function userInput()
+    ManagerID, message = rednet.receive("Init")              -- waits for a broadcast to receive ID of manager
+
     while true do
         print("For adding new field enter 'new', for editing fields endet 'edit'.")
         local input = read()
         if input == "new" then
             field=addField()
+            sendField(field)
             store("newfield", field)
 
         elseif input == "edit" then
             field = getField()
             field = editField(field)
+            sendField(field)
             store("editedfield", field)
         end
     end
 end
 
+rednet.open("right")
 userInput()
