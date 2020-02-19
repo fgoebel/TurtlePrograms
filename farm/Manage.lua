@@ -88,10 +88,10 @@ function processInput(message,ID)
             end
             if fieldIndex ~= 0 then
                 fields[fieldIndex] = fieldInput             -- update field
-                print("editing")
+                store("fields", fields)
             else
                 fields[numFields+1] =  fieldInput           -- append field
-                print("appending")
+                store("fields", fields)
             end
         end
     end
