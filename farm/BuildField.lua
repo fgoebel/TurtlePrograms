@@ -145,7 +145,7 @@ for i = 1, cols do
     for j=1,rows-1 do
         slot1=getSlot(ItemLayerOne)
         slot2=getSlot(itemLayerTwo)
-        if slot1 == false or slot 2 == false then                   -- refill
+        if slot1 == false or slot2 == false then                   -- refill
             print("run out of Items")
             ReturnPosition = goTo.returnPos()
             dropInventory()
@@ -201,7 +201,7 @@ function changeGround(field, ItemName)
     local rows = field.rows
     local turnRight = field.right
 
-    if ItemName = nil then
+    if ItemName == nil then
         ItemName = "minecraft:dirt"
     end
 

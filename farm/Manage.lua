@@ -143,7 +143,7 @@ while true do
         NewID = ID
         storagePos = textutils.serialize(storage)
         rednet.send(NewID,storagePos,"New")                             -- send storage position using protocol "New"
-        if message == "I am new planting then"
+        if message == "I am new planting" then
             harvestingqueuePos = textutils.serialize(harvestingqueue)
             rednet.send(NewID,harvestingqueuePos,"New")                -- send queue position using protocol "New"
         else
@@ -167,12 +167,12 @@ while true do
         processInput(message,ID)
 
     -- Protocol = "PlantQueue" --> Trutle is waiting on first position in Plantqueue
-    elseif protocol = "PlantQueue" then
+    elseif protocol == "PlantQueue" then
         PlantQueueID = ID
         Plantqueuestate = true
     
     -- Protocol = "FinishedPlanting" --> turtle finished planting, next step is activating field
-    elseif protocol = "FinishedPlanting" then
+    elseif protocol == "FinishedPlanting" then
         toPlantName = message
         for k,field in ipairs(fields) do
             if field.name == toPlantName then   
@@ -216,7 +216,7 @@ while true do
             end
         end
         if toBuildIndex ~= 0 then
-            BuildState == true
+            BuildState = true
         else 
             LastCheckBuild = Time 
         end 
@@ -233,7 +233,7 @@ while true do
             end
         end
         if toPlantIndex ~= 0 then
-            Plantingstate == true
+            Plantingstate = true
         else 
             LastCheckPlant = Time 
         end 
@@ -267,7 +267,7 @@ while true do
         end
     end
 
-    if Plantingstate = true then                                                -- send harvesting turtle to plant field
+    if Plantingstate == true then                                                -- send harvesting turtle to plant field
         PlantingField = textutils.serialize(fields[toPlantIndex])               -- serialize field table
         rednet.send(PlantQueueID,PlantingField,"PlantQueue")
         ID, message, protocol = rednet.receive(2)
