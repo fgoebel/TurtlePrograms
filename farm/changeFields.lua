@@ -97,17 +97,17 @@ function editField(field)
     print("Which property should be edited? (pos/right/interval/active)")
     input = read()
     if input == "pos" then
-        print("x?")
+        print("x? (current: "..field.pos.x .. ")")
         field.pos.x = tonumber(read())
-        print("y?")
+        print("y? (current: "..field.pos.y .. ")")
         field.pos.y = tonumber(read())
-        print("z?")
+        print("z? (current: "..field.pos.z .. ")")
         field.pos.z = tonumber(read())
-        print("f?")
+        print("f? (current: "..field.pos.f .. ")")
         field.pos.f = tonumber(read())
 
     elseif input == "right" then
-        print("Set to true or false?")
+        print("Set to true or false?  (current: "..field.right .. ")")
         input = read()
         if input == true then
             field.right = true
@@ -116,11 +116,11 @@ function editField(field)
         end
 
     elseif input == "interval" then
-        print("new interval?")
+        print("new interval?  (current: "..field.interval .. ")")
         field.interval = tonumber(read())
 
     elseif input == "active" then
-        print("Set to true or false?")
+        print("Set to true or false?  (current: "..field.active .. ")")
         input = read()
         if input == true then
             field.active = true
