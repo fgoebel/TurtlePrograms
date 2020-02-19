@@ -27,6 +27,9 @@ function addField()
         interval = 0,
         lastHarvested = 0,
         active = false,
+        aero = false,
+        tobuild = false,
+        toplant = false,
         }
     
     print("Please enter field name: ")
@@ -77,14 +80,22 @@ function addField()
     if input == "y" then
         NewField.tobuild = true
         NewField.active = false
+        NewField.toplant = false
     elseif input == "n" then
         NewField.tobuild = false
         print("is it already active? (y/n)")
         input = read()
         if input == "y" then
             NewField.active = true
+            NewField.toplant = false
         elseif input == "n" then
             NewField.active = false
+            print("Should turtle plant seeds? (y/n)")
+            if input == "y" then
+                NewField.toplant = true
+            elseif input == "n" then
+                NewField.toplant = false
+            end
         end
     end
 return NewField
