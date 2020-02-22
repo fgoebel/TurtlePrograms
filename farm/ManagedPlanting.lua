@@ -128,6 +128,7 @@ function main()
             goTo.back()
   
             ToQueue()                                               -- go to queue
+            Waiting = true
         end
     end
 end

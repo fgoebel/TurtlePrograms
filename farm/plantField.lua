@@ -243,8 +243,9 @@ function generalField(field)
     for j = 1,cols do
         for i= 1,rows-1 do
             turtle.digDown()
-            turtle.forward()
+            goTo.forward()
         end
+        turtle.digDown()
         if turnRight then
             goTo.turnRight()
             goTo.forward()
