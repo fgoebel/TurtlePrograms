@@ -36,6 +36,7 @@ end
 function getItemFromPeripheral(ItemName,Slot,MaxItems)
     goTo.goTo(storage)  
     peri = peripheral.wrap("right")                    -- sets ME interface on bottom as pheripheral
+    sleep(1)
     for i=1,9 do                                        -- checks each slot of peripheral
         item = peri.getItemMeta(i)                      -- stores meta data in item variable
         if item ~= nil then
