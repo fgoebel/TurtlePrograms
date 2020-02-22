@@ -260,6 +260,7 @@ function generalField(field)
     end
 
     -- go back to start
+    turnRight = field.right
     goTo.goTo(field.pos)
     goTo.up()
     turtle.digDown()
