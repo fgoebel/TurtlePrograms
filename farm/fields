@@ -205,7 +205,7 @@
     lastHarvested = 0,
     active = false,
     aero = true,
-    tobuild = true,
+    tobuild = false,
     toplant = false,
   },
 }
