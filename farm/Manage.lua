@@ -264,6 +264,7 @@ while true do
         if protocol == "Field" then 
             BuildState = false                                                  -- Change BuildState
             fields[toBuildIndex].tobuild = false
+            store("fields", fields)
         end
     end
 

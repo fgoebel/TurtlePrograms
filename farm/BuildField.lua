@@ -143,9 +143,8 @@ goTo.turnLeft()                     -- turtle is facing backwards and at first b
 
 for i = 1, cols do
     for j=1,rows-1 do
-        print("select slots")
         slot1=getSlot(ItemLayerOne)
-        slot2=getSlot(itemLayerTwo)
+        slot2=getSlot(ItemLayerTwo)
         if slot1 == false or slot2 == false then                   -- refill
             print("run out of Items")
             ReturnPosition = goTo.returnPos()
@@ -160,12 +159,9 @@ for i = 1, cols do
             slot1=getSlot(ItemLayerOne)
             slot2=getSlot(ItemLayerTwo)
         end
-        print("place first")
         turtle.select(slot1)
         turtle.placeDown()
-        print("go back")
         goTo.back()
-        print("place second")
         turtle.select(slot2)
         turtle.place()
     end
@@ -211,7 +207,7 @@ function changeGround(field, ItemName)
 
     dropInventory()
     refillFuel()
-    for i = 1, 8 do                                 -- get Item, leave half of the slots empty
+    for i = 1, 16 do                                 -- get Item, leave half of the slots empty
         getItemFromPeripheral(ItemName,i,64)
     end
     goTo.goTo(field.pos)
@@ -474,7 +470,7 @@ function generalField(field)
 
     -- build frame and ground if aero field
     if field.aero then
-        --buildFrame(field)
+        buildFrame(field)
         buildGround(field)
     else
         changeGround(field)
