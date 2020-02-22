@@ -257,6 +257,16 @@ function generalField(field)
             turtle.placeDown()
             goTo.forward()
         end
+        if turnRight then
+            goTo.turnRight()
+            goTo.forward()
+            goTo.turnRight()
+        else 
+            goTo.turnLeft()
+            goTo.forward()
+            goTo.turnLeft()
+        end
+        goTo.forward()
     end
 
     dropInventory()
