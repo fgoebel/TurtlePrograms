@@ -383,6 +383,7 @@ function sugarField(field)
                 turtle.select(slot)
                 turtle.placeDown()                  -- get water   
             end
+            sleep(1)
         end
         goTo.forward()
 
