@@ -474,7 +474,7 @@ function generalField(field)
 
     -- build frame and ground if aero field
     if field.aero then
-        buildFrame(field)
+        --buildFrame(field)
         buildGround(field)
     else
         changeGround(field)

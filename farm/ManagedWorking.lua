@@ -125,7 +125,7 @@ while true do
                 field = textutils.unserialize(message)
                 Waiting = false                                 -- change state of Waiting and First in Queue
                 FirstInQueue = false
-                if protocol = "Build" then                      -- change state of Building
+                if protocol == "Build" then                      -- change state of Building
                     Building = true
                 end
             end
