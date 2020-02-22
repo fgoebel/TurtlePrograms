@@ -470,10 +470,10 @@ function generalField(field)
 
     -- build frame and ground if aero field
     if field.aero then
-        buildFrame(field)
-        buildGround(field)
+        --buildFrame(field)
+        --buildGround(field)
     else
-        changeGround(field)
+        --changeGround(field)
     end
 
     -- Build water blocks
@@ -485,13 +485,13 @@ function generalField(field)
     end
     goTo.goTo(field.pos)
     if turnRight then                               -- go to first water col
-        goTo.turnLeft()
-        goTo.forward(4)
         goTo.turnRight()
+        goTo.forward(4)
+        goTo.turnLeft()
     else
-        goTo.turnRight()
-        goTo.forward(4)
         goTo.turnLeft()
+        goTo.forward(4)
+        goTo.turnRight()
     end
     goTo.back()
 
