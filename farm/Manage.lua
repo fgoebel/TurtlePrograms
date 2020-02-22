@@ -75,7 +75,7 @@ function checkTime()
 end
 
 -- Process user input
-function processInput(message,ID)
+function processInput(message,ID,protocol)
     
     -- message == "send fields" --> send list of fields
     if message == "send fields" then
@@ -88,20 +88,25 @@ function processInput(message,ID)
             rednet.send(ID,"got it", "Input")               -- send message to manager using protocol "Input"
             fieldInput = textutils.unserialize(message)
 
-            fieldIndex = 0
-            for k,field in ipairs(fields) do                -- check if field is known
-                if field.name == fieldInput.name then
-                    fieldIndex = k
+            if protocol == "Input" then
+                fieldIndex = 0
+                for k,field in ipairs(fields) do                -- check if field is known
+                    if field.name == fieldInput.name then
+                        fieldIndex = k
+                    end
+                    numFields = k
                 end
-                numFields = k
-            end
-            if fieldIndex ~= 0 then
-                fields[fieldIndex] = fieldInput             -- update field
-                store("fields", fields)
-            else
-                fields[numFields+1] =  fieldInput           -- append field
-                store("fields", fields)
-            end
+                if fieldIndex ~= 0 then
+                    fields[fieldIndex] = fieldInput             -- update field
+                    store("fields", fields)
+                else
+                    fields[numFields+1] =  fieldInput           -- append field
+                    store("fields", fields)
+                end
+            elseif protocol == "InputMulti" then
+                fields = fieldInput
+                store("fields", field)
+            end    
         end
     end
 
@@ -162,9 +167,9 @@ while true do
         store("fields", fields)
 
     --Protocol = "Input" --> User input on fields
-    elseif protocol == "Input" then
+    elseif protocol == "Input" or protocol == "InputMulti" then
         print("User input on fields")
-        processInput(message,ID)
+        processInput(message,ID,protocol)
 
     -- Protocol = "PlantQueue" --> Trutle is waiting on first position in Plantqueue
     elseif protocol == "PlantQueue" then

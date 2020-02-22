@@ -185,10 +185,15 @@ end
 
 --*********************************************
 -- send field to manager
-function sendField(field)
+function sendField(field,multi)
     while true do
+        if multi ~= nil then
+            protocol = "Input"
+        elseif multi == "multi" then
+            protocol = "InputMulti"
+        end
         local field = textutils.serialize(field)       -- serialize fields table
-        rednet.send(ManagerID,field,"Input") 
+        rednet.send(ManagerID,field,protocol) 
         ID,message = rednet.receive("Input",2)
         if message == "got it" then
             return
@@ -202,7 +207,7 @@ function userInput()
     ManagerID, message = rednet.receive("Init")              -- waits for a broadcast to receive ID of manager
 
     while true do
-        print("For adding new field enter 'new', for editing fields endet 'edit'.")
+        print("For adding new field enter 'new', for editing fields enter 'edit', for updating field from github enter 'update'.")
         local input = read()
         if input == "new" then
             field=addField()
@@ -214,6 +219,11 @@ function userInput()
             field = editField(field)
             sendField(field)
             store("editedfield", field)
+
+        elseif input == "update" then
+            r = http.get("https://raw.githubusercontent.com/fgoebel/TurtlePrograms/cct-clique27/farm/fields").readAll()
+            fields = textutils.unserialize(data)
+            sendField(fields,"multi")
         end
     end
 end
