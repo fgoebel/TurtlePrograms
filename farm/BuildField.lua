@@ -281,7 +281,7 @@ function addLight(field)
     goTo.back()
 
     j = 5
-    while j = cols-4 do
+    while j <= cols-4 do
         i = 1
         while i <= rows-4 do
             goTo.forward(5)
