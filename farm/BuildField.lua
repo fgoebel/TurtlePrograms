@@ -265,7 +265,7 @@ function addLight(field)
     dropInventory()
     refillFuel()
     getItemFromPeripheral("minecraft:torch",1,64)
-    getItemFromPeripheral("minecraft:planks",1,64)
+    getItemFromPeripheral("minecraft:planks",2,64)
 
     goTo.goTo(field.pos)
     goTo.up(5)
@@ -278,13 +278,12 @@ function addLight(field)
         goTo.forward(4)
         goTo.turnRight()
     end
-    goTo.back()
 
     j = 5
     while j <= cols-4 do
         i = 1
         while i <= rows-4 do
-            goTo.forward(5)
+            goTo.forward(4)
             turtle.select(2)
             turtle.placeDown()
             turtle.select(1)
