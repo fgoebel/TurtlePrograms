@@ -241,24 +241,20 @@ function generalField(field)
 
     for j=1,cols do
         for i=1,rows do
-            valid, data = turtle.inspectDown()
-            if valid and data.name ~= "minecraft:water" then
-                slot=getSlot(seed)
-                if slot == false then                   -- refill if no water is left
-                    print("run out of seed")
-                    ReturnPosition = goTo.returnPos()
-                    dropInventory()
-                    for n=1,16 do
-                        getItemFromPeripheral(seed,n,64)
-                    end
-                    goTo.goTo(ReturnPosition)
-                    slot=getSlot(seed)
-                else
-                    turtle.select(slot)
+            slot=getSlot(seed)
+            if slot == false then                   -- refill if no water is left
+                print("run out of seed")
+                ReturnPosition = goTo.returnPos()
+                dropInventory()
+                for n=1,16 do
+                    getItemFromPeripheral(seed,n,64)
                 end
-                turtle.digDown()
-                turtle.placeDown()
+                goTo.goTo(ReturnPosition)
+                slot=getSlot(seed)
             end
+            turtle.select(slot)
+            turtle.digDown()
+            turtle.placeDown()
             goTo.forward()
         end
     end
