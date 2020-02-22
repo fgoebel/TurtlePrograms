@@ -280,6 +280,8 @@ while true do
         -- Protocol = "Planting" --> turtle received field and starts planting
         if protocol == "Planting" then
             Plantingstate = false
+            fields[toPlantIndex].tobplant = false
+            store("fields", fields)
         end
     end
 
