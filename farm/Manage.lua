@@ -21,14 +21,14 @@ local storage = {
 local queue = {
     x=123,
     y=63,
-    z=-259,
+    z=-260,
     f=3
 }
 
 local harvestingqueue = {
     x=123,
     y=63,
-    z=-260,
+    z=-259,
     f=3
 }
 
