@@ -66,7 +66,7 @@ end
 function sugarField(field)
     local cols = field.cols
     local rows = field.rows
-    local turnRight = field.turnRight
+    local turnRight = field.right
   
     dropInventory()
     refillFuel()
@@ -75,7 +75,7 @@ function sugarField(field)
     end
     goTo.goTo(field.pos)
     goTo.up(1)
-    turnRight = field.turnRight
+    turnRight = field.right
     local skip = 1
 
     for j=1,cols do
@@ -124,7 +124,7 @@ end
 function cactusField(field)
     local cols = field.cols
     local rows = field.rows
-    local turnRight = field.turnRight
+    local turnRight = field.right
     
     dropInventory()
     refillFuel()
@@ -132,7 +132,7 @@ function cactusField(field)
     for i=1,16 do
         getItemFromPeripheral("minecraft:cactus",i,64)
     end
-    turnRight = field.turnRight
+    turnRight = field.right
     goTo.goTo(field.pos)
     goTo.up()
 
@@ -175,7 +175,7 @@ end
 function enderlillyField(field)
     local cols = field.cols
     local rows = field.rows
-    local turnRight = field.turnRight
+    local turnRight = field.right
     
     dropInventory()
     refillFuel()
@@ -183,7 +183,7 @@ function enderlillyField(field)
     for i=1,16 do
         getItemFromPeripheral("extrautils2:enderlilly",i,64)
     end
-    turnRight = field.turnRight
+    turnRight = field.right
     goTo.goTo(field.pos)
     goTo.up()
 
@@ -225,14 +225,14 @@ end
 function generalField(field)
     local cols = field.cols
     local rows = field.rows
-    local turnRight = field.turnRight
+    local turnRight = field.right
 
     seed = determineSeed(field.crop)
     
     dropInventory()
     refillFuel()
 
-    turnRight = field.turnRight
+    turnRight = field.right
     for i=1,16 do
         getItemFromPeripheral(seed,i,64)
     end
