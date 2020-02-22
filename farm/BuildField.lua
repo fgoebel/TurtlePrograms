@@ -495,8 +495,10 @@ function generalField(field)
     end
     goTo.back()
 
-    for j = 1, waterCols do
-        for i = 1, waterRows do
+    j=1
+    while j <= cols-4 do
+        i=1
+        while i <= rows-4 do
             goTo.forward(5)
             slot=getSlot("minecraft:water_bucket")
             if slot == false then                   -- refill if no water is left
@@ -513,6 +515,7 @@ function generalField(field)
             end
             turtle.digDown()
             turtle.placeDown()
+            i = i + 5
         end
         goTo.forward(4)
         if turnRight then
@@ -526,6 +529,7 @@ function generalField(field)
             goTo.turnLeft()
             turnRight = true
         end
+        j = j + 5
     end
 
     -- build light
