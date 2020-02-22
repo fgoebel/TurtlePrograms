@@ -143,6 +143,7 @@ goTo.turnLeft()                     -- turtle is facing backwards and at first b
 
 for i = 1, cols do
     for j=1,rows-1 do
+        print("select slots")
         slot1=getSlot(ItemLayerOne)
         slot2=getSlot(itemLayerTwo)
         if slot1 == false or slot2 == false then                   -- refill
@@ -159,9 +160,12 @@ for i = 1, cols do
             slot1=getSlot(ItemLayerOne)
             slot2=getSlot(ItemLayerTwo)
         end
+        print("place first")
         turtle.select(slot1)
         turtle.placeDown()
+        print("go back")
         goTo.back()
+        print("place second")
         turtle.select(slot2)
         turtle.place()
     end
