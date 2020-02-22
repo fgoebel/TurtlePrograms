@@ -122,6 +122,7 @@ function main()
     
         elseif not Waiting then                                     -- State: not waiting, harvesting
             print("Start planting on: ".. field.name)
+            goTo.back()
             goTo.goTo(storage)
             planting.planting(field,storage)                        -- go working
   
