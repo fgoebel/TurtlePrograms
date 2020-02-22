@@ -343,6 +343,7 @@ function sugarField(field)
 -- build water cols
     for i = 1, 3 do                                     -- get water buckets
         getItemFromPeripheral("minecraft:water_bucket",i,1)
+        sleep(1)
     end
     goTo.goTo(field.pos)                                -- go to first water block
     turnRight = field.right                         -- reset turnRight
@@ -385,8 +386,10 @@ function sugarField(field)
         goTo.back(1)                            -- go back 1 blocks, were water is available
         for n=1,3 do                            -- refill water
             slot=getSlot("minecraft:bucket")    -- get empty bucket
-            turtle.select(slot)
-            turtle.placeDown()                  -- get water   
+            if slot ~= false then
+                turtle.select(slot)
+                turtle.placeDown()                  -- get water   
+            end
         end
         goTo.forward()
 
