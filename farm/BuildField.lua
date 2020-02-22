@@ -334,8 +334,8 @@ function sugarField(field)
     
 -- build frame and ground if aero field
     if field.aero then
-        buildFrame(field)
-        buildGround(field)
+        --buildFrame(field)
+        --buildGround(field)
     else
         changeGround(field)
     end
@@ -346,7 +346,7 @@ function sugarField(field)
         sleep(1)
     end
     goTo.goTo(field.pos)                                -- go to first water block
-    turnRight = field.right                         -- reset turnRight
+    turnRight = field.right                             -- reset turnRight
     if turnRight then
         goTo.turnRight()
         goTo.forward()
@@ -365,25 +365,18 @@ function sugarField(field)
             turtle.placeDown()
             goTo.forward()
         end
+        goTo.back(1)
 
         for i=4,rows do
-            turtle.digDown()                            -- remove dirt
-            slot=getSlot("minecraft:water_bucket")      -- select water bucket
-            if not slot then                            -- no water in inventory
-                goTo.back(2)                            -- go back 2 blocks, were water is available
-                for n=1,3 do                            -- refill water
-                    slot=getSlot("minecraft:bucket")    -- get empty bucket
-                    turtle.select(slot)
-                    turtle.placeDown()                  -- get water   
-                end
-                slot=getSlot("minecraft:water_bucket")  -- select water bucket
-                goTo.forward(2)
-            end           
+            goTo.back(1)
+            slot=getSlot("minecraft:bucket")    -- select empty bucket 
             turtle.select(slot)
-            turtle.placeDown()
-            goTo.forward()
+            turtle.placeDown()                  -- refill bucket
+            goTo.forward(2)
+            turtle.digDown()                          
+            turtle.placeDown()                  -- place water
         end
-        goTo.back(1)                            -- go back 1 blocks, were water is available
+        goTo.back(1)                            -- go back 1 block, were water is available
         for n=1,3 do                            -- refill water
             slot=getSlot("minecraft:bucket")    -- get empty bucket
             if slot ~= false then
