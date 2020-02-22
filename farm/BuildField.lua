@@ -267,25 +267,24 @@ function addLight(field)
     getItemFromPeripheral("minecraft:torch",1,64)
     getItemFromPeripheral("minecraft:planks",1,64)
 
-    local lightCols = math.floor((cols-1)/9)        -- returns number of necessary watercols
-    local lightRows = math.floor((rows-1)/9)
     goTo.goTo(field.pos)
     goTo.up(5)
     if turnRight then                               -- go to first light col
-        goTo.turnLeft()
-        goTo.forward(4)
         goTo.turnRight()
+        goTo.forward(4)
+        goTo.turnLeft()
     else
-        goTo.turnRight()
-        goTo.forward(4)
         goTo.turnLeft()
+        goTo.forward(4)
+        goTo.turnRight()
     end
     goTo.back()
 
-    for j = 1, lightCols do
-        goTo.forward()
-        for i = 1, lightRows do
-            goTo.forward(4)
+    j = 5
+    while j = cols-4 do
+        i = 1
+        while i <= rows-4 do
+            goTo.forward(5)
             turtle.select(2)
             turtle.placeDown()
             turtle.select(1)
@@ -301,19 +300,23 @@ function addLight(field)
                 turtle.placeDown()
             end
             goTo.turnLeft()
+            i = i + 5
         end
         goTo.forward(4)
-        if turnRight then
-            goTo.turnRight()
-            goTo.forward(5)
-            goTo.turnRight()
-            turnRight = false
-        else
-            goTo.turnLeft()
-            goTo.forward(5)
-            goTo.turnLeft()
-            turnRight = true
+        if j < cols - 4 then 
+            if turnRight then
+                goTo.turnRight()
+                goTo.forward(5)
+                goTo.turnRight()
+                turnRight = false
+            else
+                goTo.turnLeft()
+                goTo.forward(5)
+                goTo.turnLeft()
+                turnRight = true
+            end
         end
+        j = j + 5
     end
 
 end
@@ -478,8 +481,6 @@ function generalField(field)
 
     -- Build water blocks
     turnRight = field.right
-    local waterCols = math.floor((cols-1)/9)        -- returns number of necessary watercols
-    local waterRows = math.floor((rows-1)/9)
     for i=1,15 do                                   -- leave one slot empty for dirt
         getItemFromPeripheral("minecraft:water_bucket",i,1)
     end
@@ -495,7 +496,7 @@ function generalField(field)
     end
     goTo.back()
 
-    j=1
+    j=5
     while j <= cols-4 do
         i=1
         while i <= rows-4 do
@@ -518,16 +519,18 @@ function generalField(field)
             i = i + 5
         end
         goTo.forward(4)
-        if turnRight then
-            goTo.turnRight()
-            goTo.forward(5)
-            goTo.turnRight()
-            turnRight = false
-        else
-            goTo.turnLeft()
-            goTo.forward(5)
-            goTo.turnLeft()
-            turnRight = true
+        if j < cols - 4 then
+            if turnRight then
+                goTo.turnRight()
+                goTo.forward(5)
+                goTo.turnRight()
+                turnRight = false
+            else
+                goTo.turnLeft()
+                goTo.forward(5)
+                goTo.turnLeft()
+                turnRight = true
+            end
         end
         j = j + 5
     end
