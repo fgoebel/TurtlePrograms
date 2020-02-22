@@ -261,7 +261,7 @@ while true do
         rednet.send(QueueID,BuildingField,"Build")                              -- send field to turtle using protocol "Build"
         ID, message, protocol = rednet.receive(2)                               -- check for messages
         -- Protocol = "Build" --> Turtle received field and starts building
-        if protocol == "Build" then 
+        if protocol == "Field" then 
             BuildState = false                                                  -- Change BuildState
             fields[toBuildIndex].tobuild = false
         end

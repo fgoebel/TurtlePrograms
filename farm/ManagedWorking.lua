@@ -118,28 +118,19 @@ while true do
     elseif (Waiting and FirstInQueue) then                      -- State: Waiting and First in Queue
         print("waiting for field")
         rednet.send(ManagerID,"I am first","Queue")             -- send message to manager using protocol "Queue"
-        ID, message = rednet.receive("Queue",2)                 -- listening to messages on protocol "Queue"
-        print(message)
-            if message ~= nil then
-                if textutils.unserialize(message) ~= nil then   -- message was field
-                    rednet.send(ID,"got it", "Field")           -- send message to manager using protocol "Field"
-                    field = textutils.unserialize(message)
-                    Waiting = false                             -- change state of Waiting and First in Queue
-                    FirstInQueue = false
-                end
-            end
-        ID, message = rednet.receive("Build",2)                 -- listening to messages on protocol "Build"
-        print(message)
-            if message ~= nil then
-                if textutils.unserialize(message) ~= nil then   -- message was field
-                    rednet.send(ID,"got it", "Build")           -- send message to manager using protocol "Field"
-                    field = textutils.unserialize(message)
-                    Waiting = false                             -- change state of Waiting and First in Queue
-                    FirstInQueue = false
+        ID, message, protocol = rednet.receive(2)               -- listening to messages on an protocol
+        if message ~= nil then
+            if textutils.unserialize(message) ~= nil then       -- message was field
+                rednet.send(ID,"got it", "Field")               -- send message to manager using protocol "Field"
+                field = textutils.unserialize(message)
+                Waiting = false                                 -- change state of Waiting and First in Queue
+                FirstInQueue = false
+                if protocol = "Build" then                      -- change state of Building
                     Building = true
                 end
             end
-
+        end
+        
     elseif not Waiting then                                     -- State: not waiting, harvesting
         if not Building then
             print("Start farming on: ".. field.name)
