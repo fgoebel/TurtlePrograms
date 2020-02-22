@@ -174,7 +174,7 @@ while true do
     -- Protocol = "PlantQueue" --> Trutle is waiting on first position in Plantqueue
     elseif protocol == "PlantQueue" then
         PlantQueueID = ID
-        Plantqueuestate = true
+        Plantingqueuestate = true
     
     -- Protocol = "FinishedPlanting" --> turtle finished planting, next step is activating field
     elseif protocol == "FinishedPlanting" then
@@ -273,7 +273,7 @@ while true do
         end
     end
 
-    if Plantingstate == true then                                                -- send harvesting turtle to plant field
+    if Plantingstate == true and Plantingqueuestate == true then                -- send harvesting turtle to plant field
         PlantingField = textutils.serialize(fields[toPlantIndex])               -- serialize field table
         rednet.send(PlantQueueID,PlantingField,"PlantQueue")
         ID, message, protocol = rednet.receive(2)
