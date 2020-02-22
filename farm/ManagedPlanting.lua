@@ -125,6 +125,7 @@ function main()
             goTo.back()
             goTo.goTo(storage)
             planting.planting(field,storage)                        -- go working
+            goTo.back()
   
             ToQueue()                                               -- go to queue
         end

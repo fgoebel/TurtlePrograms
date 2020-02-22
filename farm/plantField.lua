@@ -239,8 +239,33 @@ function generalField(field)
     goTo.goTo(field.pos)
     goTo.up()
 
+    -- till first
+    for j = 1,cols do
+        for i= 1,rows-1 do
+            turtle.digDown()
+            turtle.forward()
+        end
+        if turnRight then
+            goTo.turnRight()
+            goTo.forward()
+            goTo.turnRight()
+            turnRight = false
+        else 
+            goTo.turnLeft()
+            goTo.forward()
+            goTo.turnLeft()
+            turnRight = true
+        end
+    end
+
+    -- go back to start
+    goTo.goTo(field.pos)
+    goTo.up()
+    turtle.digDown()
+    
+    -- plant seeds
     for j=1,cols do
-        for i=1,rows do
+        for i=1,rows-1 do
             slot=getSlot(seed)
             if slot == false then                   -- refill if no water is left
                 print("run out of seed")
@@ -253,20 +278,23 @@ function generalField(field)
                 slot=getSlot(seed)
             end
             turtle.select(slot)
-            turtle.digDown()
             turtle.placeDown()
             goTo.forward()
         end
+        turtle.select(slot)
+        turtle.placeDown()
+
         if turnRight then
             goTo.turnRight()
             goTo.forward()
             goTo.turnRight()
+            turnRight = false
         else 
             goTo.turnLeft()
             goTo.forward()
             goTo.turnLeft()
+            turnRight = true
         end
-        goTo.forward()
     end
 
     dropInventory()
