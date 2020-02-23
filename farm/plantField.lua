@@ -75,7 +75,7 @@ function sugarField(field)
     for i = 1, 16 do                -- get sugar cane
         getItemFromPeripheral("minecraft:reeds",i,64)
     end
-    goTo.back()                                      -- one back to avoid crashes
+    goTo.back(2)                                      -- back to avoid crashes
 
     goTo.goTo(field.pos)
     goTo.up(1)
@@ -116,9 +116,9 @@ function sugarField(field)
 
     end
 
-    goTo.up(2)                                       -- go to travel height
+    goTo.goTo(travelsPos)
     dropInventory()
-    goTo.back()                                      -- one back to avoid crashes
+    goTo.back(2)                                      -- back to avoid crashes
 
 end
 
@@ -135,7 +135,7 @@ function cactusField(field)
     for i=1,16 do
         getItemFromPeripheral("minecraft:cactus",i,64)
     end
-    goTo.back()                                      -- one back to avoid crashes
+    goTo.back(2)                                      -- back to avoid crashes
 
     turnRight = field.right
     goTo.goTo(field.pos)
@@ -171,9 +171,9 @@ function cactusField(field)
         end
     end
 
-    goTo.up(2)                                      -- go to travel height
+    goTo.goTo(travelsPos)
     dropInventory()
-    goTo.back()                                     -- one back to avoid crashes
+    goTo.back(2)                                     -- back to avoid crashes
 
 end
 
@@ -190,7 +190,7 @@ function enderlillyField(field)
     for i=1,16 do
         getItemFromPeripheral("extrautils2:enderlilly",i,64)
     end
-    goTo.back()                                      -- one back to avoid crashes
+    goTo.back(2)                                      -- back to avoid crashes
 
     turnRight = field.right
     goTo.goTo(field.pos)
@@ -224,9 +224,9 @@ function enderlillyField(field)
         end
     end
 
-    goTo.up(2)                                      -- go to travel height
+    goTo.goTo(travelsPos)
     dropInventory()
-    goTo.back()                                      -- one back to avoid crashes
+    goTo.back(2)                                      -- back to avoid crashes
 
 end
 
@@ -246,7 +246,7 @@ function generalField(field)
     for i=1,16 do
         getItemFromPeripheral(seed,i,64)
     end
-    goTo.back()                                      -- one back to avoid crashes
+    goTo.back(2)                                      -- back to avoid crashes
 
     goTo.goTo(field.pos)
     goTo.up()
@@ -306,9 +306,9 @@ function generalField(field)
         end
     end
 
-    goTo.up(2)                      -- go to travel height
+    goTo.goTo(travelsPos)
     dropInventory()
-    goTo.back()                                      -- one back to avoid crashes
+    goTo.back(2)                                      -- back to avoid crashes
 
 end
 
@@ -316,6 +316,9 @@ end
 -- select planting function
 function planting(field,storagePos)
     storage = storagePos
+    travelsPos = field.pos
+    travelsPos.y = travelsPos.y + 3
+    travelsPos.x = travelsPos.x - 5
     if field.crop == "sugar" then
         sugarField(field)
     elseif field.crop == "cactus" then

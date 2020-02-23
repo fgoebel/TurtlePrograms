@@ -63,7 +63,7 @@ function buildFrame(field)
     for i = 1, 16 do                -- get cobblestone
         getItemFromPeripheral("minecraft:cobblestone",i,64)
     end
-    goTo.back()                                      -- one back to avoid crashes
+    goTo.back(2)                    -- one back to avoid crashes
 
     goTo.goTo(field.pos)
 
@@ -109,9 +109,7 @@ function buildFrame(field)
     
     turtle.placeDown()              -- do last blocks of frame
 
-    goTo.up(3)                      -- go to travel height
-    dropInventory()
-    goTo.back()                                      -- one back to avoid crashes
+    goTo.goTo(travelsPos)           -- go to travel pos
 
 end
 
@@ -137,7 +135,7 @@ end
 for i = 9, 16 do                     -- get ItemLayerTwo
     getItemFromPeripheral(ItemLayerTwo,i,64)
 end
-goTo.back()                                      -- one back to avoid crashes
+goTo.back(2)                         -- back to avoid crashes
 
 goTo.goTo(field.pos)
 goTo.down(1)
@@ -191,9 +189,7 @@ for i = 1, cols do
 
 end
 
-goTo.up(3)                      -- go to travel height
-dropInventory()
-goTo.back()                                      -- one back to avoid crashes
+goTo.goTo(travelsPos)           -- go to travel pos
 
 end
 
@@ -213,7 +209,7 @@ function changeGround(field, ItemName)
     for i = 1, 16 do                                 -- get Item, leave half of the slots empty
         getItemFromPeripheral(ItemName,i,64)
     end
-    goTo.back()                                      -- one back to avoid crashes
+    goTo.back(2)                                     -- back to avoid crashes
 
     goTo.goTo(field.pos)
 
@@ -248,9 +244,7 @@ function changeGround(field, ItemName)
         goTo.forward()
     end
     
-    goTo.up(3)                      -- go to travel height
-    dropInventory()
-    goTo.back()                                      -- one back to avoid crashes
+    goTo.goTo(travelsPos)           -- go to travel pos
 
 end
 
@@ -265,7 +259,7 @@ function addLight(field)
     refillFuel()
     getItemFromPeripheral("minecraft:torch",1,64)
     getItemFromPeripheral("minecraft:planks",2,64)
-    goTo.back()                                      -- one back to avoid crashes
+    goTo.back(2)                                     -- back to avoid crashes
 
     goTo.goTo(field.pos)
     goTo.up(5)
@@ -318,6 +312,7 @@ function addLight(field)
         j = j + 5
     end
 
+    goTo.goTo(travelsPos)           -- go to travel pos
 end
 
 
@@ -329,9 +324,6 @@ function sugarField(field)
     local turnRight = field.right
     local waterCols = cols/3                                -- determine number of water cols
 
-    dropInventory()
-    refillFuel()
-    
 -- build frame and ground if aero field
     if field.aero then
         buildFrame(field)
@@ -341,11 +333,13 @@ function sugarField(field)
     end
 
 -- build water cols
+    dropInventory()
+    refuel()
     for i = 1, 3 do                                     -- get water buckets
         getItemFromPeripheral("minecraft:water_bucket",i,1)
         sleep(1)
     end
-    goTo.back()                                      -- one back to avoid crashes
+    goTo.back(2)                                        -- back to avoid crashes
 
     goTo.goTo(field.pos)                                -- go to first water block
     turnRight = field.right                             -- reset turnRight
@@ -419,13 +413,13 @@ function sugarField(field)
         end
 
     end
-    goTo.up(3)                      -- go to travel height
+    goTo.goTo(travelsPos)
 
     -- build light
     addLight(field)
 
     dropInventory()
-    goTo.back()                                      -- one back to avoid crashes
+    goTo.back(2)                                      -- back to avoid crashes
 
 end
 
@@ -435,10 +429,7 @@ function cactusField(field)
     local cols = field.cols
     local rows = field.rows
     local turnRight = field.right
-    
-    dropInventory()
-    refillFuel()
-        
+          
     -- build frame and ground if aero field
     if field.aero then
         buildFrame(field)
@@ -451,7 +442,7 @@ function cactusField(field)
     addLight(field)
     
     dropInventory()
-    goTo.back()                                      -- one back to avoid crashes
+    goTo.back(2)                                      -- back to avoid crashes
 
 end
 
@@ -461,9 +452,6 @@ function enderlillyField(field)
     local cols = field.cols
     local rows = field.rows
     local turnRight = field.right
-    
-    dropInventory()
-    refillFuel()
 
     -- build frame and ground if aero field
     if field.aero then
@@ -477,7 +465,7 @@ function enderlillyField(field)
     addLight(field)
     
     dropInventory()
-    goTo.back()                                      -- one back to avoid crashes
+    goTo.back(2)                                      -- back to avoid crashes
 
 end
 
@@ -487,9 +475,6 @@ function generalField(field)
     local cols = field.cols
     local rows = field.rows
     local turnRight = field.right
-    
-    dropInventory()
-    refillFuel()
 
     -- build frame and ground if aero field
     if field.aero then
@@ -500,10 +485,14 @@ function generalField(field)
     end
 
     -- Build water blocks
+    dropInventory()
+    refuel()
     turnRight = field.right
     for i=1,15 do                                   -- leave one slot empty for dirt
         getItemFromPeripheral("minecraft:water_bucket",i,1)
     end
+    goTo.back(2)
+
     goTo.goTo(field.pos)
     if turnRight then                               -- go to first water col
         goTo.turnRight()
@@ -548,13 +537,13 @@ function generalField(field)
         end
         j = j + 5
     end
-    goTo.up(3)                      -- go to travel height
+    goTo.goTo(travelsPos)
 
     -- build light
     addLight(field)
     
     dropInventory()
-    goTo.back()                                      -- one back to avoid crashes
+    goTo.back(2)                                      -- back to avoid crashes
 
 end
 
@@ -562,6 +551,9 @@ end
 -- select building function
 function building(field,storagePos)
     storage = storagePos
+    travelsPos = field.pos
+    travelsPos.y = travelsPos.y + 3
+    travelsPos.x = travelsPos.x - 5
     if field.crop == "sugar" then
         sugarField(field)
     elseif field.crop == "cactus" then
@@ -571,5 +563,4 @@ function building(field,storagePos)
     else
         generalField(field)
     end
-
 end

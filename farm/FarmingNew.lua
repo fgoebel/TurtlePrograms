@@ -399,6 +399,9 @@ end
 
 function start(field, storagePos)
     storage = storagePos
+    travelsPos = field.pos
+    travelsPos.y = travelsPos.y + 3
+    travelsPos.x = travelsPos.x - 5
     print("Start farming")
     if (field.crop == "cactus") then
         cactusField(field)
@@ -411,7 +414,8 @@ function start(field, storagePos)
     end
 
     print("finished farming")
-
+    goTo.goTo(travelsPos)
+    
     dropInventory()
     back()                                  -- one back to avoid crashes
 
