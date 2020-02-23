@@ -117,7 +117,7 @@ SeedName = determineSeed(field.crop)
 
 dropInventory()                     -- drop everything
 refillFuel()                        -- refuel if fuel level below 5000
-SeedSlot = getItemFromPeripheral(SeedName,1),64 -- get 64 Seeds, returns false, if no seeds were available
+SeedSlot = getItemFromPeripheral(SeedName,1,64) -- get 64 Seeds, returns false, if no seeds were available
 back()                              -- one back to avoid crashes
 if BoneMealOpt then
     BoneSlot = getBoneMeal()        -- get Bone Meal, returns false, if no Bone meal was available
@@ -415,7 +415,7 @@ function start(field, storagePos)
 
     print("finished farming")
     goTo.goTo(travelsPos)
-    
+
     dropInventory()
     back()                                  -- one back to avoid crashes
 
