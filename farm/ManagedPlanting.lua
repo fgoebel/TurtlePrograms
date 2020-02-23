@@ -118,6 +118,8 @@ function main()
                         Waiting = false                             -- change state of Waiting and First in Queue
                         FirstInQueue = false
                     end
+                else 
+                    sleep(5)
                 end
     
         elseif not Waiting then                                     -- State: not waiting, harvesting

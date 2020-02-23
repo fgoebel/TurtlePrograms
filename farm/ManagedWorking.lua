@@ -129,6 +129,8 @@ while true do
                     Building = true
                 end
             end
+        else
+            sleep(5)
         end
         
     elseif not Waiting then                                     -- State: not waiting, harvesting
