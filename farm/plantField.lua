@@ -17,6 +17,7 @@ function refillFuel()
             turtle.select(16)                                       -- select last slot
             getItemFromPeripheral("minecraft:lava_bucket",16,1)     -- get lava in slot 16
             turtle.refuel()                                         -- refuel
+            turtle.dropDown()
         end
     end
 end
