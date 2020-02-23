@@ -62,7 +62,7 @@ function buildFrame(field)
         getItemFromPeripheral("minecraft:cobblestone",i,64)
     end
     goTo.back()                                      -- one back to avoid crashes
-    
+
     goTo.goTo(field.pos)
 
     if turnRight then               -- go to first pos of frame (one block left)
@@ -189,7 +189,7 @@ for i = 1, cols do
 
 end
 
-goTo.up(4)                      -- go to travel height
+goTo.up(3)                      -- go to travel height
 dropInventory()
 goTo.back()                                      -- one back to avoid crashes
 
