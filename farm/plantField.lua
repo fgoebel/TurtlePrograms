@@ -73,6 +73,8 @@ function sugarField(field)
     for i = 1, 16 do                -- get sugar cane
         getItemFromPeripheral("minecraft:sugar_cane",i,64)
     end
+    goTo.back()                                      -- one back to avoid crashes
+
     goTo.goTo(field.pos)
     goTo.up(1)
     turnRight = field.right
@@ -110,8 +112,9 @@ function sugarField(field)
 
     end
 
-    goTo.up(2)                      -- go to travel height
+    goTo.up(2)                                       -- go to travel height
     dropInventory()
+    goTo.back()                                      -- one back to avoid crashes
 
 end
 
@@ -128,6 +131,8 @@ function cactusField(field)
     for i=1,16 do
         getItemFromPeripheral("minecraft:cactus",i,64)
     end
+    goTo.back()                                      -- one back to avoid crashes
+
     turnRight = field.right
     goTo.goTo(field.pos)
     goTo.up()
@@ -162,8 +167,9 @@ function cactusField(field)
         end
     end
 
-    goTo.up(2)                      -- go to travel height
+    goTo.up(2)                                      -- go to travel height
     dropInventory()
+    goTo.back()                                     -- one back to avoid crashes
 
 end
 
@@ -180,6 +186,8 @@ function enderlillyField(field)
     for i=1,16 do
         getItemFromPeripheral("extrautils2:enderlilly",i,64)
     end
+    goTo.back()                                      -- one back to avoid crashes
+
     turnRight = field.right
     goTo.goTo(field.pos)
     goTo.up()
@@ -210,8 +218,10 @@ function enderlillyField(field)
         end
     end
 
-    goTo.up(2)                      -- go to travel height
+    goTo.up(2)                                      -- go to travel height
     dropInventory()
+    goTo.back()                                      -- one back to avoid crashes
+
 end
 
 --*********************************************
@@ -230,6 +240,8 @@ function generalField(field)
     for i=1,16 do
         getItemFromPeripheral(seed,i,64)
     end
+    goTo.back()                                      -- one back to avoid crashes
+
     goTo.goTo(field.pos)
     goTo.up()
 
@@ -290,6 +302,8 @@ function generalField(field)
 
     goTo.up(2)                      -- go to travel height
     dropInventory()
+    goTo.back()                                      -- one back to avoid crashes
+    
 end
 
 --*********************************************

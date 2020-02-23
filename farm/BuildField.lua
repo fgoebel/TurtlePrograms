@@ -61,6 +61,7 @@ function buildFrame(field)
     for i = 1, 16 do                -- get cobblestone
         getItemFromPeripheral("minecraft:cobblestone",i,64)
     end
+    goTo.back()                                      -- one back to avoid crashes
     
     goTo.goTo(field.pos)
 
@@ -108,6 +109,7 @@ function buildFrame(field)
 
     goTo.up(3)                      -- go to travel height
     dropInventory()
+    goTo.back()                                      -- one back to avoid crashes
 
 end
 
@@ -133,6 +135,8 @@ end
 for i = 9, 16 do                     -- get ItemLayerTwo
     getItemFromPeripheral(ItemLayerTwo,i,64)
 end
+goTo.back()                                      -- one back to avoid crashes
+
 goTo.goTo(field.pos)
 goTo.down(1)
 goTo.turnLeft()
@@ -187,6 +191,7 @@ end
 
 goTo.up(4)                      -- go to travel height
 dropInventory()
+goTo.back()                                      -- one back to avoid crashes
 
 end
 
@@ -206,6 +211,8 @@ function changeGround(field, ItemName)
     for i = 1, 16 do                                 -- get Item, leave half of the slots empty
         getItemFromPeripheral(ItemName,i,64)
     end
+    goTo.back()                                      -- one back to avoid crashes
+
     goTo.goTo(field.pos)
 
     for j=1,cols do
@@ -240,7 +247,9 @@ function changeGround(field, ItemName)
     end
     
     goTo.up(3)                      -- go to travel height
-    dropInventory()   
+    dropInventory()
+    goTo.back()                                      -- one back to avoid crashes
+
 end
 
 --*********************************************
@@ -254,6 +263,7 @@ function addLight(field)
     refillFuel()
     getItemFromPeripheral("minecraft:torch",1,64)
     getItemFromPeripheral("minecraft:planks",2,64)
+    goTo.back()                                      -- one back to avoid crashes
 
     goTo.goTo(field.pos)
     goTo.up(5)
@@ -333,6 +343,8 @@ function sugarField(field)
         getItemFromPeripheral("minecraft:water_bucket",i,1)
         sleep(1)
     end
+    goTo.back()                                      -- one back to avoid crashes
+
     goTo.goTo(field.pos)                                -- go to first water block
     turnRight = field.right                             -- reset turnRight
     if turnRight then
@@ -411,6 +423,7 @@ function sugarField(field)
     addLight(field)
 
     dropInventory()
+    goTo.back()                                      -- one back to avoid crashes
 
 end
 
@@ -436,6 +449,7 @@ function cactusField(field)
     addLight(field)
     
     dropInventory()
+    goTo.back()                                      -- one back to avoid crashes
 
 end
 
@@ -461,6 +475,8 @@ function enderlillyField(field)
     addLight(field)
     
     dropInventory()
+    goTo.back()                                      -- one back to avoid crashes
+
 end
 
 --*********************************************
@@ -536,6 +552,8 @@ function generalField(field)
     addLight(field)
     
     dropInventory()
+    goTo.back()                                      -- one back to avoid crashes
+
 end
 
 --*********************************************
