@@ -81,17 +81,12 @@ function sugarField(field)
     for j=1,cols do
         for i=1,rows-1 do
             slot=getSlot("minecraft:sugar_cane")
-            if slot == false then                   -- refill if no sugar is left
-                print("run out ofsugar cane")
-                ReturnPosition = goTo.returnPos()
-                for n=1,16 do
-                    getItemFromPeripheral("minecraft:sugar_cane",n,64)
-                end
-                goTo.goTo(ReturnPosition)
+            while slot == false do                  -- wait for beeing refilled
+                print("run out of sugar_cane")
+                sleep(10)
                 slot=getSlot("minecraft:sugar_cane")
-            else
-                turtle.select(slot)
             end
+            turtle.select(slot)
             turtle.placeDown()
             goTo.forward()
         end
@@ -137,31 +132,31 @@ function cactusField(field)
     goTo.up()
 
     for j = 1,cols do
-        for i = 1,rows/2 do
+        i = 1
+        while i < rows do
             slot=getSlot("minecraft:cactus")
-            if slot == false then                   -- refill if no cactus is left
+            while slot == false do                  -- wait for beeing refilled
                 print("run out of cactus")
-                ReturnPosition = goTo.returnPos()
-                for n=1,16 do
-                    getItemFromPeripheral("minecraft:cactus",n,64)
-                end
-                goTo.goTo(ReturnPosition)
+                sleep(10)
                 slot=getSlot("minecraft:cactus")
-            else
-                turtle.select(slot)
             end
+            turtle.select(slot)
+            turtle.placeDown()
+            goTo.forward(2)
+            i = i + 2
         end
-        turtle.placeDown()
-        goTo.forward(2)            
+
         if turnRight then                           -- move to next row
             goTo.turnRight()
             goTo.forward()
             goTo.turnRight()
+            goTo.forward()
             turnRight = false
         else 
             goTo.turnLeft()
             goTo.forward()
             goTo.turnLeft()
+            goTo.forward()
             turnRight=true
         end
     end
@@ -190,30 +185,26 @@ function enderlillyField(field)
     for j = 1,cols do
         for i = 1,rows do
             slot=getSlot("extrautils2:enderlilly")
-            if slot == false then                   -- refill if no cactus is left
+            while slot == false do                  -- wait for beeing refilled
                 print("run out of enderlilly")
-                ReturnPosition = goTo.returnPos()
-                for n=1,16 do
-                    getItemFromPeripheral("extrautils2:enderlilly",n,64)
-                end
-                goTo.goTo(ReturnPosition)
+                sleep(10)
                 slot=getSlot("extrautils2:enderlilly")
-            else
-                turtle.select(slot)
             end
+            turtle.select(slot)
             turtle.placeDown()
-            goTo.forward()            
-            if turnRight then                       -- move to next row
-                goTo.turnRight()
-                goTo.forward()
-                goTo.turnRight()
-                turnRight = false
-            else 
-                goTo.turnLeft()
-                goTo.forward()
-                goTo.turnLeft()
-                turnRight=true
-            end
+            goTo.forward()
+        end          
+
+        if turnRight then                           -- move to next row
+            goTo.turnRight()
+            goTo.forward()
+            goTo.turnRight()
+            turnRight = false
+        else 
+            goTo.turnLeft()
+            goTo.forward()
+            goTo.turnLeft()
+            turnRight=true
         end
     end
 
@@ -269,14 +260,9 @@ function generalField(field)
     for j=1,cols do
         for i=1,rows-1 do
             slot=getSlot(seed)
-            if slot == false then                   -- refill if no water is left
-                print("run out of seed")
-                ReturnPosition = goTo.returnPos()
-                dropInventory()
-                for n=1,16 do
-                    getItemFromPeripheral(seed,n,64)
-                end
-                goTo.goTo(ReturnPosition)
+            while slot == false do                  -- wait for beeing refilled
+                print("run out of "..seed)
+                sleep(10)
                 slot=getSlot(seed)
             end
             turtle.select(slot)

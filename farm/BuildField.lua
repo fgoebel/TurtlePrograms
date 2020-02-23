@@ -80,17 +80,12 @@ function buildFrame(field)
     while side <= 4 do
         for i=1,blocks do
             slot=getSlot("minecraft:cobblestone")
-            if slot == false then                   -- refill if no dirt is left
-                print("run out of stone")
-                ReturnPosition = goTo.returnPos()
-                for n=1,16 do
-                    getItemFromPeripheral("minecraft:cobblestone",n,64)
-                end
-                goTo.goTo(ReturnPosition)
+            while slot == false do                   -- wait for beeing refilled
+                print("run out of cobblestone")
+                sleep(10)
                 slot=getSlot("minecraft:cobblestone")
-            else
-                turtle.select(slot)
             end
+            turtle.select(slot)
             turtle.placeDown()
             goTo.forward()
         end                         -- turtle is now above last block of current side/ first block of next side of frame
@@ -146,17 +141,14 @@ for i = 1, cols do
     for j=1,rows-1 do
         slot1=getSlot(ItemLayerOne)
         slot2=getSlot(ItemLayerTwo)
-        if slot1 == false or slot2 == false then                   -- refill
-            print("run out of Items")
-            ReturnPosition = goTo.returnPos()
-            dropInventory()
-            for n=1,8 do
-                getItemFromPeripheral(ItemLayerOne,n,64)
+        while slot1 == false or slot2 == false do           -- wait for beeing refilled
+            if slot1 == false then
+                print("run out of "..ItemLayerOne)
             end
-            for n=9,16 do
-                getItemFromPeripheral(ItemLayerTwo,n,64)
+            if slot2 == false then
+                print("run out of "..ItemLayerTwo)
             end
-            goTo.goTo(ReturnPosition)
+            sleep(10)
             slot1=getSlot(ItemLayerOne)
             slot2=getSlot(ItemLayerTwo)
         end
@@ -217,22 +209,13 @@ function changeGround(field, ItemName)
         for i=1,rows do
             valid, data = turtle.inspectDown()
             if (valid and data.name ~= ItemName) or not valid then
-                exchange = true
-            end
-            
-            if exchange then
                 slot=getSlot(ItemName)
-                if slot == false then                   -- refill if no sugar is left
-                    print("run out of"..ItemName)
-                    ReturnPosition = goTo.returnPos()
-                    for n=1,8 do
-                        getItemFromPeripheral(ItemName,n,64)
-                    end
-                    goTo.goTo(ReturnPosition)
+                while slot == false do                  -- wait for beeing refilled
+                    print("run out of "..ItemName)
+                    sleep(10)
                     slot=getSlot(ItemName)
-                else
-                    turtle.select(slot)
                 end
+                turtle.select(slot)
                 turtle.digDown()
                 turtle.placeDown()
             end
@@ -335,8 +318,8 @@ function sugarField(field)
     
 -- build frame and ground if aero field
     if field.aero then
-        --buildFrame(field)
-        --buildGround(field)
+        buildFrame(field)
+        buildGround(field)
     else
         changeGround(field)
     end
@@ -362,6 +345,11 @@ function sugarField(field)
         for i=1,3 do
             turtle.digDown()
             slot=getSlot("minecraft:water_bucket")
+            while slot == false do                  -- wait for beeing refilled
+                print("run out of water_bucket")
+                sleep(10)
+                slot=getSlot("minecraft:water_bucket")
+            end
             turtle.select(slot)
             turtle.placeDown()
             goTo.forward()
@@ -370,7 +358,12 @@ function sugarField(field)
 
         for i=4,rows do
             goTo.back(1)
-            slot=getSlot("minecraft:bucket")    -- select empty bucket 
+            slot=getSlot("minecraft:bucket")    -- select empty bucket
+            while slot == false do                  -- wait for beeing refilled
+                print("run out of bucket")
+                sleep(10)
+                slot=getSlot("minecraft:bucket")
+            end
             turtle.select(slot)
             turtle.placeDown()                  -- refill bucket
             goTo.forward(2)
@@ -380,9 +373,16 @@ function sugarField(field)
         goTo.back(1)                            -- go back 1 block, were water is available
         for n=1,3 do                            -- refill water
             slot=getSlot("minecraft:bucket")    -- get empty bucket
-            if slot ~= false then
+            if slot ~= false then               -- if empty bucket is available
                 turtle.select(slot)
-                turtle.placeDown()                  -- get water   
+                turtle.placeDown()              -- get water   
+            else
+                slot=getSlot("minecraft:water_bucket")
+                while slot == false do                  -- wait for beeing refilled
+                    print("run out of water_bucket")
+                    sleep(10)
+                    slot=getSlot("minecraft:water_bucket")
+                end
             end
             sleep(1)
         end
@@ -470,10 +470,10 @@ function generalField(field)
 
     -- build frame and ground if aero field
     if field.aero then
-        --buildFrame(field)
-        --buildGround(field)
+        buildFrame(field)
+        buildGround(field)
     else
-        --changeGround(field)
+        changeGround(field)
     end
 
     -- Build water blocks
@@ -499,18 +499,12 @@ function generalField(field)
         while i <= rows-4 do
             goTo.forward(5)
             slot=getSlot("minecraft:water_bucket")
-            if slot == false then                   -- refill if no water is left
-                print("run out of water")
-                ReturnPosition = goTo.returnPos()
-                dropInventory()
-                for n=1,15 do
-                    getItemFromPeripheral("minecraft:water_bucket",n,1)
-                end
-                goTo.goTo(ReturnPosition)
+            while slot == false do                  -- wait for beeing refilled
+                print("run out of water_bucket")
+                sleep(10)
                 slot=getSlot("minecraft:water_bucket")
-            else
-                turtle.select(slot)
             end
+            turtle.select(slot)
             turtle.digDown()
             turtle.placeDown()
             i = i + 5

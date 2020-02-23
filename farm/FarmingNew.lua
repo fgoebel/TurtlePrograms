@@ -98,10 +98,10 @@ function havestAndPlant(crop)
     if turtle.inspectDown() == false then               -- tilling and planting only needed if there is nothing below or crop was destroyed
         if turtle.getItemCount(SeedSlot) == 0 then      -- if SeedSlot is empty, get new slot
             SeedSlot = getSlot(SeedName)
-            if SeedSlot == false then
-                print("no seeds left")
-                dropAndReturn()                         -- get new Seeds (and clear inventory)
-                return
+            while slot == false do                  -- wait for beeing refilled
+                print("run out of "..SeedName)
+                sleep(10)
+                SeedSlot=getSlot(SeedName)
             end
         end
         turtle.select(SeedSlot)                     --select SeedSlot
@@ -145,8 +145,10 @@ goTo.goTo(field.pos)                -- got to first Block of field
             end
         end
         empty = determineEmptySlots()
-        if empty < 2 then               -- if inventory almost full
-            dropAndReturn()             -- clear inventory and return
+        while empty < 2 then               -- wait for beeing unfilled
+            print("please clear inventory")
+            sleep(10)
+            empty = determineEmptySlots()
         end
     end
 end
@@ -219,8 +221,10 @@ currentCol = 1                                  -- variable for currentCol
             end
         end
         empty = determineEmptySlots()
-        if empty < 2 then               -- if inventory almost full
-            dropAndReturn()             -- clear inventory and return
+        while empty < 2 then               -- wait for beeing unfilled
+            print("please clear inventory")
+            sleep(10)
+            empty = determineEmptySlots()
         end
     end
 end
@@ -266,8 +270,10 @@ goTo.goTo(field.pos)                        -- got to first Block of field
         skip = math.abs((skip-1))           -- invert skipping variable, returns 1 if skip was 0 and 0 if skip was 1
 
         empty = determineEmptySlots()
-        if empty < 2 then               -- if inventory almost full
-            dropAndReturn()             -- clear inventory and return
+        while empty < 2 then               -- wait for beeing unfilled
+            print("please clear inventory")
+            sleep(10)
+            empty = determineEmptySlots()
         end
     end
 
@@ -320,8 +326,10 @@ function enderlillyField(field)
                 end
             end
             empty = determineEmptySlots()
-            if empty < 2 then               -- if inventory almost full
-                dropAndReturn()             -- clear inventory and return
+            while empty < 2 then               -- wait for beeing unfilled
+                print("please clear inventory")
+                sleep(10)
+                empty = determineEmptySlots()
             end
         end
 end
@@ -382,18 +390,6 @@ function determineEmptySlots()
         end
     end
 return empty
-end
-
-function dropAndReturn()
-    ReturnPosition = goTo.returnPos()
-    dropInventory()
-    if (field.crop == "wheat" or field.crop == "beetroot" or field.crop == "potato" or field.crop == "carrot") then
-        SeedSlot = getItemFromPeripheral(SeedName,1),64 -- get 64 Seeds, returns false, if no seeds were available
-        if BoneMealOpt then
-            BoneSlot = getBoneMeal()            -- get Bone Meal, returns false, if no Bone meal was available
-        end
-    end
-    goTo.goTo(ReturnPosition)
 end
 
 function start(field, storagePos)
