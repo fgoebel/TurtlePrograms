@@ -407,8 +407,6 @@ function start(field, storagePos)
 
     print("finished farming")
 
-    up(5)                                   -- go up to avoid crashes
-
     dropInventory()
     back()                                  -- one back to avoid crashes
 
