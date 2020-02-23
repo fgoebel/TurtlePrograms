@@ -25,10 +25,10 @@ local queue = {
     f=3
 }
 
-local harvestingqueue = {
+local plantingqueue = {
     x=123,
     y=63,
-    z=-259,
+    z=-258,
     f=3
 }
 
@@ -149,8 +149,8 @@ while true do
         storagePos = textutils.serialize(storage)
         rednet.send(NewID,storagePos,"New")                             -- send storage position using protocol "New"
         if message == "I am new planting" then
-            harvestingqueuePos = textutils.serialize(harvestingqueue)
-            rednet.send(NewID,harvestingqueuePos,"New")                -- send queue position using protocol "New"
+            plantingqueuePos = textutils.serialize(plantingqueue)
+            rednet.send(NewID,plantingqueuePos,"New")                -- send queue position using protocol "New"
         else
             queuePos = textutils.serialize(queue)
             rednet.send(NewID,queuePos,"New")                           -- send queue position using protocol "New"
