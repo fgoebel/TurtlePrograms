@@ -28,7 +28,7 @@
     name = "enderlilly02",
     crop = "enderlilly",
     rows = 24,
-    cols = 8,
+    cols = 9,
     right = true,
     interval = 9000,
     lastHarvested = 0,
