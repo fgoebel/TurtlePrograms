@@ -7,6 +7,7 @@ function dropInventory()
     for Slot =1, 16 do              -- clear slots
         turtle.select(Slot)        -- select next Slot
         turtle.dropDown()          -- just drop everthing in the slot
+        sleep(0.5)
     end
 end
 
