@@ -151,6 +151,7 @@ goTo.goTo(field.pos)                -- got to first Block of field
             empty = determineEmptySlots()
         end
     end
+    goTo.up(2)                      -- go to travel height
 end
 
 --*********************************************
@@ -227,6 +228,7 @@ currentCol = 1                                  -- variable for currentCol
             empty = determineEmptySlots()
         end
     end
+    goTo.up(1)                      -- go to travel height
 end
 
 --*********************************************
@@ -276,7 +278,7 @@ goTo.goTo(field.pos)                        -- got to first Block of field
             empty = determineEmptySlots()
         end
     end
-
+    goTo.up(1)                      -- go to travel height
 end
 
 --*********************************************
@@ -332,6 +334,7 @@ function enderlillyField(field)
                 empty = determineEmptySlots()
             end
         end
+        goTo.up(2)                      -- go to travel height
 end
 
 --*********************************************
