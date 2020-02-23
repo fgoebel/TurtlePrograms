@@ -181,8 +181,8 @@ while true do
         toPlantName = message
         for k,field in ipairs(fields) do
             if field.name == toPlantName then   
-                field.toplant = false                                       -- store field, which is now active
-                field.active = true
+                field.toplant = false
+                field.active = true                                       -- store field, which is now active
                 field.lastHarvested = Time
             end
         end
@@ -280,6 +280,8 @@ while true do
         -- Protocol = "Planting" --> turtle received field and starts planting
         if protocol == "Planting" then
             Plantingstate = false
+            fields[toPlantIndex].toplant = false
+            store("fields", fields)
         end
     end
 
