@@ -106,6 +106,7 @@ function buildFrame(field)
     
     turtle.placeDown()              -- do last blocks of frame
 
+    goTo.up(3)                      -- go to travel height
     dropInventory()
 
 end
@@ -183,6 +184,8 @@ for i = 1, cols do
     end
 
 end
+
+goTo.up(4)                      -- go to travel height
 dropInventory()
 
 end
@@ -236,6 +239,7 @@ function changeGround(field, ItemName)
         goTo.forward()
     end
     
+    goTo.up(3)                      -- go to travel height
     dropInventory()   
 end
 
@@ -401,7 +405,8 @@ function sugarField(field)
         end
 
     end
-    
+    goTo.up(3)                      -- go to travel height
+
     -- build light
     addLight(field)
 
@@ -525,6 +530,7 @@ function generalField(field)
         end
         j = j + 5
     end
+    goTo.up(3)                      -- go to travel height
 
     -- build light
     addLight(field)

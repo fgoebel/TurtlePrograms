@@ -110,6 +110,7 @@ function sugarField(field)
 
     end
 
+    goTo.up(2)                      -- go to travel height
     dropInventory()
 
 end
@@ -161,6 +162,7 @@ function cactusField(field)
         end
     end
 
+    goTo.up(2)                      -- go to travel height
     dropInventory()
 
 end
@@ -208,6 +210,7 @@ function enderlillyField(field)
         end
     end
 
+    goTo.up(2)                      -- go to travel height
     dropInventory()
 end
 
@@ -285,6 +288,7 @@ function generalField(field)
         end
     end
 
+    goTo.up(2)                      -- go to travel height
     dropInventory()
 end
 
