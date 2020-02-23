@@ -125,6 +125,7 @@ function main()
             goTo.goTo(queue)                                     -- just to avoid crashes
             goTo.goTo(storage)
             planting.planting(field,storage)                        -- go working
+            rednet.send(ManagerID,"back", "FinishedPlanting")
             goTo.back()
   
             ToQueue()                                               -- go to queue
