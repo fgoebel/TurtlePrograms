@@ -80,7 +80,8 @@ function sugarField(field)
     turnRight = field.right
     local skip = 1
 
-    for j=1,cols do
+    j=1
+    while j <= cols do
         for i=1,rows-1 do
             slot=getSlot("minecraft:reeds")
             while slot == false do                  -- wait for beeing refilled
@@ -104,6 +105,7 @@ function sugarField(field)
             goTo.turnLeft()
             turnRight = true 
         end
+        j = j + 1 + skip
         if skip == 1 then
             skip = 0
         else
