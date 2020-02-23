@@ -145,7 +145,7 @@ goTo.goTo(field.pos)                -- got to first Block of field
             end
         end
         empty = determineEmptySlots()
-        while empty < 2 then               -- wait for beeing unfilled
+        while empty < 2 do              -- wait for beeing unfilled
             print("please clear inventory")
             sleep(10)
             empty = determineEmptySlots()
@@ -221,7 +221,7 @@ currentCol = 1                                  -- variable for currentCol
             end
         end
         empty = determineEmptySlots()
-        while empty < 2 then               -- wait for beeing unfilled
+        while empty < 2 do               -- wait for beeing unfilled
             print("please clear inventory")
             sleep(10)
             empty = determineEmptySlots()
@@ -270,7 +270,7 @@ goTo.goTo(field.pos)                        -- got to first Block of field
         skip = math.abs((skip-1))           -- invert skipping variable, returns 1 if skip was 0 and 0 if skip was 1
 
         empty = determineEmptySlots()
-        while empty < 2 then               -- wait for beeing unfilled
+        while empty < 2 do               -- wait for beeing unfilled
             print("please clear inventory")
             sleep(10)
             empty = determineEmptySlots()
@@ -326,7 +326,7 @@ function enderlillyField(field)
                 end
             end
             empty = determineEmptySlots()
-            while empty < 2 then               -- wait for beeing unfilled
+            while empty < 2 do               -- wait for beeing unfilled
                 print("please clear inventory")
                 sleep(10)
                 empty = determineEmptySlots()
