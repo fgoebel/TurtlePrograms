@@ -205,17 +205,19 @@ function enderlillyField(field)
             turtle.select(slot)
             turtle.placeDown()
             goTo.forward()
-        end          
+        end         
 
         if turnRight then                           -- move to next row
             goTo.turnRight()
             goTo.forward()
             goTo.turnRight()
+            goTo.forward()
             turnRight = false
         else 
             goTo.turnLeft()
             goTo.forward()
             goTo.turnLeft()
+            goTo.forward()
             turnRight=true
         end
     end
