@@ -349,7 +349,7 @@ function refillFuel()
         goTo.goTo(storage)              -- go to storage system
         while turtle.getFuelLevel()/turtle.getFuelLimit() < 1 do    -- get current Fuellevel (percentage) and compare to Limit
             turtle.select(16)                                       -- select last slot
-            getItemFromPeripheral("minecraft:coal",16,16)           -- get 16 coal in slot 16
+            getItemFromPeripheral("minecraft:lava_bucket",16,1)     -- get lava in slot 16
             turtle.refuel()                                         -- refuel
         end
     end
