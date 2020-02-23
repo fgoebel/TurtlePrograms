@@ -71,7 +71,7 @@ function sugarField(field)
     dropInventory()
     refillFuel()
     for i = 1, 16 do                -- get sugar cane
-        getItemFromPeripheral("minecraft:sugar_cane",i,64)
+        getItemFromPeripheral("minecraft:reeds",i,64)
     end
     goTo.back()                                      -- one back to avoid crashes
 
@@ -82,11 +82,11 @@ function sugarField(field)
 
     for j=1,cols do
         for i=1,rows-1 do
-            slot=getSlot("minecraft:sugar_cane")
+            slot=getSlot("minecraft:reeds")
             while slot == false do                  -- wait for beeing refilled
                 print("run out of sugar_cane")
                 sleep(10)
-                slot=getSlot("minecraft:sugar_cane")
+                slot=getSlot("minecraft:reeds")
             end
             turtle.select(slot)
             turtle.placeDown()
@@ -303,7 +303,7 @@ function generalField(field)
     goTo.up(2)                      -- go to travel height
     dropInventory()
     goTo.back()                                      -- one back to avoid crashes
-    
+
 end
 
 --*********************************************
