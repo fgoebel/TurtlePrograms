@@ -21,14 +21,14 @@ local storage = {
 local queue = {
     x=123,
     y=63,
-    z=-260,
+    z=-259,
     f=3
 }
 
 local plantingqueue = {
     x=123,
     y=63,
-    z=-258,
+    z=-257,
     f=3
 }
 
