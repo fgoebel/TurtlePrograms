@@ -64,6 +64,7 @@ local EndofQueue = false
         end
     end
     goTo.forward()
+    goTo.turnRight()
 end
 
 --*********************************************

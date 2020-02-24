@@ -55,6 +55,7 @@ local EndofQueue = false
         end
     end
     goTo.forward()
+    goTo.turnLeft()
 end
 
 --*********************************************
