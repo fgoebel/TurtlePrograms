@@ -576,8 +576,9 @@ end
 
 --*********************************************
 -- select building function
-function building(field,storagePos)
+function building(field,storagePos,dropPos)
     storage = storagePos
+    drop = dropPos
     travelsPos = field.pos
     travelsPos.y = travelsPos.y + 3
     travelsPos.x = travelsPos.x - 5
