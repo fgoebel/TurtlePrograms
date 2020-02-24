@@ -2,8 +2,7 @@
 
 --*********************************************
 --refill and drop functions + general functions
-function dropInventory(position)
-    goTo.goTo(position)             -- go to storage system, after field is finished
+function dropInventory()
     for Slot =1, 16 do              -- clear slots
         turtle.select(Slot)        -- select next Slot
         turtle.dropDown()          -- just drop everthing in the slot
@@ -11,9 +10,8 @@ function dropInventory(position)
     end
 end
 
-function refillFuel(position)
+function refillFuel()
     if turtle.getFuelLevel() < 5000 then
-        goTo.goTo(position)              -- go to storage system
         while turtle.getFuelLevel()/turtle.getFuelLimit() < 1 do    -- get current Fuellevel (percentage) and compare to Limit
             turtle.select(16)                                       -- select last slot
             getItemFromPeripheral("minecraft:lava_bucket",16,1)     -- get lava in slot 16
@@ -57,7 +55,9 @@ function buildFrame(field)
     local rows = field.rows
     local turnRight = field.right
 
-    goTo.goTo(storage)  
+    goTo.goTo(storage)
+    dropInventory()
+    refillFuel()  
     for i = 1, 16 do                -- get cobblestone
         getItemFromPeripheral("minecraft:cobblestone",i,64)
     end
@@ -126,7 +126,9 @@ if ItemLayerTwo == nil then
     ItemLayerTwo = "minecraft:dirt"
 end
 
-goTo.goTo(storage)  
+goTo.goTo(storage)
+dropInventory()
+refillFuel() 
 for i = 1, 8 do                     -- get ItemLayerOne
     getItemFromPeripheral(ItemLayerOne,i,64)
 end
@@ -203,7 +205,9 @@ function changeGround(field, ItemName)
         ItemName = "minecraft:dirt"
     end
 
-    goTo.goTo(storage)  
+    goTo.goTo(storage)
+    dropInventory()
+    refillFuel()  
     for i = 1, 16 do                                 -- get Item, leave half of the slots empty
         getItemFromPeripheral(ItemName,i,64)
     end
@@ -254,7 +258,9 @@ function addLight(field)
     local rows = field.rows
     local turnRight = field.right
 
-    goTo.goTo(storage)  
+    goTo.goTo(storage)
+    dropInventory()
+    refillFuel()   
     getItemFromPeripheral("minecraft:torch",1,64)
     getItemFromPeripheral("minecraft:planks",2,64)
 
@@ -323,25 +329,18 @@ function sugarField(field)
     local turnRight = field.right
     local waterCols = cols/3                                -- determine number of water cols
 
-    dropInventory(storage)
-    refillFuel(storage)
-
     -- build frame and ground if aero field
     if field.aero then
         buildFrame(field)
-        dropInventory(drop)
-        goTo.forward()
-        refillFuel(storage)
         buildGround(field)
     else
         changeGround(field)
     end
 
 -- build water cols
-    dropInventory(drop)
-    goTo.forward()
-    goTo.goTo(storage)  
-    refuel(storage)
+    goTo.goTo(storage)
+    dropInventory()  
+    refuel()
     for i = 1, 3 do                                     -- get water buckets
         getItemFromPeripheral("minecraft:water_bucket",i,1)
         sleep(1)
@@ -423,10 +422,6 @@ function sugarField(field)
     end
     goTo.goTo(travelsPos)
 
-    dropInventory(drop)
-    goTo.forward()
-    refillFuel(storage)
-
     -- build light
     addLight(field)
 
@@ -439,22 +434,13 @@ function cactusField(field)
     local rows = field.rows
     local turnRight = field.right
     
-    dropInventory(storage)
-    refillFuel(storage)
     -- build frame and ground if aero field
     if field.aero then
         buildFrame(field)
-        dropInventory(drop)
-        goTo.forward()
-        refillFuel(storage)
         buildGround(field,"minecraft:dirt", "minecraft:sand")
     else
         changeGround(field,"minecraft:sand")
     end
-
-    dropInventory(drop)
-    goTo.forward()
-    refillFuel(storage)
 
     -- build light
     addLight(field)
@@ -468,23 +454,13 @@ function enderlillyField(field)
     local rows = field.rows
     local turnRight = field.right
 
-    dropInventory(storage)
-    refillFuel(storage)
-
     -- build frame and ground if aero field
     if field.aero then
         buildFrame(field)
-        dropInventory(drop)
-        goTo.forward()
-        refillFuel(storage)
         buildGround(field,"minecraft:dirt", "minecraft:end_stone")
     else
         changeGround(field,"minecraft:end_stone")
     end
-
-    dropInventory(drop)
-    goTo.forward()
-    refillFuel(storage)
 
     -- build light
     addLight(field)
@@ -498,27 +474,19 @@ function generalField(field)
     local rows = field.rows
     local turnRight = field.right
 
-    dropInventory(storage)
-    refillFuel(storage)
-
     -- build frame and ground if aero field
     if field.aero then
         buildFrame(field)
-        dropInventory(drop)
-        goTo.forward()
-        refillFuel(storage)
         buildGround(field)
     else
         changeGround(field)
     end
 
-    dropInventory(drop)
-    goTo.forward()
-    refillFuel(storage)
-
     -- Build water blocks
     turnRight = field.right
-    goTo.goTo(storage)  
+    goTo.goTo(storage)
+    dropInventory()
+    refillFuel()
     for i=1,15 do                                   -- leave one slot empty for dirt
         getItemFromPeripheral("minecraft:water_bucket",i,1)
     end
@@ -571,9 +539,6 @@ function generalField(field)
     end
     goTo.goTo(travelsPos)
 
-    dropInventory(drop)
-    goTo.forward()
-    refillFuel(storage)
     -- build light
     addLight(field)
 

@@ -115,8 +115,9 @@ local rows = field.rows
 local turnRight = field.right
 SeedName = determineSeed(field.crop)
 
-dropInventory(storage)              -- drop everything
-refillFuel(storage)                 -- refuel if fuel level below 5000
+goTo.goTo(storage)
+dropInventory()                                 -- drop everything
+refillFuel()                                    -- refuel if fuel level below 5000
 SeedSlot = getItemFromPeripheral(SeedName,1,64) -- get 64 Seeds, returns false, if no seeds were available
 if BoneMealOpt then
     BoneSlot = getBoneMeal()        -- get Bone Meal, returns false, if no Bone meal was available
@@ -163,8 +164,9 @@ local cols = field.cols
 local rows = field.rows
 local turnRight = field.right
 
-dropInventory(storage)
-refillFuel(storage)                             -- refuel if fuel level below 5000
+goTo.goTo(storage)
+dropInventory()                                 -- drop everything
+refillFuel()                                    -- refuel if fuel level below 5000
 
 goTo.forward()
 goTo.goTo(travelsPos)
@@ -246,8 +248,9 @@ local turnRight = field.right
 local skip = 1                              -- equals 1 if water must be skipped in next turn, else equals 0
 local currentCol = 1                        -- variable for currentCol
 
-dropInventory(storage)
-refillFuel(storage)                         -- refuel if fuel level below 5000
+goTo.goTo(storage)
+dropInventory()                                 -- drop everything
+refillFuel()                                    -- refuel if fuel level below 5000
 
 goTo.forward()
 goTo.goTo(travelsPos)
@@ -296,8 +299,9 @@ function enderlillyField(field)
     local rows = field.rows
     local turnRight = field.right
 
-    dropInventory(storage)
-    refillFuel(storage)                             -- refuel if fuel level below 5000
+    goTo.goTo(storage)
+    dropInventory()                                 -- drop everything
+    refillFuel()                                    -- refuel if fuel level below 5000
 
     goTo.forward()
     goTo.goTo(travelsPos)
@@ -350,8 +354,7 @@ end
 
 --*********************************************
 --refill and drop functions + general functions
-function dropInventory(position)
-    goTo.goTo(position)             -- go to storage system, after field is finished
+function dropInventory()
     for Slot =1, 16 do              -- clear slots
         turtle.select(Slot)        -- select next Slot
         turtle.dropDown()          -- just drop everthing in the slot
@@ -359,9 +362,8 @@ function dropInventory(position)
     end
 end
 
-function refillFuel(position)
+function refillFuel()
     if turtle.getFuelLevel() < 5000 then
-        goTo.goTo(position)              -- go to storage system
         while turtle.getFuelLevel()/turtle.getFuelLimit() < 1 do    -- get current Fuellevel (percentage) and compare to Limit
             turtle.select(16)                                       -- select last slot
             getItemFromPeripheral("minecraft:lava_bucket",16,1)     -- get lava in slot 16
@@ -430,5 +432,6 @@ function start(field, storagePos, dropPos)
     goTo.goTo(travelsPos)
 
     dropInventory(drop)
+    goTo.forward()
 
 end

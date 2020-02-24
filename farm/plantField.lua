@@ -2,8 +2,7 @@
 
 --*********************************************
 --refill and drop functions + general functions
-function dropInventory(position)
-    goTo.goTo(position)             -- go to storage system, after field is finished
+function dropInventory()
     for Slot =1, 16 do              -- clear slots
         turtle.select(Slot)        -- select next Slot
         turtle.dropDown()          -- just drop everthing in the slot
@@ -11,9 +10,8 @@ function dropInventory(position)
     end
 end
 
-function refillFuel(position)
+function refillFuel()
     if turtle.getFuelLevel() < 5000 then
-        goTo.goTo(position)                                         -- go to storage system
         while turtle.getFuelLevel()/turtle.getFuelLimit() < 1 do    -- get current Fuellevel (percentage) and compare to Limit
             turtle.select(16)                                       -- select last slot
             getItemFromPeripheral("minecraft:lava_bucket",16,1)     -- get lava in slot 16
@@ -69,8 +67,9 @@ function sugarField(field)
     local rows = field.rows
     local turnRight = field.right
   
-    dropInventory(storage)
-    refillFuel(storage)
+    goTo.goTo(storage)
+    dropInventory()
+    refillFuel()
     for i = 1, 16 do                -- get sugar cane
         getItemFromPeripheral("minecraft:reeds",i,64)
     end
@@ -127,9 +126,9 @@ function cactusField(field)
     local rows = field.rows
     local turnRight = field.right
     
-    dropInventory(storage)
-    refillFuel(storage)
-        
+    goTo.goTo(storage)
+    dropInventory()
+    refillFuel()
     for i=1,16 do
         getItemFromPeripheral("minecraft:cactus",i,64)
     end
@@ -181,9 +180,9 @@ function enderlillyField(field)
     local rows = field.rows
     local turnRight = field.right
     
-    dropInventory(storage)
-    refillFuel(storage)
-
+    goTo.goTo(storage)
+    dropInventory()
+    refillFuel()
     for i=1,16 do
         getItemFromPeripheral("extrautils2:enderlilly",i,64)
     end
@@ -234,9 +233,9 @@ function generalField(field)
 
     seed = determineSeed(field.crop)
     
-    dropInventory(storage)
-    refillFuel(storage)
-
+    goTo.goTo(storage)
+    dropInventory()
+    refillFuel()
     turnRight = field.right
     goTo.goTo(storage)  
     for i=1,16 do
