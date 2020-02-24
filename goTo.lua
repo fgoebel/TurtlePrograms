@@ -253,10 +253,8 @@ end
 
 --go to Positon
 function goTo(Position)
-	counter = 0									-- counter for correction of Pos
 	getPos()									-- to ensure to have currentPos correct
 
-while counter < 5 do
     -- first move up
     while currentPosition.y < Position.y do
 		up()
@@ -292,20 +290,6 @@ while counter < 5 do
 	
 	turnToDir(Position.f)
 
-	getPos()									--check pos
-	if currentPos ~= Position then
-		counter = counter + 1
-	else 
-		counter = 10							-- any value > 5 to break
-	end
-
-end
-	if counter == 5 then
-		while true do
-			print("got lost, going to rest mode")
-			sleep(60)
-		end
-	end
 end
 
 
