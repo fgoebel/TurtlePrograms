@@ -327,6 +327,7 @@ function sugarField(field)
     if field.aero then
         buildFrame(field)
         dropInventory(drop)
+        goTo.forward()
         refillFuel(storage)
         buildGround(field)
     else
@@ -335,6 +336,7 @@ function sugarField(field)
 
 -- build water cols
     dropInventory(drop)
+    goTo.forward()
     refuel(storage)
     for i = 1, 3 do                                     -- get water buckets
         getItemFromPeripheral("minecraft:water_bucket",i,1)
@@ -418,6 +420,7 @@ function sugarField(field)
     goTo.goTo(travelsPos)
 
     dropInventory(drop)
+    goTo.forward()
     refillFuel(storage)
 
     -- build light
@@ -438,6 +441,7 @@ function cactusField(field)
     if field.aero then
         buildFrame(field)
         dropInventory(drop)
+        goTo.forward()
         refillFuel(storage)
         buildGround(field,"minecraft:dirt", "minecraft:sand")
     else
@@ -445,6 +449,7 @@ function cactusField(field)
     end
 
     dropInventory(drop)
+    goTo.forward()
     refillFuel(storage)
 
     -- build light
@@ -466,6 +471,7 @@ function enderlillyField(field)
     if field.aero then
         buildFrame(field)
         dropInventory(drop)
+        goTo.forward()
         refillFuel(storage)
         buildGround(field,"minecraft:dirt", "minecraft:end_stone")
     else
@@ -473,6 +479,7 @@ function enderlillyField(field)
     end
 
     dropInventory(drop)
+    goTo.forward()
     refillFuel(storage)
 
     -- build light
@@ -493,12 +500,16 @@ function generalField(field)
     -- build frame and ground if aero field
     if field.aero then
         buildFrame(field)
+        dropInventory(drop)
+        goTo.forward()
+        refillFuel(storage)
         buildGround(field)
     else
         changeGround(field)
     end
 
     dropInventory(drop)
+    goTo.forward()
     refillFuel(storage)
 
     -- Build water blocks
@@ -556,6 +567,7 @@ function generalField(field)
     goTo.goTo(travelsPos)
 
     dropInventory(drop)
+    goTo.forward()
     refillFuel(storage)
     -- build light
     addLight(field)
