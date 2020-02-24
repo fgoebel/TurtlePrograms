@@ -312,9 +312,11 @@ end
 function planting(field,storagePos,dropPos)
     storage = storagePos
     drop = dropPos
-    travelsPos = field.pos
-    travelsPos.y = travelsPos.y + 3
-    travelsPos.x = travelsPos.x - 5
+    travelsPos = {}
+    travelsPos.f = field.pos.f
+    travelsPos.z = field.pos.z
+    travelsPos.y = field.pos.y + 3
+    travelsPos.x = field.pos.x - 5
     if field.crop == "sugar" then
         sugarField(field)
     elseif field.crop == "cactus" then
