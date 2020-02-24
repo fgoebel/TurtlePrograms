@@ -69,31 +69,22 @@ end
 --*********************************************
 -- Initialization
 function initialization()
-    if not fs.exists("StoragePos") or not fs.exists("QueuePos") then
-        initialization = true
-    else 
-        local file = fs.open("StoragePos","r")
-        local data = file.readAll()
-        file.close()
-        storage = textutils.unserialize(data)
-        local file = fs.open("QueuePos","r")
-        local data = file.readAll()
-        file.close()
-        queue = textutils.unserialize(data)
-        initialization = false
-    end
+    fs.delete("StoragePos")
+    fs.delete("DropPos")
+    fs.delete("QueuePos")
     ManagerID, message = rednet.receive("Init")              -- waits for a broadcast to receive ID of manager
 
     -- initialization store storage Position
-    if initialization then
-        rednet.send(ManagerID,"I am new","New")             -- send message to manager using protocol "New"
-        ManagerID, StorageMessage = rednet.receive("New")   -- listening to messages on protocol "New"
-        ManagerID, QueueMessage = rednet.receive("New")     -- listening to messages on protocol "New"
-        storage = textutils.unserialize(StorageMessage)
-        store("StoragePos",storage)
-        queue = textutils.unserialize(QueueMessage)
-        store("QueuePos",queue)
-    end
+    rednet.send(ManagerID,"I am new","New")             -- send message to manager using protocol "New"
+    ManagerID, StorageMessage = rednet.receive("New")   -- listening to messages on protocol "New"
+    ManagerID, DropMessage = rednet.receive("New")      -- listening to messages on protocol "New"
+    ManagerID, QueueMessage = rednet.receive("New")     -- listening to messages on protocol "New"
+    storage = textutils.unserialize(StorageMessage)
+    store("StoragePos",storage)
+    drop = textutils.unserialize(DropMessage)
+    store("DropPos",storage)
+    queue = textutils.unserialize(QueueMessage)
+    store("QueuePos",queue)
 end
 
 -- General Farming/Building Programm
@@ -136,11 +127,10 @@ while true do
     elseif not Waiting then                                     -- State: not waiting, harvesting
         if not Building then
             print("Start farming on: ".. field.name)
-            goTo.goTo(storage)
-            farming.start(field,storage)                        -- go working
+            farming.start(field,storage,drop)                   -- go working
         else 
             print("Start building on: ".. field.name)
-            building.building(field,storage)
+            building.building(field,storage,drop)
             rednet.send(ManagerID,field.name,"FinishedBuilding")
             sleep(2)
         end    

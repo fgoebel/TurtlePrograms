@@ -115,10 +115,9 @@ local rows = field.rows
 local turnRight = field.right
 SeedName = determineSeed(field.crop)
 
-dropInventory()                     -- drop everything
-refillFuel()                        -- refuel if fuel level below 5000
+dropInventory(storage)              -- drop everything
+refillFuel(storage)                 -- refuel if fuel level below 5000
 SeedSlot = getItemFromPeripheral(SeedName,1,64) -- get 64 Seeds, returns false, if no seeds were available
-back(2)                             -- back to avoid crashes
 if BoneMealOpt then
     BoneSlot = getBoneMeal()        -- get Bone Meal, returns false, if no Bone meal was available
 end
@@ -161,8 +160,8 @@ local cols = field.cols
 local rows = field.rows
 local turnRight = field.right
 
-refillFuel()                                    -- refuel if fuel level below 5000
-back(2)                                         -- back to avoid crashes
+refillFuel(storage)                             -- refuel if fuel level below 5000
+
 field.pos.y = field.pos.y + 3                   -- correct harvesting height based on crop
 goTo.goTo(field.pos)                            -- got to first Block of field
 
@@ -241,8 +240,8 @@ local turnRight = field.right
 local skip = 1                              -- equals 1 if water must be skipped in next turn, else equals 0
 local currentCol = 1                        -- variable for currentCol
 
-refillFuel()                                -- refuel if fuel level below 5000
-back()                                      -- one back to avoid crashes
+refillFuel(storage)                         -- refuel if fuel level below 5000
+
 field.pos.y = field.pos.y + 3               -- correct harvesting height based on crop
 goTo.goTo(field.pos)                        -- got to first Block of field
 
@@ -288,8 +287,8 @@ function enderlillyField(field)
     local rows = field.rows
     local turnRight = field.right
 
-    refillFuel()                                    -- refuel if fuel level below 5000
-    back()                                          -- one back to avoid crashes
+    refillFuel(storage)                             -- refuel if fuel level below 5000
+
     field.pos.y = field.pos.y + 1                   -- correct harvesting height based on crop
     goTo.goTo(field.pos)                            -- got to first Block of field
     
@@ -339,8 +338,8 @@ end
 
 --*********************************************
 --refill and drop functions + general functions
-function dropInventory()
-    goTo.goTo(storage)             -- go to storage system, after field is finished
+function dropInventory(position)
+    goTo.goTo(position)             -- go to storage system, after field is finished
     for Slot =1, 16 do              -- clear slots
         turtle.select(Slot)        -- select next Slot
         turtle.dropDown()          -- just drop everthing in the slot
@@ -348,9 +347,9 @@ function dropInventory()
     end
 end
 
-function refillFuel()
+function refillFuel(position)
     if turtle.getFuelLevel() < 5000 then
-        goTo.goTo(storage)              -- go to storage system
+        goTo.goTo(position)              -- go to storage system
         while turtle.getFuelLevel()/turtle.getFuelLimit() < 1 do    -- get current Fuellevel (percentage) and compare to Limit
             turtle.select(16)                                       -- select last slot
             getItemFromPeripheral("minecraft:lava_bucket",16,1)     -- get lava in slot 16
@@ -397,8 +396,9 @@ function determineEmptySlots()
 return empty
 end
 
-function start(field, storagePos)
+function start(field, storagePos, dropPos)
     storage = storagePos
+    drop = dropPos
     travelsPos = field.pos
     travelsPos.y = travelsPos.y + 3
     travelsPos.x = travelsPos.x - 5
@@ -416,7 +416,6 @@ function start(field, storagePos)
     print("finished farming")
     goTo.goTo(travelsPos)
 
-    dropInventory()
-    back()                                  -- one back to avoid crashes
+    dropInventory(drop)
 
 end

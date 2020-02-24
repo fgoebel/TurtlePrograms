@@ -14,21 +14,42 @@ local Time = 0
 local storage = {
     x=122,
     y=63,
-    z=-261,
-    f=3
+    z=-260,
+    f=0
+}
+
+local drop = {
+    x=123,
+    y=63,
+    z=-260,
+    f=2
 }
 
 local queue = {
     x=123,
     y=63,
-    z=-260,
+    z=-258,
     f=3
+}
+
+local plantingstorage = {
+    x=122,
+    y=63,
+    z=-255,
+    f=2
+}
+
+local plantingdrop = {
+    x=123,
+    y=63,
+    z=-255,
+    f=0
 }
 
 local plantingqueue = {
     x=123,
     y=63,
-    z=-259,
+    z=-257,
     f=3
 }
 
@@ -112,6 +133,24 @@ function processInput(message,ID,protocol)
 
 end
 
+function processNew(ID, message)
+    if message == "I am new planting" then
+        storagePos = textutils.serialize(plantingstorage)
+        rednet.send(ID,storagePos,"New")                         -- send storage position using protocol "New"
+        dropPos = textutils.serialize(plantingdrop)
+        rednet.send(ID,dropPos,"New")                            -- send drop position using protocol "New"
+        queuePos = textutils.serialize(plantingqueue)
+        rednet.send(ID,queuePos,"New")                           -- send queue position using protocol "New"
+    else
+        storagePos = textutils.serialize(storage)
+        rednet.send(ID,storagePos,"New")                         -- send storage position using protocol "New"
+        dropPos = textutils.serialize(drop)
+        rednet.send(ID,dropPos,"New")                            -- send drop position using protocol "New"
+        queuePos = textutils.serialize(queue)
+        rednet.send(ID,queuePos,"New")                           -- send queue position using protocol "New"
+    end
+end
+
 --*********************************************
 -- Main Managing function
 
@@ -145,16 +184,7 @@ while true do
     -- Protocol = "New" --> New Turtle needs input
     elseif protocol == "New" then
         print("found new turtle")
-        NewID = ID
-        storagePos = textutils.serialize(storage)
-        rednet.send(NewID,storagePos,"New")                             -- send storage position using protocol "New"
-        if message == "I am new planting" then
-            plantingqueuePos = textutils.serialize(plantingqueue)
-            rednet.send(NewID,plantingqueuePos,"New")                -- send queue position using protocol "New"
-        else
-            queuePos = textutils.serialize(queue)
-            rednet.send(NewID,queuePos,"New")                           -- send queue position using protocol "New"
-        end
+        processNew(ID,message)
 
     -- Protocol = "Plant" --> turtle finished building, next step is planting of field
     elseif protocol == "FinishedBuilding" then

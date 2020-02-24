@@ -2,8 +2,8 @@
 
 --*********************************************
 --refill and drop functions + general functions
-function dropInventory()
-    goTo.goTo(storage)             -- go to storage system, after field is finished
+function dropInventory(position)
+    goTo.goTo(position)             -- go to storage system, after field is finished
     for Slot =1, 16 do              -- clear slots
         turtle.select(Slot)        -- select next Slot
         turtle.dropDown()          -- just drop everthing in the slot
@@ -11,9 +11,9 @@ function dropInventory()
     end
 end
 
-function refillFuel()
+function refillFuel(position)
     if turtle.getFuelLevel() < 5000 then
-        goTo.goTo(storage)              -- go to storage system
+        goTo.goTo(position)                                         -- go to storage system
         while turtle.getFuelLevel()/turtle.getFuelLimit() < 1 do    -- get current Fuellevel (percentage) and compare to Limit
             turtle.select(16)                                       -- select last slot
             getItemFromPeripheral("minecraft:lava_bucket",16,1)     -- get lava in slot 16
@@ -70,12 +70,11 @@ function sugarField(field)
     local rows = field.rows
     local turnRight = field.right
   
-    dropInventory()
-    refillFuel()
+    dropInventory(storage)
+    refillFuel(storage)
     for i = 1, 16 do                -- get sugar cane
         getItemFromPeripheral("minecraft:reeds",i,64)
     end
-    goTo.back(2)                                      -- back to avoid crashes
 
     goTo.goTo(travelsPos)                             -- go to travel pos
     goTo.goTo(field.pos)
@@ -118,8 +117,7 @@ function sugarField(field)
     end
 
     goTo.goTo(travelsPos)
-    dropInventory()
-    goTo.back(2)                                      -- back to avoid crashes
+    dropInventory(drop)
 
 end
 
@@ -130,13 +128,12 @@ function cactusField(field)
     local rows = field.rows
     local turnRight = field.right
     
-    dropInventory()
-    refillFuel()
+    dropInventory(storage)
+    refillFuel(storage)
         
     for i=1,16 do
         getItemFromPeripheral("minecraft:cactus",i,64)
     end
-    goTo.back(2)                                      -- back to avoid crashes
 
     turnRight = field.right
     goTo.goTo(travelsPos)                             -- go to travel pos
@@ -174,8 +171,7 @@ function cactusField(field)
     end
 
     goTo.goTo(travelsPos)
-    dropInventory()
-    goTo.back(2)                                     -- back to avoid crashes
+    dropInventory(drop)
 
 end
 
@@ -186,13 +182,12 @@ function enderlillyField(field)
     local rows = field.rows
     local turnRight = field.right
     
-    dropInventory()
-    refillFuel()
+    dropInventory(storage)
+    refillFuel(storage)
 
     for i=1,16 do
         getItemFromPeripheral("extrautils2:enderlilly",i,64)
     end
-    goTo.back(2)                                      -- back to avoid crashes
 
     turnRight = field.right
     goTo.goTo(travelsPos)                             -- go to travel pos
@@ -228,8 +223,7 @@ function enderlillyField(field)
     end
 
     goTo.goTo(travelsPos)
-    dropInventory()
-    goTo.back(2)                                      -- back to avoid crashes
+    dropInventory(drop)
 
 end
 
@@ -242,14 +236,13 @@ function generalField(field)
 
     seed = determineSeed(field.crop)
     
-    dropInventory()
-    refillFuel()
+    dropInventory(storage)
+    refillFuel(storage)
 
     turnRight = field.right
     for i=1,16 do
         getItemFromPeripheral(seed,i,64)
     end
-    goTo.back(2)                                      -- back to avoid crashes
 
     goTo.goTo(travelsPos)                             -- go to travel pos
     goTo.goTo(field.pos)
@@ -311,15 +304,15 @@ function generalField(field)
     end
 
     goTo.goTo(travelsPos)
-    dropInventory()
-    goTo.back(2)                                      -- back to avoid crashes
+    dropInventory(drop)
 
 end
 
 --*********************************************
 -- select planting function
-function planting(field,storagePos)
+function planting(field,storagePos,dropPos)
     storage = storagePos
+    drop = dropPos
     travelsPos = field.pos
     travelsPos.y = travelsPos.y + 3
     travelsPos.x = travelsPos.x - 5

@@ -60,31 +60,22 @@ end
 --*********************************************
 -- Initialization
 function initialization()
-    if not fs.exists("StoragePos") or not fs.exists("QueuePos") then
-        initialization = true
-    else 
-        local file = fs.open("StoragePos","r")
-        local data = file.readAll()
-        file.close()
-        storage = textutils.unserialize(data)
-        local file = fs.open("QueuePos","r")
-        local data = file.readAll()
-        file.close()
-        queue = textutils.unserialize(data)
-        initialization = false
-    end
+    fs.delete("StoragePos")
+    fs.delete("DropPos")
+    fs.delete("QueuePos")
     ManagerID, message = rednet.receive("Init")              -- waits for a broadcast to receive ID of manager
 
     -- initialization store storage Position
-    if initialization then
-        rednet.send(ManagerID,"I am new planting","New")  -- send message to manager using protocol "New"
-        ManagerID, StorageMessage = rednet.receive("New")   -- listening to messages on protocol "New"
-        ManagerID, QueueMessage = rednet.receive("New")     -- listening to messages on protocol "New"
-        storage = textutils.unserialize(StorageMessage)
-        store("StoragePos",storage)
-        queue = textutils.unserialize(QueueMessage)
-        store("QueuePos",queue)
-    end
+    rednet.send(ManagerID,"I am new planting","New")    -- send message to manager using protocol "New"
+    ManagerID, StorageMessage = rednet.receive("New")   -- listening to messages on protocol "New"
+    ManagerID, DropMessage = rednet.receive("New")      -- listening to messages on protocol "New"
+    ManagerID, QueueMessage = rednet.receive("New")     -- listening to messages on protocol "New"
+    storage = textutils.unserialize(StorageMessage)
+    store("StoragePos",storage)
+    drop = textutils.unserialize(DropMessage)
+    store("DropPos",storage)
+    queue = textutils.unserialize(QueueMessage)
+    store("QueuePos",queue)
 end
 
 -- General planting Programm
@@ -124,11 +115,8 @@ function main()
     
         elseif not Waiting then                                     -- State: not waiting, harvesting
             print("Start planting on: ".. field.name)
-            goTo.goTo(queue)                                     -- just to avoid crashes
-            goTo.goTo(storage)
-            planting.planting(field,storage)                        -- go working
+            planting.planting(field,storage,drop)                   -- go working
             rednet.send(ManagerID,"back", "FinishedPlanting")
-            goTo.back()
   
             ToQueue()                                               -- go to queue
             Waiting = true

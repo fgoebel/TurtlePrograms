@@ -2,8 +2,8 @@
 
 --*********************************************
 --refill and drop functions + general functions
-function dropInventory()
-    goTo.goTo(storage)             -- go to storage system, after field is finished
+function dropInventory(position)
+    goTo.goTo(position)             -- go to storage system, after field is finished
     for Slot =1, 16 do              -- clear slots
         turtle.select(Slot)        -- select next Slot
         turtle.dropDown()          -- just drop everthing in the slot
@@ -11,9 +11,9 @@ function dropInventory()
     end
 end
 
-function refillFuel()
+function refillFuel(position)
     if turtle.getFuelLevel() < 5000 then
-        goTo.goTo(storage)              -- go to storage system
+        goTo.goTo(position)              -- go to storage system
         while turtle.getFuelLevel()/turtle.getFuelLimit() < 1 do    -- get current Fuellevel (percentage) and compare to Limit
             turtle.select(16)                                       -- select last slot
             getItemFromPeripheral("minecraft:lava_bucket",16,1)     -- get lava in slot 16
@@ -37,13 +37,13 @@ end
 
 function getItemFromPeripheral(ItemName,Slot,MaxItems)
     goTo.goTo(storage)  
-    peri = peripheral.wrap("right")                    -- sets ME interface on bottom as pheripheral
+    peri = peripheral.wrap("left")                    -- sets ME interface on bottom as pheripheral
     sleep(1)
     for i=1,9 do                                        -- checks each slot of peripheral
         item = peri.getItemMeta(i)                      -- stores meta data in item variable
         if item ~= nil then
             if item.name == ItemName then                   -- if name of item in slot is desired seed name
-                peri.pushItems("south",i,MaxItems,Slot)        -- push item in slot i up to turtle, max 64 items in slot 1
+                peri.pushItems("east",i,MaxItems,Slot)      -- push item in slot i up to turtle, max 64 items in slot 1
                 return Slot                                 -- returns slot number for seeds if it was available
             end
         end
@@ -58,12 +58,11 @@ function buildFrame(field)
     local rows = field.rows
     local turnRight = field.right
 
-    dropInventory()
-    refillFuel()
+    dropInventory(storage)
+    refillFuel(storage)
     for i = 1, 16 do                -- get cobblestone
         getItemFromPeripheral("minecraft:cobblestone",i,64)
     end
-    goTo.back(2)                    -- one back to avoid crashes
 
     goTo.goTo(travelsPos)           -- go to travel pos
     goTo.goTo(field.pos)
@@ -128,15 +127,14 @@ if ItemLayerTwo == nil then
     ItemLayerTwo = "minecraft:dirt"
 end
 
-dropInventory()
-refillFuel()
+dropInventory(storage)
+refillFuel(storage)
 for i = 1, 8 do                     -- get ItemLayerOne
     getItemFromPeripheral(ItemLayerOne,i,64)
 end
 for i = 9, 16 do                     -- get ItemLayerTwo
     getItemFromPeripheral(ItemLayerTwo,i,64)
 end
-goTo.back(2)                         -- back to avoid crashes
 
 goTo.goTo(travelsPos)                -- go to travel pos
 goTo.goTo(field.pos)
@@ -206,12 +204,11 @@ function changeGround(field, ItemName)
         ItemName = "minecraft:dirt"
     end
 
-    dropInventory()
-    refillFuel()
+    dropInventory(storage)
+    refillFuel(storage)
     for i = 1, 16 do                                 -- get Item, leave half of the slots empty
         getItemFromPeripheral(ItemName,i,64)
     end
-    goTo.back(2)                                     -- back to avoid crashes
 
     goTo.goTo(travelsPos)                            -- go to travel pos
     goTo.goTo(field.pos)
@@ -258,11 +255,10 @@ function addLight(field)
     local rows = field.rows
     local turnRight = field.right
 
-    dropInventory()
-    refillFuel()
+    dropInventory(storage)
+    refillFuel(storage)
     getItemFromPeripheral("minecraft:torch",1,64)
     getItemFromPeripheral("minecraft:planks",2,64)
-    goTo.back(2)                                     -- back to avoid crashes
 
     goTo.goTo(travelsPos)                            -- go to travel pos
     goTo.goTo(field.pos)
@@ -337,13 +333,12 @@ function sugarField(field)
     end
 
 -- build water cols
-    dropInventory()
-    refuel()
+    dropInventory(storage)
+    refuel(storage)
     for i = 1, 3 do                                     -- get water buckets
         getItemFromPeripheral("minecraft:water_bucket",i,1)
         sleep(1)
     end
-    goTo.back(2)                                        -- back to avoid crashes
 
     goTo.goTo(travelsPos)                               -- go to travel pos
     goTo.goTo(field.pos)                                -- go to first water block
@@ -423,9 +418,6 @@ function sugarField(field)
     -- build light
     addLight(field)
 
-    dropInventory()
-    goTo.back(2)                                      -- back to avoid crashes
-
 end
 
 --*********************************************
@@ -445,9 +437,6 @@ function cactusField(field)
 
     -- build light
     addLight(field)
-    
-    dropInventory()
-    goTo.back(2)                                      -- back to avoid crashes
 
 end
 
@@ -469,9 +458,6 @@ function enderlillyField(field)
     -- build light
     addLight(field)
     
-    dropInventory()
-    goTo.back(2)                                      -- back to avoid crashes
-
 end
 
 --*********************************************
@@ -490,13 +476,12 @@ function generalField(field)
     end
 
     -- Build water blocks
-    dropInventory()
-    refuel()
+    dropInventory(drop)
+    refuel(drop)
     turnRight = field.right
     for i=1,15 do                                   -- leave one slot empty for dirt
         getItemFromPeripheral("minecraft:water_bucket",i,1)
     end
-    goTo.back(2)
 
     goTo.goTo(travelsPos)                           -- go to travel pos
     goTo.goTo(field.pos)
@@ -547,9 +532,6 @@ function generalField(field)
 
     -- build light
     addLight(field)
-    
-    dropInventory()
-    goTo.back(2)                                      -- back to avoid crashes
 
 end
 
@@ -569,4 +551,6 @@ function building(field,storagePos)
     else
         generalField(field)
     end
+
+    dropInventory(drop)
 end
