@@ -346,7 +346,7 @@ function sugarField(field)
     dropInventory()
     goTo.forward()
     goTo.goTo(storage)
-    refuel()
+    refillFuel()
     for i = 1, 3 do                                     -- get water buckets
         getItemFromPeripheral("minecraft:water_bucket",i,1)
         sleep(1)
