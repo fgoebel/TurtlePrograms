@@ -55,7 +55,7 @@ local EndofQueue = false
         end
     end
     goTo.forward()
-    goTo.turnLeft()
+    goTo.turnRight()
 end
 
 --*********************************************
@@ -87,7 +87,6 @@ function main()
     while true do
     
         if (Waiting and not FirstInQueue) then                      -- State: Waiting in Queue
-            sleep(5)
             print("waiting in queue")
             valid, block = turtle.inspectDown()                      -- Check for first position, based on block below (cobble on first Position)
             if valid then

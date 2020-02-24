@@ -34,7 +34,7 @@ function getSlot(ItemName)
 end
 
 function getItemFromPeripheral(ItemName,Slot,MaxItems)
-    peri = peripheral.wrap("left")                    -- sets ME interface on bottom as pheripheral
+    peri = peripheral.wrap("right")                     -- sets ME interface on bottom as pheripheral
     sleep(1)
     for i=1,9 do                                        -- checks each slot of peripheral
         item = peri.getItemMeta(i)                      -- stores meta data in item variable
@@ -554,6 +554,11 @@ function building(field,storagePos,dropPos)
     travelsPos.z = field.pos.z
     travelsPos.y = field.pos.y + 3
     travelsPos.x = field.pos.x - 5
+
+    while turtle.detect == true do          -- check if someone is in front before moving to storage
+        sleep(5)
+    end
+
     if field.crop == "sugar" then
         sugarField(field)
     elseif field.crop == "cactus" then
@@ -564,5 +569,6 @@ function building(field,storagePos,dropPos)
         generalField(field)
     end
 
-    dropInventory(drop)
+    goTo.goTo(drop) 
+    dropInventory()
 end

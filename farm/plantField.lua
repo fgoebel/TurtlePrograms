@@ -316,6 +316,11 @@ function planting(field,storagePos,dropPos)
     travelsPos.z = field.pos.z
     travelsPos.y = field.pos.y + 3
     travelsPos.x = field.pos.x - 5
+
+    while turtle.detect == true do          -- check if someone is in front before moving to storage
+        sleep(5)
+    end
+
     if field.crop == "sugar" then
         sugarField(field)
     elseif field.crop == "cactus" then
@@ -326,6 +331,7 @@ function planting(field,storagePos,dropPos)
         generalField(field)
     end
 
-    dropInventory(drop)
+    goTo.goTo(drop)
+    dropInventory()
 
 end

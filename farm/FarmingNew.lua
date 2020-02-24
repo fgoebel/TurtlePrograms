@@ -417,7 +417,12 @@ function start(field, storagePos, dropPos)
     travelsPos.z = field.pos.z
     travelsPos.y = field.pos.y + 3
     travelsPos.x = field.pos.x - 5
-    print("Start farming")
+    print("Start farming")  
+
+    while turtle.detect == true do          -- check if someone is in front before moving to storage
+        sleep(5)
+    end
+
     if (field.crop == "cactus") then
         cactusField(field)
     elseif (field.crop == "sugar") then
@@ -431,7 +436,8 @@ function start(field, storagePos, dropPos)
     print("finished farming")
     goTo.goTo(travelsPos)
 
-    dropInventory(drop)
+    goTo.goTo(drop)
+    dropInventory()
     goTo.forward()
 
 end
