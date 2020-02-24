@@ -118,7 +118,7 @@ SeedName = determineSeed(field.crop)
 dropInventory()                     -- drop everything
 refillFuel()                        -- refuel if fuel level below 5000
 SeedSlot = getItemFromPeripheral(SeedName,1,64) -- get 64 Seeds, returns false, if no seeds were available
-back()                              -- one back to avoid crashes
+back(2)                             -- back to avoid crashes
 if BoneMealOpt then
     BoneSlot = getBoneMeal()        -- get Bone Meal, returns false, if no Bone meal was available
 end
@@ -151,7 +151,7 @@ goTo.goTo(field.pos)                -- got to first Block of field
             empty = determineEmptySlots()
         end
     end
-    goTo.up(2)                      -- go to travel height
+
 end
 
 --*********************************************
@@ -162,7 +162,7 @@ local rows = field.rows
 local turnRight = field.right
 
 refillFuel()                                    -- refuel if fuel level below 5000
-back()                                          -- one back to avoid crashes
+back(2)                                         -- back to avoid crashes
 field.pos.y = field.pos.y + 3                   -- correct harvesting height based on crop
 goTo.goTo(field.pos)                            -- got to first Block of field
 
@@ -228,7 +228,7 @@ currentCol = 1                                  -- variable for currentCol
             empty = determineEmptySlots()
         end
     end
-    goTo.up(1)                      -- go to travel height
+
 end
 
 --*********************************************
@@ -278,7 +278,7 @@ goTo.goTo(field.pos)                        -- got to first Block of field
             empty = determineEmptySlots()
         end
     end
-    goTo.up(1)                      -- go to travel height
+
 end
 
 --*********************************************
@@ -334,7 +334,7 @@ function enderlillyField(field)
                 empty = determineEmptySlots()
             end
         end
-        goTo.up(2)                      -- go to travel height
+
 end
 
 --*********************************************
