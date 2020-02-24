@@ -413,7 +413,6 @@ function start(field, storagePos, dropPos)
     travelsPos.z = field.pos.z
     travelsPos.y = field.pos.y + 3
     travelsPos.x = field.pos.x - 5
-    print(field.pos.y)
     print("Start farming")
     if (field.crop == "cactus") then
         cactusField(field)
