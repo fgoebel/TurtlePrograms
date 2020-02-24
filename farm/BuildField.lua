@@ -65,6 +65,7 @@ function buildFrame(field)
     end
     goTo.back(2)                    -- one back to avoid crashes
 
+    goTo.goTo(travelsPos)           -- go to travel pos
     goTo.goTo(field.pos)
 
     if turnRight then               -- go to first pos of frame (one block left)
@@ -137,6 +138,7 @@ for i = 9, 16 do                     -- get ItemLayerTwo
 end
 goTo.back(2)                         -- back to avoid crashes
 
+goTo.goTo(travelsPos)                -- go to travel pos
 goTo.goTo(field.pos)
 goTo.down(1)
 goTo.turnLeft()
@@ -211,6 +213,7 @@ function changeGround(field, ItemName)
     end
     goTo.back(2)                                     -- back to avoid crashes
 
+    goTo.goTo(travelsPos)                            -- go to travel pos
     goTo.goTo(field.pos)
 
     for j=1,cols do
@@ -261,6 +264,7 @@ function addLight(field)
     getItemFromPeripheral("minecraft:planks",2,64)
     goTo.back(2)                                     -- back to avoid crashes
 
+    goTo.goTo(travelsPos)                            -- go to travel pos
     goTo.goTo(field.pos)
     goTo.up(5)
     if turnRight then                               -- go to first light col
@@ -341,6 +345,7 @@ function sugarField(field)
     end
     goTo.back(2)                                        -- back to avoid crashes
 
+    goTo.goTo(travelsPos)                               -- go to travel pos
     goTo.goTo(field.pos)                                -- go to first water block
     turnRight = field.right                             -- reset turnRight
     if turnRight then
@@ -493,6 +498,7 @@ function generalField(field)
     end
     goTo.back(2)
 
+    goTo.goTo(travelsPos)                           -- go to travel pos
     goTo.goTo(field.pos)
     if turnRight then                               -- go to first water col
         goTo.turnRight()
