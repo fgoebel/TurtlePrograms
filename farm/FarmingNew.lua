@@ -315,7 +315,7 @@ function enderlillyField(field)
                 end
                 forward(1)                          -- move one block forward
             end                         
-            turtle.digDown()                -- dig Down to harvest
+            turtle.digDown()                        -- dig Down to harvest
             sleep(0.5)
             lillySlot = getSlot("extrautils2:enderlilly")
             if lillySlot ~= false then
@@ -408,9 +408,12 @@ end
 function start(field, storagePos, dropPos)
     storage = storagePos
     drop = dropPos
-    travelsPos = field.pos
-    travelsPos.y = travelsPos.y + 3
-    travelsPos.x = travelsPos.x - 5
+    travelsPos = {}
+    travelsPos.f = field.pos.f
+    travelsPos.z = field.pos.z
+    travelsPos.y = field.pos.y + 3
+    travelsPos.x = field.pos.x - 5
+    print(field.pos.y)
     print("Start farming")
     if (field.crop == "cactus") then
         cactusField(field)
