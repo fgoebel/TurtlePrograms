@@ -77,6 +77,7 @@ function sugarField(field)
     end
     goTo.back(2)                                      -- back to avoid crashes
 
+    goTo.goTo(travelsPos)                             -- go to travel pos
     goTo.goTo(field.pos)
     goTo.up(1)
     turnRight = field.right
@@ -138,6 +139,7 @@ function cactusField(field)
     goTo.back(2)                                      -- back to avoid crashes
 
     turnRight = field.right
+    goTo.goTo(travelsPos)                             -- go to travel pos
     goTo.goTo(field.pos)
     goTo.up()
 
@@ -193,6 +195,7 @@ function enderlillyField(field)
     goTo.back(2)                                      -- back to avoid crashes
 
     turnRight = field.right
+    goTo.goTo(travelsPos)                             -- go to travel pos
     goTo.goTo(field.pos)
     goTo.up()
 
@@ -248,6 +251,7 @@ function generalField(field)
     end
     goTo.back(2)                                      -- back to avoid crashes
 
+    goTo.goTo(travelsPos)                             -- go to travel pos
     goTo.goTo(field.pos)
     goTo.up()
 
