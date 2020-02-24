@@ -189,6 +189,7 @@ while true do
     -- Protocol = "Plant" --> turtle finished building, next step is planting of field
     elseif protocol == "FinishedBuilding" then
         toPlantName = message
+        rednet.send(ID,"got it","FinishedBuilding")
         for k,field in ipairs(fields) do
             if field.name == toPlantName then   
                 field.toplant = true                                       -- store field, which needs to be planted
@@ -208,9 +209,10 @@ while true do
     
     -- Protocol = "FinishedPlanting" --> turtle finished planting, next step is activating field
     elseif protocol == "FinishedPlanting" then
-        toPlantName = message
+        toActivateName = message
+        rednet.send(ID,"got it","FinishedPlanting")
         for k,field in ipairs(fields) do
-            if field.name == toPlantName then   
+            if field.name == toActivateName then   
                 field.toplant = false
                 field.active = true                                       -- store field, which is now active
                 field.lastHarvested = Time

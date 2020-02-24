@@ -130,15 +130,30 @@ while true do
         if not Building then
             print("Start farming on: ".. field.name)
             farming.start(field,storage,drop)                   -- go working
+            ToQueue()                                               -- go to queue
+            Waiting = true
         else 
             print("Start building on: ".. field.name)
             building.building(field,storage,drop)
-            rednet.send(ManagerID,field.name,"FinishedBuilding")
-            sleep(2)
+            check = false
+            rednet.send(ManagerID,field.name, "FinishedBuilding")
+            ID,message = rednet.receive("FinishedBuilding")
+            if message == "got it" then
+                check = true
+            end
+  
+            ToQueue()                                               -- go to queue
+            Waiting = true
             Building = false
+            while not check do
+                rednet.send(ManagerID,field.name, "FinishedPlanting")
+                ID,message = rednet.receive("FinishedPlanting")
+                if message == "got it" then
+                    check = true
+                end
+            end
+            
         end    
-        ToQueue()                                               -- go to queue
-        Waiting = true
     end
 end
 end

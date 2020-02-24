@@ -118,10 +118,22 @@ function main()
         elseif not Waiting then                                     -- State: not waiting, harvesting
             print("Start planting on: ".. field.name)
             planting.planting(field,storage,drop)                   -- go working
-            rednet.send(ManagerID,"back", "FinishedPlanting")
+            check = false
+            rednet.send(ManagerID,field.name, "FinishedPlanting")
+            ID,message = rednet.receive("FinishedPlanting")
+            if message == "got it" then
+                check = true
+            end
   
             ToQueue()                                               -- go to queue
             Waiting = true
+            while not check do
+                rednet.send(ManagerID,field.name, "FinishedPlanting")
+                ID,message = rednet.receive("FinishedPlanting")
+                if message == "got it" then
+                    check = true
+                end
+            end
         end
     end
 end
