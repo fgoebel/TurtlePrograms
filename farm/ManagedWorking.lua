@@ -133,6 +133,7 @@ while true do
             building.building(field,storage,drop)
             rednet.send(ManagerID,field.name,"FinishedBuilding")
             sleep(2)
+            Building = false
         end    
         ToQueue()                                               -- go to queue
         Waiting = true
