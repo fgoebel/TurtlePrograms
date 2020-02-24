@@ -193,6 +193,7 @@ while true do
         for k,field in ipairs(fields) do
             if field.name == toPlantName then   
                 field.toplant = true                                       -- store field, which needs to be planted
+                field.tobuild = false
             end
         end
         store("fields", fields)
