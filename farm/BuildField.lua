@@ -126,8 +126,10 @@ if ItemLayerTwo == nil then
     ItemLayerTwo = "minecraft:dirt"
 end
 
-goTo.goTo(storage)
+goTo.goTo(drop)
 dropInventory()
+goTo.forward()
+goTo.goTo(storage)
 refillFuel() 
 for i = 1, 8 do                     -- get ItemLayerOne
     getItemFromPeripheral(ItemLayerOne,i,64)
@@ -258,8 +260,10 @@ function addLight(field)
     local rows = field.rows
     local turnRight = field.right
 
-    goTo.goTo(storage)
+    goTo.goTo(drop)
     dropInventory()
+    goTo.forward()
+    goTo.goTo(storage)
     refillFuel()   
     getItemFromPeripheral("minecraft:torch",1,64)
     getItemFromPeripheral("minecraft:planks",2,64)
@@ -338,8 +342,10 @@ function sugarField(field)
     end
 
 -- build water cols
+    goTo.goTo(drop)
+    dropInventory()
+    goTo.forward()
     goTo.goTo(storage)
-    dropInventory()  
     refuel()
     for i = 1, 3 do                                     -- get water buckets
         getItemFromPeripheral("minecraft:water_bucket",i,1)
@@ -484,8 +490,10 @@ function generalField(field)
 
     -- Build water blocks
     turnRight = field.right
-    goTo.goTo(storage)
+    goTo.goTo(drop)
     dropInventory()
+    goTo.forward()
+    goTo.goTo(storage)
     refillFuel()
     for i=1,15 do                                   -- leave one slot empty for dirt
         getItemFromPeripheral("minecraft:water_bucket",i,1)
