@@ -14,42 +14,42 @@ local Time = 0
 local storage = {
     x=122,
     y=63,
-    z=-260,
-    f=0
+    z=-255,
+    f=2
 }
 
 local drop = {
     x=123,
     y=63,
-    z=-260,
-    f=2
+    z=-255,
+    f=0
 }
 
 local queue = {
     x=123,
     y=63,
-    z=-258,
+    z=-257,
     f=3
 }
 
 local plantingstorage = {
     x=122,
     y=63,
-    z=-255,
-    f=2
+    z=-260,
+    f=0
 }
 
 local plantingdrop = {
     x=123,
     y=63,
-    z=-255,
-    f=0
+    z=-260,
+    f=2
 }
 
 local plantingqueue = {
     x=123,
     y=63,
-    z=-257,
+    z=-258,
     f=3
 }
 
