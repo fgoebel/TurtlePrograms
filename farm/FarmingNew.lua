@@ -163,6 +163,7 @@ local cols = field.cols
 local rows = field.rows
 local turnRight = field.right
 
+dropInventory(storage)
 refillFuel(storage)                             -- refuel if fuel level below 5000
 
 goTo.forward()
@@ -245,6 +246,7 @@ local turnRight = field.right
 local skip = 1                              -- equals 1 if water must be skipped in next turn, else equals 0
 local currentCol = 1                        -- variable for currentCol
 
+dropInventory(storage)
 refillFuel(storage)                         -- refuel if fuel level below 5000
 
 goTo.forward()
@@ -294,6 +296,7 @@ function enderlillyField(field)
     local rows = field.rows
     local turnRight = field.right
 
+    dropInventory(storage)
     refillFuel(storage)                             -- refuel if fuel level below 5000
 
     goTo.forward()
