@@ -228,5 +228,5 @@ function userInput()
     end
 end
 
-rednet.open("right")
+rednet.open("left")
 userInput()
