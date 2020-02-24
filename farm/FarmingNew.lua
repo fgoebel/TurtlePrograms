@@ -121,6 +121,9 @@ SeedSlot = getItemFromPeripheral(SeedName,1,64) -- get 64 Seeds, returns false, 
 if BoneMealOpt then
     BoneSlot = getBoneMeal()        -- get Bone Meal, returns false, if no Bone meal was available
 end
+
+goTo.forward()
+goTo.goTo(travelsPos)
 field.pos.y = field.pos.y + 1       -- correct harvesting height based on crop
 goTo.goTo(field.pos)                -- got to first Block of field
 
@@ -162,6 +165,8 @@ local turnRight = field.right
 
 refillFuel(storage)                             -- refuel if fuel level below 5000
 
+goTo.forward()
+goTo.goTo(travelsPos)
 field.pos.y = field.pos.y + 3                   -- correct harvesting height based on crop
 goTo.goTo(field.pos)                            -- got to first Block of field
 
@@ -242,6 +247,8 @@ local currentCol = 1                        -- variable for currentCol
 
 refillFuel(storage)                         -- refuel if fuel level below 5000
 
+goTo.forward()
+goTo.goTo(travelsPos)
 field.pos.y = field.pos.y + 3               -- correct harvesting height based on crop
 goTo.goTo(field.pos)                        -- got to first Block of field
 
@@ -289,6 +296,8 @@ function enderlillyField(field)
 
     refillFuel(storage)                             -- refuel if fuel level below 5000
 
+    goTo.forward()
+    goTo.goTo(travelsPos)
     field.pos.y = field.pos.y + 1                   -- correct harvesting height based on crop
     goTo.goTo(field.pos)                            -- got to first Block of field
     

@@ -76,6 +76,7 @@ function sugarField(field)
         getItemFromPeripheral("minecraft:reeds",i,64)
     end
 
+    goTo.forward()
     goTo.goTo(travelsPos)                             -- go to travel pos
     goTo.goTo(field.pos)
     goTo.up(1)
@@ -117,7 +118,6 @@ function sugarField(field)
     end
 
     goTo.goTo(travelsPos)
-    dropInventory(drop)
 
 end
 
@@ -135,6 +135,7 @@ function cactusField(field)
         getItemFromPeripheral("minecraft:cactus",i,64)
     end
 
+    goTo.forward()
     turnRight = field.right
     goTo.goTo(travelsPos)                             -- go to travel pos
     goTo.goTo(field.pos)
@@ -171,7 +172,6 @@ function cactusField(field)
     end
 
     goTo.goTo(travelsPos)
-    dropInventory(drop)
 
 end
 
@@ -189,6 +189,7 @@ function enderlillyField(field)
         getItemFromPeripheral("extrautils2:enderlilly",i,64)
     end
 
+    goTo.forward()
     turnRight = field.right
     goTo.goTo(travelsPos)                             -- go to travel pos
     goTo.goTo(field.pos)
@@ -223,8 +224,6 @@ function enderlillyField(field)
     end
 
     goTo.goTo(travelsPos)
-    dropInventory(drop)
-
 end
 
 --*********************************************
@@ -244,6 +243,7 @@ function generalField(field)
         getItemFromPeripheral(seed,i,64)
     end
 
+    goTo.forward()
     goTo.goTo(travelsPos)                             -- go to travel pos
     goTo.goTo(field.pos)
     goTo.up()
@@ -304,7 +304,6 @@ function generalField(field)
     end
 
     goTo.goTo(travelsPos)
-    dropInventory(drop)
 
 end
 
@@ -325,5 +324,7 @@ function planting(field,storagePos,dropPos)
     else
         generalField(field)
     end
+
+    dropInventory(drop)
 
 end

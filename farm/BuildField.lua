@@ -58,12 +58,11 @@ function buildFrame(field)
     local rows = field.rows
     local turnRight = field.right
 
-    dropInventory(storage)
-    refillFuel(storage)
     for i = 1, 16 do                -- get cobblestone
         getItemFromPeripheral("minecraft:cobblestone",i,64)
     end
 
+    goTo.forward()
     goTo.goTo(travelsPos)           -- go to travel pos
     goTo.goTo(field.pos)
 
@@ -127,8 +126,6 @@ if ItemLayerTwo == nil then
     ItemLayerTwo = "minecraft:dirt"
 end
 
-dropInventory(storage)
-refillFuel(storage)
 for i = 1, 8 do                     -- get ItemLayerOne
     getItemFromPeripheral(ItemLayerOne,i,64)
 end
@@ -136,6 +133,7 @@ for i = 9, 16 do                     -- get ItemLayerTwo
     getItemFromPeripheral(ItemLayerTwo,i,64)
 end
 
+goTo.forward()
 goTo.goTo(travelsPos)                -- go to travel pos
 goTo.goTo(field.pos)
 goTo.down(1)
@@ -204,12 +202,11 @@ function changeGround(field, ItemName)
         ItemName = "minecraft:dirt"
     end
 
-    dropInventory(storage)
-    refillFuel(storage)
     for i = 1, 16 do                                 -- get Item, leave half of the slots empty
         getItemFromPeripheral(ItemName,i,64)
     end
 
+    goTo.forward()
     goTo.goTo(travelsPos)                            -- go to travel pos
     goTo.goTo(field.pos)
 
@@ -255,11 +252,10 @@ function addLight(field)
     local rows = field.rows
     local turnRight = field.right
 
-    dropInventory(storage)
-    refillFuel(storage)
     getItemFromPeripheral("minecraft:torch",1,64)
     getItemFromPeripheral("minecraft:planks",2,64)
 
+    goTo.forward()
     goTo.goTo(travelsPos)                            -- go to travel pos
     goTo.goTo(field.pos)
     goTo.up(5)
@@ -324,22 +320,28 @@ function sugarField(field)
     local turnRight = field.right
     local waterCols = cols/3                                -- determine number of water cols
 
--- build frame and ground if aero field
+    dropInventory(storage)
+    refillFuel(storage)
+
+    -- build frame and ground if aero field
     if field.aero then
         buildFrame(field)
+        dropInventory(drop)
+        refillFuel(storage)
         buildGround(field)
     else
         changeGround(field)
     end
 
 -- build water cols
-    dropInventory(storage)
+    dropInventory(drop)
     refuel(storage)
     for i = 1, 3 do                                     -- get water buckets
         getItemFromPeripheral("minecraft:water_bucket",i,1)
         sleep(1)
     end
 
+    goTo.forward()
     goTo.goTo(travelsPos)                               -- go to travel pos
     goTo.goTo(field.pos)                                -- go to first water block
     turnRight = field.right                             -- reset turnRight
@@ -415,6 +417,9 @@ function sugarField(field)
     end
     goTo.goTo(travelsPos)
 
+    dropInventory(drop)
+    refillFuel(storage)
+
     -- build light
     addLight(field)
 
@@ -426,14 +431,21 @@ function cactusField(field)
     local cols = field.cols
     local rows = field.rows
     local turnRight = field.right
-          
+    
+    dropInventory(storage)
+    refillFuel(storage)
     -- build frame and ground if aero field
     if field.aero then
         buildFrame(field)
+        dropInventory(drop)
+        refillFuel(storage)
         buildGround(field,"minecraft:dirt", "minecraft:sand")
     else
         changeGround(field,"minecraft:sand")
     end
+
+    dropInventory(drop)
+    refillFuel(storage)
 
     -- build light
     addLight(field)
@@ -447,13 +459,21 @@ function enderlillyField(field)
     local rows = field.rows
     local turnRight = field.right
 
+    dropInventory(storage)
+    refillFuel(storage)
+
     -- build frame and ground if aero field
     if field.aero then
         buildFrame(field)
+        dropInventory(drop)
+        refillFuel(storage)
         buildGround(field,"minecraft:dirt", "minecraft:end_stone")
     else
         changeGround(field,"minecraft:end_stone")
     end
+
+    dropInventory(drop)
+    refillFuel(storage)
 
     -- build light
     addLight(field)
@@ -467,6 +487,9 @@ function generalField(field)
     local rows = field.rows
     local turnRight = field.right
 
+    dropInventory(storage)
+    refillFuel(storage)
+
     -- build frame and ground if aero field
     if field.aero then
         buildFrame(field)
@@ -475,14 +498,16 @@ function generalField(field)
         changeGround(field)
     end
 
-    -- Build water blocks
     dropInventory(drop)
-    refuel(drop)
+    refillFuel(storage)
+
+    -- Build water blocks
     turnRight = field.right
     for i=1,15 do                                   -- leave one slot empty for dirt
         getItemFromPeripheral("minecraft:water_bucket",i,1)
     end
 
+    goTo.forward()
     goTo.goTo(travelsPos)                           -- go to travel pos
     goTo.goTo(field.pos)
     if turnRight then                               -- go to first water col
@@ -530,6 +555,8 @@ function generalField(field)
     end
     goTo.goTo(travelsPos)
 
+    dropInventory(drop)
+    refillFuel(storage)
     -- build light
     addLight(field)
 
