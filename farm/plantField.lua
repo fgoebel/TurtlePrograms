@@ -36,7 +36,6 @@ function getSlot(ItemName)
 end
 
 function getItemFromPeripheral(ItemName,Slot,MaxItems)
-    goTo.goTo(storage)  
     peri = peripheral.wrap("bottom")                    -- sets ME interface on bottom as pheripheral
     for i=1,9 do                                        -- checks each slot of peripheral
         item = peri.getItemMeta(i)                      -- stores meta data in item variable
@@ -239,6 +238,7 @@ function generalField(field)
     refillFuel(storage)
 
     turnRight = field.right
+    goTo.goTo(storage)  
     for i=1,16 do
         getItemFromPeripheral(seed,i,64)
     end

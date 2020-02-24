@@ -36,7 +36,6 @@ function getSlot(ItemName)
 end
 
 function getItemFromPeripheral(ItemName,Slot,MaxItems)
-    goTo.goTo(storage)  
     peri = peripheral.wrap("left")                    -- sets ME interface on bottom as pheripheral
     sleep(1)
     for i=1,9 do                                        -- checks each slot of peripheral
@@ -58,6 +57,7 @@ function buildFrame(field)
     local rows = field.rows
     local turnRight = field.right
 
+    goTo.goTo(storage)  
     for i = 1, 16 do                -- get cobblestone
         getItemFromPeripheral("minecraft:cobblestone",i,64)
     end
@@ -126,6 +126,7 @@ if ItemLayerTwo == nil then
     ItemLayerTwo = "minecraft:dirt"
 end
 
+goTo.goTo(storage)  
 for i = 1, 8 do                     -- get ItemLayerOne
     getItemFromPeripheral(ItemLayerOne,i,64)
 end
@@ -202,6 +203,7 @@ function changeGround(field, ItemName)
         ItemName = "minecraft:dirt"
     end
 
+    goTo.goTo(storage)  
     for i = 1, 16 do                                 -- get Item, leave half of the slots empty
         getItemFromPeripheral(ItemName,i,64)
     end
@@ -252,6 +254,7 @@ function addLight(field)
     local rows = field.rows
     local turnRight = field.right
 
+    goTo.goTo(storage)  
     getItemFromPeripheral("minecraft:torch",1,64)
     getItemFromPeripheral("minecraft:planks",2,64)
 
@@ -337,6 +340,7 @@ function sugarField(field)
 -- build water cols
     dropInventory(drop)
     goTo.forward()
+    goTo.goTo(storage)  
     refuel(storage)
     for i = 1, 3 do                                     -- get water buckets
         getItemFromPeripheral("minecraft:water_bucket",i,1)
@@ -514,6 +518,7 @@ function generalField(field)
 
     -- Build water blocks
     turnRight = field.right
+    goTo.goTo(storage)  
     for i=1,15 do                                   -- leave one slot empty for dirt
         getItemFromPeripheral("minecraft:water_bucket",i,1)
     end

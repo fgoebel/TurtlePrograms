@@ -94,7 +94,7 @@ function forward(steps)
 	while (i < steps and counter < 50) do
 		if not turtle.forward() then
 			counter = counter + 1
-			sleep(0.5)
+			sleep(5)
 		else
 			i=i+1
 			currentPosition.x = currentPosition.x + xDirFromF[currentPosition.f]
