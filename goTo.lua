@@ -138,7 +138,7 @@ function back(steps)
 	while (i < steps and counter < 50) do
 		if not turtle.back() then
 			counter = counter + 1
-			sleep(0.5)
+			sleep(5)
 		else
 			i=i+1
 			currentPosition.x = currentPosition.x - xDirFromF[currentPosition.f]
@@ -163,7 +163,7 @@ function down(steps)
 	while (i < steps and counter < 50) do
 		if not turtle.down() then
 			counter = counter + 1
-			sleep(0.5)
+			sleep(5)
 		else
 			i=i+1
 			currentPosition.y = currentPosition.y - 1
@@ -187,7 +187,7 @@ function downForce()
 			end
 		elseif turtle.attackDown() then
 		else
-			sleep( 0.5 )
+			sleep(0.5)
 		end
 	end
 
@@ -206,7 +206,7 @@ function up(steps)
 	while (i < steps and counter < 50) do
 		if not turtle.up() then
 			counter = counter + 1
-			sleep(0.5)
+			sleep(5)
 		else
 			i=i+1
 			currentPosition.y = currentPosition.y + 1
