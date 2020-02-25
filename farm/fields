@@ -224,8 +224,8 @@
     lastHarvested = 0,
     active = false,
     aero = true,
-    tobuild = true,
-    toplant = false,
+    tobuild = false,
+    toplant = true,
   },
   {
     pos = {
@@ -604,8 +604,8 @@
     lastHarvested = 0,
     active = false,
     aero = true,
-    tobuild = true,
-    toplant = false,
+    tobuild = false,
+    toplant = true,
   },
       {
     pos = {
@@ -849,9 +849,9 @@
     right = true,
     interval = 1800,
     lastHarvested = 0,
-    active = false,
+    active = true,
     aero = true,
-    tobuild = true,
+    tobuild = false,
     toplant = false,
   },
 }
