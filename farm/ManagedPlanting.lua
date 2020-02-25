@@ -67,8 +67,13 @@ function initialization()
     ManagerID, message = rednet.receive("Init")              -- waits for a broadcast to receive ID of manager
 
     -- initialization store storage Position
+while true do
     rednet.send(ManagerID,"I am new planting","New")    -- send message to manager using protocol "New"
     ManagerID, StorageMessage = rednet.receive("New")   -- listening to messages on protocol "New"
+    if StorageMessage ~=nil then
+        return
+    end
+end
     ManagerID, DropMessage = rednet.receive("New")      -- listening to messages on protocol "New"
     ManagerID, QueueMessage = rednet.receive("New")     -- listening to messages on protocol "New"
     storage = textutils.unserialize(StorageMessage)
