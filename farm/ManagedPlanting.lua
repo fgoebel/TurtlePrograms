@@ -120,7 +120,7 @@ function main()
             planting.planting(field,storage,drop)                   -- go working
             check = false
             rednet.send(ManagerID,field.name, "FinishedPlanting")
-            ID,message = rednet.receive("FinishedPlanting")
+            ID,message = rednet.receive("FinishedPlanting",2)
             if message == "got it" then
                 check = true
             end
@@ -129,7 +129,7 @@ function main()
             Waiting = true
             while not check do
                 rednet.send(ManagerID,field.name, "FinishedPlanting")
-                ID,message = rednet.receive("FinishedPlanting")
+                ID,message = rednet.receive("FinishedPlanting",2)
                 if message == "got it" then
                     check = true
                 end

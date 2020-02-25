@@ -137,7 +137,7 @@ while true do
             building.building(field,storage,drop)
             check = false
             rednet.send(ManagerID,field.name, "FinishedBuilding")
-            ID,message = rednet.receive("FinishedBuilding")
+            ID,message = rednet.receive("FinishedBuilding",3)
             if message == "got it" then
                 check = true
             end
@@ -147,7 +147,7 @@ while true do
             Building = false
             while not check do
                 rednet.send(ManagerID,field.name, "FinishedPlanting")
-                ID,message = rednet.receive("FinishedPlanting")
+                ID,message = rednet.receive("FinishedPlanting",3)
                 if message == "got it" then
                     check = true
                 end

@@ -284,38 +284,32 @@ while true do
         NextField = textutils.serialize(fields[FieldIndex])                 -- serialize field table
         rednet.send(QueueID,NextField,"Queue")                              -- send field to turtle using protocol "Queue"
         print(fields[FieldIndex].name)
-        ID, message, protocol = rednet.receive(2)                       -- check for messages
+        ID, message, protocol = rednet.receive("Field",2)                       -- check for messages
         -- Protocol = "Field" --> Turtle received field and starts harvesting
-        if protocol == "Field" then 
             Fieldstate = false                                                  -- Change Fieldstate and Queuestate
             Queuestate = false                                                  
             fields[FieldIndex].lastHarvested = Time                             -- update field harvesting time
             store("fields", fields)
             sleep(10)
-        end
     
     elseif (Fieldstate == false and Queuestate == true and BuildState == true) then -- send turtles to build new fields
         BuildingField = textutils.serialize(fields[toBuildIndex])               -- serialize field table
         rednet.send(QueueID,BuildingField,"Build")                              -- send field to turtle using protocol "Build"
-        ID, message, protocol = rednet.receive(2)                               -- check for messages
-        -- Protocol = "Build" --> Turtle received field and starts building
-        if protocol == "Field" then 
+        ID, message, protocol = rednet.receive("Field",2)                       -- check for messages
+        -- Protocol = "Field" --> Turtle received field and starts building
             BuildState = false                                                  -- Change BuildState
             fields[toBuildIndex].tobuild = false
             store("fields", fields)
-        end
     end
 
     if Plantingstate == true and Plantingqueuestate == true then                -- send harvesting turtle to plant field
         PlantingField = textutils.serialize(fields[toPlantIndex])               -- serialize field table
         rednet.send(PlantQueueID,PlantingField,"PlantQueue")
-        ID, message, protocol = rednet.receive(2)
+        ID, message, protocol = rednet.receive(2,"Planting")
         -- Protocol = "Planting" --> turtle received field and starts planting
-        if protocol == "Planting" then
             Plantingstate = false
             fields[toPlantIndex].toplant = false
             store("fields", fields)
-        end
     end
 
 end
