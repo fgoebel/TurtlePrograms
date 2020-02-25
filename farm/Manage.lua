@@ -168,19 +168,16 @@ while true do
 
     -- Processing Message:
     -- Protocol = "Queue" --> Trutle is waiting on first position
-    if protocol == "Queue" then
+    if protocol == "Queue" and Queuestate == false then
         print("found someone on queue")
         QueueID = ID
         Queuestate = true
-
-    -- Protocol = "Field" --> Turtle received field and starts harvesting
-    elseif protocol == "Field" then 
-        Fieldstate = false                                                  -- Change Fieldstate and Queuestate
-        Queuestate = false                                                  
-        fields[FieldIndex].lastHarvested = Time                             -- update field harvesting time
-        store("fields", fields)
-        sleep(10)
     
+    -- Protocol = "PlantQueue" --> Trutle is waiting on first position in Plantqueue
+    elseif protocol == "PlantQueue" and Plantingqueuestate == false then
+        PlantQueueID = ID
+        Plantingqueuestate = true
+   
     -- Protocol = "New" --> New Turtle needs input
     elseif protocol == "New" then
         print("found new turtle")
@@ -197,17 +194,7 @@ while true do
             end
         end
         store("fields", fields)
-
-    --Protocol = "Input" --> User input on fields
-    elseif protocol == "Input" or protocol == "InputMulti" then
-        print("User input on fields")
-        processInput(message,ID,protocol)
-
-    -- Protocol = "PlantQueue" --> Trutle is waiting on first position in Plantqueue
-    elseif protocol == "PlantQueue" then
-        PlantQueueID = ID
-        Plantingqueuestate = true
-    
+   
     -- Protocol = "FinishedPlanting" --> turtle finished planting, next step is activating field
     elseif protocol == "FinishedPlanting" then
         toActivateName = message
@@ -220,6 +207,11 @@ while true do
             end
         end
         store("fields", fields)
+
+    --Protocol = "Input" --> User input on fields
+    elseif protocol == "Input" or protocol == "InputMulti" then
+        print("User input on fields")
+        processInput(message,ID,protocol)
 
     end
     
@@ -284,8 +276,8 @@ while true do
         NextField = textutils.serialize(fields[FieldIndex])                 -- serialize field table
         rednet.send(QueueID,NextField,"Queue")                              -- send field to turtle using protocol "Queue"
         print(fields[FieldIndex].name)
-        ID, message, protocol = rednet.receive("Field",2)                       -- check for messages
-        -- Protocol = "Field" --> Turtle received field and starts harvesting
+        ID, message, protocol = rednet.receive("Harvest",2)                     -- check for messages
+        -- Protocol = "Harvest" --> Turtle received field and starts harvesting
             Fieldstate = false                                                  -- Change Fieldstate and Queuestate
             Queuestate = false                                                  
             fields[FieldIndex].lastHarvested = Time                             -- update field harvesting time
@@ -295,9 +287,10 @@ while true do
     elseif (Fieldstate == false and Queuestate == true and BuildState == true) then -- send turtles to build new fields
         BuildingField = textutils.serialize(fields[toBuildIndex])               -- serialize field table
         rednet.send(QueueID,BuildingField,"Build")                              -- send field to turtle using protocol "Build"
-        ID, message, protocol = rednet.receive("Field",2)                       -- check for messages
+        ID, message, protocol = rednet.receive("Build",2)                       -- check for messages
         -- Protocol = "Field" --> Turtle received field and starts building
             BuildState = false                                                  -- Change BuildState
+            Queuestate = false
             fields[toBuildIndex].tobuild = false
             store("fields", fields)
     end
@@ -308,6 +301,7 @@ while true do
         ID, message, protocol = rednet.receive("Planting",2)
         -- Protocol = "Planting" --> turtle received field and starts planting
             Plantingstate = false
+            Plantingqueuestate = false
             fields[toPlantIndex].toplant = false
             store("fields", fields)
     end

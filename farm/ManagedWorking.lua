@@ -114,13 +114,15 @@ while true do
         ID, message, protocol = rednet.receive(2)               -- listening to messages on an protocol
         if message ~= nil then
             if textutils.unserialize(message) ~= nil then       -- message was field
-                rednet.send(ID,"got it", "Field")               -- send message to manager using protocol "Field"
+                if protocol == "Build" then                     -- change state of Building
+                    Building = true
+                    rednet.send(ManagerID,"got it", "Build")
+                else
+                    rednet.send(ManagerID,"got it", "Harvest")  -- send message to manager using protocol "Field"
+                end
                 field = textutils.unserialize(message)
                 Waiting = false                                 -- change state of Waiting and First in Queue
                 FirstInQueue = false
-                if protocol == "Build" then                      -- change state of Building
-                    Building = true
-                end
             end
         else
             sleep(5)
@@ -137,7 +139,7 @@ while true do
             building.building(field,storage,drop)
             check = false
             rednet.send(ManagerID,field.name, "FinishedBuilding")
-            ID,message = rednet.receive("FinishedBuilding",3)
+            ID,message = rednet.receive("FinishedBuilding",2)
             if message == "got it" then
                 check = true
             end
@@ -146,8 +148,8 @@ while true do
             Waiting = true
             Building = false
             while not check do
-                rednet.send(ManagerID,field.name, "FinishedPlanting")
-                ID,message = rednet.receive("FinishedPlanting",3)
+                rednet.send(ManagerID,field.name, "FinishedBuilding")
+                ID,message = rednet.receive("FinishedBuilding",2)
                 if message == "got it" then
                     check = true
                 end
