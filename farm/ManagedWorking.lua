@@ -80,7 +80,7 @@ function initialization()
     init = true
 while init do
     rednet.send(ManagerID,"I am new","New")             -- send message to manager using protocol "New"
-    ManagerID, StorageMessage = rednet.receive(,2"New") -- listening to messages on protocol "New"
+    ManagerID, StorageMessage = rednet.receive(2,"New") -- listening to messages on protocol "New"
     if StorageMessage ~=nil then
         init = false
     end
